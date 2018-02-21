@@ -16,7 +16,7 @@ app.prepare()
 
     // start server
     server.listen(3000, (err) => {
-      console.log('MATRYOSHKA ARE STACKING on :3000');
+      console.log('MATRYOSHKA ARE STACKING ON: 3000');
     });
   })
   .catch(err => {

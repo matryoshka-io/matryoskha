@@ -1,4 +1,3 @@
-
 const Index = (props) => (
   <div>
     <h1>Matryoshka Stack +1</h1>
