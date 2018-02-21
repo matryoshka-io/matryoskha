@@ -1,9 +1,14 @@
 const express = require('express');
 const next = require('next');
 
+// nextjs environment
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({dir: './client', dev});
-const handle = app.getRequestHandler();
+
+// route handlers
+const apiRoutes = require('./routes').api;
+const addPageRoutes = require('./routes').pages;
+const nextHandler = app.getRequestHandler();
 
 app.prepare()
   .then(() => {
@@ -12,7 +17,9 @@ app.prepare()
     // middleware & auth
 
     // routes
-    server.get('*', (req, res) => handle(req, res));
+    server.get('/api', apiRoutes);
+    addPageRoutes(app);
+    server.get('*', (req, res) => nextHandler(req, res));
 
     // start server
     server.listen(3000, (err) => {
