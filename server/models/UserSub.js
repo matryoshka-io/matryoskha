@@ -14,3 +14,5 @@ const userSubSchema = mongoose.Schema({
     ref: 'Sub',
   },
 });  
+
+const UserSub = mongoose.model('UserSub', userSubSchema);

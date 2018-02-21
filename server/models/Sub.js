@@ -16,3 +16,5 @@ const subSchema = mongoose.Schema({
     default: Date.now,
   }, // Self-explanatory.
 });
+
+const Sub = mongoose.model('Sub', subSchema);
