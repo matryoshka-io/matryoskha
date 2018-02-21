@@ -9,7 +9,8 @@ class TextBox extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      titleText: ''
+      titleText: '',
+      bodyText: ''
     }
   }
 
@@ -19,10 +20,27 @@ class TextBox extends React.Component {
     })
   }
 
+  onBodyTextChangeHandler = (e) => {
+    this.setState({ bodyText: e.target.value }, () => {
+      console.log(this.state.bodyText)
+    })
+  }
+
+
   render() {
     return (
       <div>
-        <textarea rows="4" cols="50" defaultValue={this.state.titleText} onChange={this.onTitleTextChangeHandler}></textarea>
+        Title: <br />
+        <textarea rows="1" cols="50" value={this.state.titleText} onChange={this.onTitleTextChangeHandler}>
+        </textarea> <br />
+
+        Text <br />
+        <textarea row="5" cols="50" value={this.state.bodyText} onChange={this.onBodyTextChangeHandler}>
+        </textarea>
+        {/* Renders HTML text */}
+        <ReactMarkdown source={this.state.bodyText} />
+
+        <button>Post!</button>
       </div>
     )
   }
