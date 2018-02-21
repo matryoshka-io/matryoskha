@@ -12,6 +12,9 @@ class PostForm extends React.Component {
       titleText: '',
       bodyText: ''
     }
+
+    this.onTitleTextChangeHandler = this.onTitleTextChangeHandler.bind(this);
+    this.onBodyTextChangeHandler = this.onBodyTextChangeHandler.bind(this);
   }
 
   onTitleTextChangeHandler = (e) => {
@@ -29,15 +32,24 @@ class PostForm extends React.Component {
 
   render() {
     return (
-      <div id="postSubmission">
+      <div className="postSubmission">
         Title: <br />
         <textarea rows="1" cols="50" value={this.state.titleText} onChange={this.onTitleTextChangeHandler}>
         </textarea> <br />
 
-        Text <br />
+        Type:
+        <select id="typeDropdown">
+          <option value="text">Text</option>
+          <option value="link">Link</option>
+          <option value="image">Image</option>
+          <option value="video">Video</option>
+        </select>
+        <br />
+
+        Text: <br />
         <textarea row="5" cols="50" value={this.state.bodyText} onChange={this.onBodyTextChangeHandler}>
         </textarea>
-        {/* Renders HTML text */}
+        {/* Renders HTML text -- move Rendering to component you want it rendered in - Profile & subreddit! */}
         <ReactMarkdown source={this.state.bodyText} />
 
         <button>Post!</button>
