@@ -27,6 +27,10 @@ const postSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Post',
   }, // See above for top-level Comments, vs. nested Comments, vs. Posts.
+  link: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Link',
+  },
 });
 
 const Post = mongoose.model('Post', postSchema);
