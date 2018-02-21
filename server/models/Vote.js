@@ -14,7 +14,7 @@ const commentVoteSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   }, // Unique ID for the User who created/voted this Vote.
-  up: Boolean, // If this is true, it's an upvote. If it's false, it's a downvote.
+  up: Number, // If -1 it's a downvote, if 1 it's an upvote.
 });
 
 const Vote = mongoose.model('Vote', voteSchema);

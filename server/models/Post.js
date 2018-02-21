@@ -13,7 +13,7 @@ const postSchema = mongoose.Schema({
     ref: 'Subreddit',
   }, // Unique ID of the Subreddit to which the Post belongs.
   title: String, // Title of the Post.
-  type: String, // Type of the Post, e.g. Video, Image (e.g. an IMGUR link), Text
+  type: String, // Type of the Post/Comment, e.g. Video, Image (e.g. an IMGUR link), Text, Comment. Videos and Images are links.
   body: String, // Body of the Post/Comment, if applicable.
   author: {
     type: mongoose.Schema.Types.ObjectId,
@@ -23,7 +23,6 @@ const postSchema = mongoose.Schema({
     type: Date,
     default: Date.now,
   }, // Self-explanatory.
-  comment: Boolean, // If true, this Post is a Comment.
   parent: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Post',
