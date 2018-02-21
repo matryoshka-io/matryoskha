@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const commentSchema = mongoose.Schema({
   parent: Number, // Optional, refers to the parent of the Comment, another Comment.
   author: Number, // Unique ID of the author of the Comment, a User.
-  text: String, // Actual text of the comment.
+  text: String, // Actual text of the Comment.
   date: {
     type: Date,
     default: Date.now,
@@ -13,6 +13,4 @@ const commentSchema = mongoose.Schema({
   // Optional, if not a nested Comment (i.e. a top-level Comment),
   // then it is the unique ID of the Post to which this Comment belongs.
   post: Number,
-  upvotes: Number, // Number of upvotes.
-  downvotes: Number, // Number of downvotes.
 });
