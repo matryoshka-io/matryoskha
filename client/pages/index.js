@@ -29,8 +29,10 @@ class Index extends React.Component {
     }
   }
 
-  createNewPost = (titleText, type, bodyText) => {
-    axios.post('/user/:id/posts', { title: titleText, body: bodyText }) //add type here!!
+  createNewTextPost = (titleText, type, bodyText) => {
+    axios.post('/user/:id/posts', { title: titleText, type: 'text', body: bodyText }
+      .then(res => {
+        console.log('SUCCESSFUL TEXT POST'))
   }
 
   render() {
