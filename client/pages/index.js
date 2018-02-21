@@ -1,4 +1,5 @@
-import TextBox from './TextBox.jsx'
+import PostForm from './PostForm.jsx'
+import axios from 'axios'
 // const Index = (props) => (
 // <div>
 //   <h1>Matryoshka Stack +1</h1>
@@ -28,6 +29,10 @@ class Index extends React.Component {
     }
   }
 
+  createNewPost = (titleText, type, bodyText) => {
+    axios.post('/user/:id/posts', { title: titleText, body: bodyText }) //add type here!!
+  }
+
   render() {
     return (
       <div>
@@ -40,7 +45,8 @@ class Index extends React.Component {
       `}
         </style>
 
-        <TextBox />
+        <PostForm />
+        {/* ^ render that on profile post pages! */}
       </div>
     )
   }
