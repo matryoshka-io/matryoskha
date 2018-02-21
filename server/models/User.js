@@ -7,9 +7,8 @@ const userSchema = mongoose.Schema({
     unique: true,
   }, // Username for the User in question, must be unique. Not the "primary key," however.
   password: String, // This must be hashed, we think sessions will be done with npm – express-session and npm – bcrypt.
-  // Sketch below. Users and Subs is a many-to-many relationship.
-  subs: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Sub',
-  }], // Array of unique IDs which refer to the Subs to which a User is subscribed.
-});   // In essence, to the get the amount of Users a Sub has, we have to check all the Users.
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+});  
