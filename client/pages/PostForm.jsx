@@ -13,12 +13,18 @@ class PostForm extends React.Component {
     super(props)
     this.state = {
       titleText: '',
-      bodyText: '',
+      // bodyText: '',
       isTextBoxHidden: false,
       isLinkBarHidden: true,
       selectedType: '',
       type: 'text'
     }
+  }
+
+  onTitleTextChangeHandler = (e) => {
+    this.setState({
+      titleText: e.target.value
+    })
   }
 
   onDropdownChangeHandler = (e) => {
@@ -49,10 +55,11 @@ class PostForm extends React.Component {
     this.createNewTextPost(this.state.titleText, this.state.type, this.state.bodyText)
   }
 
+  //client side requests here
   createNewTextPost = (titleText, type, bodyText, url) => {
     //work on changing the type here
-    if (type === 'text') {
-      axios.post('/sub/:id/post/', { title: titleText, type: this.state.type, body: bodyText })
+    if (this.state.type === 'text') {
+      axios.post('/sub/:id/post', { title: titleText, type: this.state.type, body: bodyText })
         .then(res => {
           console.log('SUCCESSFUL TEXT POST')
         })
@@ -64,7 +71,7 @@ class PostForm extends React.Component {
     return (
       <div className="postSubmission">
         Title: <br />
-        <textarea rows="1" cols="50" value={this.state.titleText} onChange={this.onTitleTextChangeHandler}>
+        <textarea rows="1" cols="80" value={this.state.titleText} onChange={this.onTitleTextChangeHandler}>
         </textarea> <br />
 
         Type:
