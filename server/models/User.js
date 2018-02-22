@@ -12,7 +12,7 @@ const userSchema = mongoose.Schema({
     default: Date.now,
   },
   karma: Number, // Cache value for the number of upvotes a User has received on their Posts/Comments, after taking downvotes into account.
-});  
+});
 
 const User = mongoose.model('User', userSchema);
 

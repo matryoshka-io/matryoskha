@@ -4,10 +4,11 @@ const next = require('next');
 
 // Next.js Environment
 const dev = process.env.NODE_ENV !== 'production';
-const app = next({dir: './client', dev});
+const app = next({ dir: './client', dev });
 
 // Route handlers
 const apiRoutes = require('./routes').api;
+const pageRoutes = require('./routes').pages;
 
 app.prepare()
   .then(() => {
@@ -19,7 +20,7 @@ app.prepare()
 
     // Routes
     server.use('/api', apiRoutes);
-    const pageRoutes = require('./routes').pages(server, app);
+    pageRoutes(server, app);
 
     // Fallback Route
     const nextHandler = app.getRequestHandler();
@@ -27,7 +28,11 @@ app.prepare()
 
     // Start the server
     server.listen(3000, (err) => {
-      console.log('MATRYOSHKA ARE STACKING ON: 3000');
+      if (err) {
+        console.log(`Error starting server: ${err}`);
+      } else {
+        console.log('MATRYOSHKA ARE STACKING ON: 3000');
+      }
     });
   })
   .catch((err) => {

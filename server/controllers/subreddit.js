@@ -5,7 +5,7 @@ const utils = require('./utils');
 
 module.exports = {
   POST: {
-    subreddit: function (req, res) {
+    subreddit(req, res) {
       // For testing.
       req.session = {
         user: '5a8e0e077f911450d4600d96', // i.e. admin, see dummy data
@@ -18,12 +18,12 @@ module.exports = {
       };
 
       const newSubreddit = new models.Subreddit(newSubredditSkeleton);
-      newSubreddit.save().then(function (subreddit) {
+      newSubreddit.save().then((subreddit) => {
         res.status(201).end(JSON.stringify(subreddit)); // Does this violate REST? Then again, the TA...
       });
     },
-    post: function (req, res) {
-      models.Subreddit.findOne({ title: req.params.subName }).then(function (subreddit) {
+    post(req, res) {
+      models.Subreddit.findOne({ title: req.params.subName }).then((subreddit) => {
         req.session = {
           user: '5a8e0e077f911450d4600d96',
         };
@@ -38,16 +38,16 @@ module.exports = {
         };
 
         const newPost = new models.Post(newPostSkeleton);
-        newPost.save().then(function (post) {
+        newPost.save().then((post) => {
           res.status(201).end(JSON.stringify(post));
         });
       });
     },
   },
-  GET: function (req, res) {
-    models.Subreddit.findOne({ title: req.params.subName }).then(function (subreddit) {
-      models.Post.find({ subreddit: subreddit._id }).lean().then(function (posts) {
-        utils.getKarmaAndSort(posts, function (posts) {
+  GET(req, res) {
+    models.Subreddit.findOne({ title: req.params.subName }).then((subreddit) => {
+      models.Post.find({ subreddit: subreddit._id }).lean().then((posts) => {
+        utils.getKarmaAndSort(posts, (posts) => {
           res.status(200).end(JSON.stringify(posts)); // Don't nest, figure out depth thing later.
         });
       });
