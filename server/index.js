@@ -8,7 +8,6 @@ const app = next({dir: './client', dev});
 // route handlers
 const apiRoutes = require('./routes').api;
 const addPageRoutes = require('./routes').pages;
-const nextHandler = app.getRequestHandler();
 
 app.prepare()
   .then(() => {
@@ -17,8 +16,11 @@ app.prepare()
     // middleware & auth
 
     // routes
-    server.get('/api', apiRoutes);
-    addPageRoutes(app);
+    server.use('/api', apiRoutes);
+    const pageRoutes = require('./routes').pages(server, app);
+
+    // fallback route
+    const nextHandler = app.getRequestHandler();
     server.get('*', (req, res) => nextHandler(req, res));
 
     // start server

@@ -1,7 +1,6 @@
-
 const Subreddit = (props) => (
   <div>
-    <h1>Matryoshka Subreddit</h1>
+    <h1>{props.url.asPath}</h1>
     <h2>{props.message}</h2>
     <style jsx>
     {`
@@ -12,7 +11,7 @@ const Subreddit = (props) => (
   </div>
 );
 
-Subreddit.getInitialProps = async function() {
+Subreddit.getInitialProps = async function () {
   // initial data requests happen in here
   // they are passed to props above automatically
   return {

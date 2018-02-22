@@ -1,6 +1,50 @@
+import Nav from '../components/nav'
+import Posts from '../components/posts'
+import Data from '../../server/database/data.json'
 
-import Homepage from './homepage'
-export default Homepage
+const Homepage = props => (
+    <div>
+      {/* <h1>{props.url.asPath}</h1> */}
+      <h2>Welcome to Matryoshka Io</h2>
+      <Nav />
+      <h2>You are everywhere and nowhere all at once</h2>
+      <Posts myPosts={props.posts} />
+      
+      <style jsx>
+        {`
+          h1 {
+            font-size: 36px;
+            color: #333;
+            align-text: center;
+          }
+          h2 {
+            margin-left: 16px;
+          }
+        `}
+      </style>
+    
+    </div>
+  );
+  
+  Homepage.getInitialProps = async function () {
+    // initial data requests happen in here
+    // they are passed to props above automatically
+    // let ourPosts = await res.json()
+    console.log(Data)
+    return {
+      user: {},
+      posts: Data
+    }
+  };
+  
+  export default Homepage;
+
+
+
+
+
+
+
 
 // class Page extends React.Component {
 //     static async getInitialProps(args) {

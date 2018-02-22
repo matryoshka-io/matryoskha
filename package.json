@@ -11,7 +11,11 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "dev": "node server",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "node server/database/insertDummyData.js"
+  },
   "scripts": {
     "dev": "node server",
     "test": "echo \"Error: no test specified\" && exit 1"

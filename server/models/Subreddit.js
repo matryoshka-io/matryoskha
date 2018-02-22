@@ -18,3 +18,5 @@ const subredditSchema = mongoose.Schema({
 });
 
 const Subreddit = mongoose.model('Subreddit', subredditSchema);
+
+module.exports = Subreddit;
