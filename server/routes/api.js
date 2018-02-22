@@ -1,5 +1,7 @@
 const router = require('express').Router();
+
 const db = require('../database');
+const models = require('../models');
 
 // API ROUTES
 
