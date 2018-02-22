@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const next = require('next');
 
 // nextjs environment
@@ -14,6 +15,8 @@ app.prepare()
     const server = express();
 
     // middleware & auth
+    server.use(bodyParser.urlencoded({ extended: true }));
+    server.use(bodyParser.json());
 
     // routes
     server.use('/api', apiRoutes);
