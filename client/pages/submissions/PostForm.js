@@ -1,6 +1,7 @@
 import axios from 'axios';
 import LinkBar from '../../components/LinkBar.js';
 import TextBox from '../../components/TextBox.js';
+import SubredditNameBox from '../../components/subredditNameBox';
 import React from 'react'
 
 class PostForm extends React.Component {
@@ -12,7 +13,7 @@ class PostForm extends React.Component {
       isLinkBarHidden: true,
       selectedType: '',
       type: 'text',
-      subredditName: ''
+      subredditId: ''
     }
   }
 
@@ -56,7 +57,7 @@ class PostForm extends React.Component {
   createNewTextPost = (titleText, type, bodyText, url) => {
     //work on changing the type here
     if (this.state.type === 'text') {
-      //POST 404 - 
+      //POST 404 - figure out how to get subId ! 
       axios.post('/api/sub/:subId/post', { title: titleText, type: this.state.type, body: bodyText })
         .then(res => {
           console.log('SUCCESSFUL TEXT POST')
@@ -69,9 +70,16 @@ class PostForm extends React.Component {
   render() {
     return (
       <div className="postSubmission">
+        <h3>Submit a post</h3>
+
         Title: <br />
         <textarea rows="1" cols="80" value={this.state.titleText} onChange={this.onTitleTextChangeHandler}>
         </textarea> <br />
+
+        <div id="subredditNameBox">
+          Your subreddit:
+          <SubredditNameBox />
+        </div>
 
         Type:
         <select id="typeDropdown" onChange={this.onDropdownChangeHandler} >
