@@ -1,7 +1,12 @@
+// https://stackoverflow.com/questions/10081452/how-to-drop-a-database-with-mongoose
+
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/matryoksha');
+mongoose.connect('mongodb://localhost:27017/matryoksha', function () {
+  // Hm.
+});
 
 const db = mongoose.connection;
+db.dropDatabase();
 
 // const Link = require('../models/Link');
 const Post = require('../models/Post');
