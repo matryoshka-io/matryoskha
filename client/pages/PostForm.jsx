@@ -12,9 +12,9 @@ class PostForm extends React.Component {
     this.state = {
       titleText: '',
       bodyText: '',
-      type: 'text',
+      isBodyTextHidden: false,
+      selectedType: '',
     }
-
     this.onTitleTextChangeHandler = this.onTitleTextChangeHandler.bind(this);
     this.onBodyTextChangeHandler = this.onBodyTextChangeHandler.bind(this);
   }
@@ -32,21 +32,30 @@ class PostForm extends React.Component {
     })
   }
 
-
-
-  createNewTextPost = (titleText, type, bodyText) => {
-    if (type === 'text') {
-      axios.post('user/:id/posts', { title: titleText, type: 'post', body: bodyText })
-        .then(res => {
-          console.log('SUCCESSFUL TEXT POST')
-        })
+  onDropdownChangeHandler = (e) => {
+    if (e.target.value === 'text') {
+      this.setState({ isBodyTextHidden: false })
     }
+    if (e.target.value === 'image') {
+
+    }
+    if (e.target.value === 'video') {
+
+    }
+  }
+
+  createNewTextPost = (titleText, selectedType, bodyText) => {
+    // axios.post('user/:id/posts', { title: titleText, type: 'Text', body: bodyText })
+    //   .then(res => {
+    //     console.log('SUCCESSFUL TEXT POST')
+    //   })
+
+    console.log('am i working')
   }
 
   onCreateNewTextPostWithUserText = () => {
     this.createNewTextPost(this.state.titleText, this.state.type, this.state.bodyText)
   }
-
 
   render() {
     return (
@@ -56,7 +65,7 @@ class PostForm extends React.Component {
         </textarea> <br />
 
         Type:
-        <select id="typeDropdown" onChange={this.dropdownChangeHandler} >
+        <select id="typeDropdown" onChange={this.onDropdownChangeHandler} >
           <option value="text" >Text</option>
           <option value="image">Image</option>
           <option value="video">Video</option>
@@ -70,8 +79,8 @@ class PostForm extends React.Component {
         <textarea row="5" cols="50" value={this.state.bodyText} onChange={this.onBodyTextChangeHandler}>
         </textarea>
 
-        {/* Renders HTML text -- move Rendering to component you want it rendered in - Profile & subreddit! */}
-        <ReactMarkdown source={this.state.bodyText} />
+        {/* Markdown render test here */}
+        {/* <ReactMarkdown source={this.state.bodyText} /> */}
 
         <button onClick={this.onCreateNewTextPostWithUserText}>Post!</button>
       </div>
