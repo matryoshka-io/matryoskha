@@ -4,10 +4,13 @@
   "description": "Comments Stack... you get it?",
   "main": "index.js",
   "dependencies": {
+    "connect-mongo": "^2.0.1",
     "express": "^4.16.2",
+    "express-session": "^1.15.6",
     "isomorphic-unfetch": "^2.0.0",
     "mongoose": "^5.0.6",
     "next": "^5.0.0",
+    "next-auth": "^1.8.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   },
