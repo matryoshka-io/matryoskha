@@ -16,7 +16,8 @@
   "devDependencies": {},
   "scripts": {
     "dev": "node server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "node server/database/insertDummyData.js"
   },
   "repository": {
     "type": "git",

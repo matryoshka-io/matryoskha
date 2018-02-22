@@ -1,4 +1,3 @@
-
 const Subreddit = (props) => (
   <div>
     <h1>{props.url.asPath}</h1>
