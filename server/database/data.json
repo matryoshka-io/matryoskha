@@ -1,0 +1,67 @@
+{
+  "Users": [
+    {
+      "_id": 0, // Override Mongo's default one for the purpose of testing.
+      "username": "admin",
+      "password": "admin",
+      "date": "2018-02-21T23:49:20.395Z", // (new Date()).toISOString();
+      "karma": 0 // Leave off for now.
+    },
+    {
+      "_id": 1,
+      "username": "test",
+      "password": "alligator1515",
+      "date": "2018-02-21T23:57:10.585Z",
+      "karma": 0
+    }
+  ],
+  "Subreddits": [
+    {
+      "_id": 0,
+      "creator": 0,
+      "description": "Share cat photos here.",
+      "title": "Cats",
+      "date": "2018-02-21T23:51:42.095Z" // (new Date()).toISOString();
+    }
+  ],
+  "Posts": [
+    {
+      "_id": 0,
+      "subreddit": 0,
+      "title": "Why I like my cat!",
+      "type": "Text",
+      "body": "My cat can build full-stack apps.",
+      "author": 0,
+      "date": "2018-02-21T23:54:30.546Z" // (new Date()).toISOString();
+    },
+    {
+      "_id": 1,
+      "type": "Comment",
+      "body": "Sounds like a really smart cat, checkout Next.js by the way. It's the new big thing.",
+      "author": 1,
+      "date": "2018-02-21T23:58:33.480Z"
+    },
+    {
+      "_id": 2,
+      "type": "Comment",
+      "body": "Will definitely check it out.",
+      "author": 0,
+      "date": "2018-02-21T23:59:43.960Z",
+      "parent": 1
+    }
+  ],
+  "Votes": [
+    {
+      "post": 1,
+      "date": "2018-02-22T00:01:13.847Z",
+      "user": 0,
+      "value": 1
+    }
+  ],
+  "Subscriptions": [
+    {
+      "user": 1,
+      "subreddit": 0
+    }
+  ]
+}
