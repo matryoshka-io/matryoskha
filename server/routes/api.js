@@ -34,7 +34,7 @@ router.get('/', function (req, res) {
       Promise.all(promises).then(function (votes) {
         for (const [index, post] of posts.entries()) {
           post.karma = votes[index].reduce(function (totalKarma, vote) {
-            totalKarma += vote;
+            return totalKarma + vote.value;
           }, 0); // 0 might not be necessary, but whatever.
         }
 
