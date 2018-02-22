@@ -3,15 +3,18 @@ const router = require('express').Router();
 const db = require('../database');
 const models = require('../models');
 
-const matryoksha = function (post, callback, depth = 0) {
-  models.Post.find({ type: 'Comment', parent: post._id }).then(function (comments) {
-    post = { comments };
-    for (const comment of post.comments) {
-      matryoksha(comment, callback, depth + 1);
-    }
-    if (depth === 0) {
-      callback(post);
-    }
+const matryoksha = function (post) {
+  return new Promise(function (resolve, reject) {
+    models.Post.find({ type: 'Comment', parent: post._id }).then(function (comments) {
+      post = { comments };
+      const promises = [];
+      for (const comment of post.comments) {
+        promises.push(matryoksha(comment));
+      }
+      Promise.all(promises).then(function () {
+        resolve();
+      });
+    });
   });
 };
 
@@ -32,17 +35,15 @@ router.get('/', function (req, res) {
           }, 0); // 0 might not be necessary, but whatever.
         }
 
+        const finalPromises = [];
+        for (const post of posts) {
+          finalPromises.push(matryoksha(post));
+        }
+        Promise.all(finalPromises).then(function () {
+          res.status(200).end(JSON.stringify(posts));
+        });
       });
     });
   });
 
 module.exports = router;
-
-/*           res.status(200).end(JSON.stringify(posts));
-
-          then(function (votes) {
-          post.karma = 0;
-          for (const vote of votes) {
-            post.karma += vote.value;
-          }
-        }); */
