@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/matryoksha');
 
 const db = mongoose.connection;
+db.dropDatabase();
 
 // const Link = require('../models/Link');
 const Post = require('../models/Post');
@@ -32,19 +33,17 @@ db.once('open', function () {
   const modelNames = Object.keys(models);
   const promises = [];
   for (const modelName of modelNames) {
-    models[modelName].remove().then(function (response) {
-      for (const fakeData of data[modelName]) {
-        promises.push(new models[modelName](fakeData).save());
-      }
-    }).catch(function (error) {
-      console.log('Error when clearing collection: ' + error);
-    });
+    for (const fakeData of data[modelName]) {
+      promises.push(new models[modelName](fakeData).save());
+    }
   }
   
   Promise.all(promises).then(function () {
     console.log('Insertion of dummy data complete!');
+    process.exit();
   }).catch(function (error) {
     console.log('Error when inserting data: ' + data);
+    process.exit();
   });
 });
 
