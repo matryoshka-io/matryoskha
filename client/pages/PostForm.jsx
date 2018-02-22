@@ -59,7 +59,7 @@ class PostForm extends React.Component {
   createNewTextPost = (titleText, type, bodyText, url) => {
     //work on changing the type here
     if (this.state.type === 'text') {
-      axios.post('/sub/:id/post', { title: titleText, type: this.state.type, body: bodyText })
+      axios.post('/sub', { title: titleText, type: this.state.type, body: bodyText })
         .then(res => {
           console.log('SUCCESSFUL TEXT POST')
         })
