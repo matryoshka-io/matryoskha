@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown'
 import LinkBar from './LinkBar.js'
+import TextBox from './TextBox.js'
 
 // const input = 'hello from **textbox** heheheheh'
 
@@ -13,51 +14,43 @@ class PostForm extends React.Component {
     this.state = {
       titleText: '',
       bodyText: '',
-      isBodyTextHidden: false,
+      isTextBoxHidden: true,
       isLinkBarHidden: true,
       selectedType: '',
+      type: 'text'
     }
-  }
-
-  onTitleTextChangeHandler = (e) => {
-    this.setState({ titleText: e.target.value }, () => {
-      console.log(this.state.titleText)
-    })
-  }
-
-  onBodyTextChangeHandler = (e) => {
-    console.log('bodytext', this.state.bodyText)
-    this.setState({ bodyText: e.target.value }, () => {
-      console.log(this.state.bodyText)
-    })
   }
 
   onDropdownChangeHandler = (e) => {
     if (e.target.value === 'text') {
-      this.setState({ isBodyTextHidden: false })
+      this.setState({ isTextBoxHidden: false })
       this.setState({ isLinkBarHidden: true })
     }
     if (e.target.value === 'image') {
       this.setState({ isLinkBarHidden: false })
-      this.setState({ isBodyTextHidden: true })
+      this.setState({ isTextBoxHidden: true })
+      this.setState({ type: 'image' })
     }
-    if (e.target.value === 'vide') {
+    if (e.target.value === 'video') {
       this.setState({ isLinkBarHidden: false })
       this.setState({ isBodyTextHidden: true })
+      this.setState({ type: 'video' })
     }
-  }
-
-  createNewTextPost = (titleText, selectedType, bodyText) => {
-    // axios.post('user/:id/posts', { title: titleText, type: 'Text', body: bodyText })
-    //   .then(res => {
-    //     console.log('SUCCESSFUL TEXT POST')
-    //   })
-
-    console.log('am i working')
   }
 
   onCreateNewTextPostWithUserText = () => {
     this.createNewTextPost(this.state.titleText, this.state.type, this.state.bodyText)
+  }
+
+  createNewTextPost = (titleText, type, bodyText, url) => {
+    //work on changing the type here
+    if (type === 'text') {
+      axios.post('/sub/:id/post/:id', { title: titleText, type: 'text', body: bodyText })
+        .then(res => {
+          console.log('SUCCESSFUL TEXT POST')
+        })
+    }
+    //work on links later
   }
 
   render() {
@@ -76,15 +69,11 @@ class PostForm extends React.Component {
         <br />
 
         <div id="linkBar">
-
           {this.state.isLinkBarHidden ? null : <LinkBar />}
-
         </div>
 
         <div id="textbar">
-          Text: <br />
-          <textarea row="5" cols="50" value={this.state.bodyText} onChange={this.onBodyTextChangeHandler}>
-          </textarea>
+          {this.state.isBodyTextHidden ? null : <TextBox />}
         </div>
 
 
