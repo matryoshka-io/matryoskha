@@ -13,10 +13,10 @@ const Vote = require('../models/Vote');
 
 const models = {
   // Link,
-  Post,
-  Subreddit,
-  Subscription,
   User,
+  Subreddit,
+  Post,
+  Subscription,
   Vote,
 };
 

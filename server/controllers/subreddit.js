@@ -53,4 +53,24 @@ module.exports = {
       });
     });
   },
+  PUT(req, res) {
+    req.session = {
+      user: '5a8e0e077f911450d4600d96',
+    };
+    // Perhaps no need for populating.
+    models.Subreddit.findOne({ title: req.params.subName }).populate('creator').lean().then((subreddit) => {
+      // console.log(typeof subreddit.creator._id === 'object');
+      // console.log(typeof req.session.user === 'string');
+      // That sexy loose equality though.
+      if (subreddit.creator._id == req.session.user) {
+        subreddit.title = req.body.title;
+        subreddit.description = req.body.description; // Might as well update both. Check with front-end.
+        subreddit.save().then((subreddit) => {
+          res.status(201).end(JSON.stringify(subreddit));
+        });
+      } else {
+        res.status(401).end('You are not the owner of this subreddit.');
+      }
+    });
+  },
 };
