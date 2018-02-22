@@ -5,6 +5,9 @@ const next = require('next');
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({dir: './client', dev});
 
+// middleware
+const sessions = require('./middleware/index').validateSession;
+
 // route handlers
 const apiRoutes = require('./routes').api;
 const addPageRoutes = require('./routes').pages;
@@ -14,6 +17,7 @@ app.prepare()
     const server = express();
 
     // middleware & auth
+    server.use(sessions);
 
     // routes
     server.use('/api', apiRoutes);

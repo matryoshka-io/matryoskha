@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "axios": "^0.18.0",
+    "bcrypt": "^1.0.3",
     "express": "^4.16.2",
     "isomorphic-unfetch": "^2.0.0",
     "jsonwebtoken": "^8.1.1",
