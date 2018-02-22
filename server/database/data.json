@@ -1,5 +1,5 @@
 {
-  "Users": [
+  "User": [
     {
       "_id": 0, // Override Mongo's default one for the purpose of testing.
       "username": "admin",
@@ -15,7 +15,7 @@
       "karma": 0
     }
   ],
-  "Subreddits": [
+  "Subreddit": [
     {
       "_id": 0,
       "creator": 0,
@@ -24,7 +24,7 @@
       "date": "2018-02-21T23:51:42.095Z"
     }
   ],
-  "Posts": [
+  "Post": [
     {
       "_id": 0,
       "subreddit": 0,
@@ -50,7 +50,7 @@
       "parent": 1
     }
   ],
-  "Votes": [
+  "Vote": [
     {
       "post": 1,
       "date": "2018-02-22T00:01:13.847Z",
@@ -58,7 +58,7 @@
       "value": 1
     }
   ],
-  "Subscriptions": [
+  "Subscription": [
     {
       "user": 1,
       "subreddit": 0
