@@ -20,6 +20,31 @@ module.exports = {
     });
   },
   GET: function (req, res) {
-    res.status(404).end('Unimplemented!');
+    models.Subreddit.findOne({ title: req.params.subName }).then(function (subreddit) {
+      models.Post.find({ subreddit: subreddit._id }).lean().then(function (posts) {
+        const promises = [];
+        for (const post of posts) {
+          promises.push(models.Vote.find({ post: post._id }));
+        }
+        Promise.all(promises).then(function (votes) {
+          for (const [index, post] of posts.entries()) {
+            post.karma = votes[index].reduce(function (totalKarma, vote) {
+              return totalKarma + vote.value;
+            }, 0);
+          }
+
+          posts.sort(function (firstPost, secondPost) {
+            if (firstPost.karma > secondPost.karma) {
+              return -1;
+            } else if (firstPost.karma < secondPost.karma) {
+              return 1;
+            }
+            return 0;
+          });
+
+          res.status(200).end(JSON.stringify(posts));
+        });
+      });
+    });
   },
 };
