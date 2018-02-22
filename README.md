@@ -7,3 +7,7 @@ Be sure to have a MongoDB instance running on your local machine (i.e. `localhos
 * npm install
 * npm run seed
 * npm run dev
+
+## Development
+
+`npm run lint path/to/file` to run ESLint on a JavaScript file, we are using the Airbnb style guide.
