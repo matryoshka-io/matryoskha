@@ -4,17 +4,20 @@
   "description": "Comments Stack... you get it?",
   "main": "index.js",
   "dependencies": {
+    "axios": "^0.18.0",
     "express": "^4.16.2",
     "isomorphic-unfetch": "^2.0.0",
     "mongoose": "^5.0.6",
     "next": "^5.0.0",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "react-markdown": "^3.2.0"
   },
   "devDependencies": {},
   "scripts": {
     "dev": "node server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "node server/database/insertDummyData.js"
   },
   "repository": {
     "type": "git",
