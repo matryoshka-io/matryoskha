@@ -2,6 +2,7 @@ import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import LinkBar from '../../components/LinkBar.js';
 import TextBox from '../../components/TextBox.js';
+import React from 'react'
 
 // const input = 'hello from **textbox** heheheheh'
 
@@ -26,6 +27,7 @@ class PostForm extends React.Component {
     })
   }
 
+  //text posts can't have links & links cannot have texts
   onDropdownChangeHandler = (e) => {
     if (e.target.value === 'text') {
       this.setState({
@@ -58,7 +60,7 @@ class PostForm extends React.Component {
   createNewTextPost = (titleText, type, bodyText, url) => {
     //work on changing the type here
     if (this.state.type === 'text') {
-      axios.post('/sub', { title: titleText, type: this.state.type, body: bodyText })
+      axios.post('/api/sub/:subId/post', { title: titleText, type: this.state.type, body: bodyText })
         .then(res => {
           console.log('SUCCESSFUL TEXT POST')
         })
