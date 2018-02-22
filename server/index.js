@@ -17,7 +17,7 @@ app.prepare()
     // middleware & auth
 
     // routes
-    server.get('/api', apiRoutes);
+    server.use('/api', apiRoutes);
     addPageRoutes(app);
     server.get('*', (req, res) => nextHandler(req, res));
 

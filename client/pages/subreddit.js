@@ -1,4 +1,3 @@
-
 const Subreddit = (props) => (
   <div>
     <h1>Matryoshka Subreddit</h1>
