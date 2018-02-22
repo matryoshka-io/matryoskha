@@ -14,7 +14,7 @@ class PostForm extends React.Component {
     this.state = {
       titleText: '',
       bodyText: '',
-      isTextBoxHidden: true,
+      isTextBoxHidden: false,
       isLinkBarHidden: true,
       selectedType: '',
       type: 'text'
@@ -23,18 +23,25 @@ class PostForm extends React.Component {
 
   onDropdownChangeHandler = (e) => {
     if (e.target.value === 'text') {
-      this.setState({ isTextBoxHidden: false })
-      this.setState({ isLinkBarHidden: true })
+      this.setState({
+        type: 'text',
+        isTextBoxHidden: false,
+        isLinkBarHidden: true
+      })
     }
     if (e.target.value === 'image') {
-      this.setState({ isLinkBarHidden: false })
-      this.setState({ isTextBoxHidden: true })
-      this.setState({ type: 'image' })
+      this.setState({
+        isLinkBarHidden: false,
+        isTextBoxHidden: true,
+        type: 'image'
+      })
     }
     if (e.target.value === 'video') {
-      this.setState({ isLinkBarHidden: false })
-      this.setState({ isBodyTextHidden: true })
-      this.setState({ type: 'video' })
+      this.setState({
+        isLinkBarHidden: false,
+        isTextBoxHidden: true,
+        type: 'video'
+      })
     }
   }
 
@@ -45,7 +52,7 @@ class PostForm extends React.Component {
   createNewTextPost = (titleText, type, bodyText, url) => {
     //work on changing the type here
     if (type === 'text') {
-      axios.post('/sub/:id/post/:id', { title: titleText, type: 'text', body: bodyText })
+      axios.post('/sub/:id/post/', { title: titleText, type: this.state.type, body: bodyText })
         .then(res => {
           console.log('SUCCESSFUL TEXT POST')
         })
@@ -72,8 +79,8 @@ class PostForm extends React.Component {
           {this.state.isLinkBarHidden ? null : <LinkBar />}
         </div>
 
-        <div id="textbar">
-          {this.state.isBodyTextHidden ? null : <TextBox />}
+        <div id="textbox">
+          {this.state.isTextBoxHidden ? null : <TextBox />}
         </div>
 
 
