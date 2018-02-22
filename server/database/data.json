@@ -1,14 +1,14 @@
 {
   "User": [
     {
-      "_id": 0, // Override Mongo's default one for the purpose of testing.
+      "_id": "5a8e0e077f911450d4600d96",
       "username": "admin",
       "password": "admin",
-      "date": "2018-02-21T23:49:20.395Z", // (new Date()).toISOString();
-      "karma": 0 // Leave off for now.
+      "date": "2018-02-21T23:49:20.395Z",
+      "karma": 0
     },
     {
-      "_id": 1,
+      "_id": "5a8e0e0b7f911450d4600d97",
       "username": "test",
       "password": "alligator1515",
       "date": "2018-02-21T23:57:10.585Z",
@@ -17,8 +17,8 @@
   ],
   "Subreddit": [
     {
-      "_id": 0,
-      "creator": 0,
+      "_id": "5a8e0e217f911450d4600d98",
+      "creator": "5a8e0e077f911450d4600d96",
       "description": "Share cat photos here.",
       "title": "Cats",
       "date": "2018-02-21T23:51:42.095Z"
@@ -26,42 +26,43 @@
   ],
   "Post": [
     {
-      "_id": 0,
-      "subreddit": 0,
+      "_id": "5a8e0e2b7f911450d4600d99",
+      "subreddit": "5a8e0e217f911450d4600d98",
       "title": "Why I like my cat!",
       "type": "Text",
       "body": "My cat can build full-stack apps.",
-      "author": 0,
+      "author": "5a8e0e077f911450d4600d96",
       "date": "2018-02-21T23:54:30.546Z"
     },
     {
-      "_id": 1,
+      "_id": "5a8e0e367f911450d4600d9a",
       "type": "Comment",
       "body": "Sounds like a really smart cat, checkout Next.js by the way. It's the new big thing.",
-      "author": 1,
-      "date": "2018-02-21T23:58:33.480Z"
+      "author": "5a8e0e0b7f911450d4600d97",
+      "date": "2018-02-21T23:58:33.480Z",
+      "parent": "5a8e0e2b7f911450d4600d99"
     },
     {
-      "_id": 2,
+      "_id": "5a8e0e3f7f911450d4600d9b",
       "type": "Comment",
       "body": "Will definitely check it out.",
-      "author": 0,
+      "author": "5a8e0e077f911450d4600d96",
       "date": "2018-02-21T23:59:43.960Z",
-      "parent": 1
+      "parent": "5a8e0e367f911450d4600d9a"
     }
   ],
   "Vote": [
     {
-      "post": 1,
+      "post": "5a8e0e367f911450d4600d9a",
       "date": "2018-02-22T00:01:13.847Z",
-      "user": 0,
+      "user": "5a8e0e077f911450d4600d96",
       "value": 1
     }
   ],
   "Subscription": [
     {
-      "user": 1,
-      "subreddit": 0
+      "user": "5a8e0e0b7f911450d4600d97",
+      "subreddit": "5a8e0e217f911450d4600d98"
     }
   ]
 }
