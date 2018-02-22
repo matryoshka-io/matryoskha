@@ -1,6 +1,7 @@
-const Index = (props) => (
+
+const Subreddit = (props) => (
   <div>
-    <h1>Matryoshka Stack +1</h1>
+    <h1>Matryoshka Subreddit</h1>
     <h2>{props.message}</h2>
     <style jsx>
     {`
@@ -11,12 +12,12 @@ const Index = (props) => (
   </div>
 );
 
-Index.getInitialProps = async function () {
+Subreddit.getInitialProps = async function() {
   // initial data requests happen in here
   // they are passed to props above automatically
   return {
     message: "There are many dolls, but this one is ours"
-  }
+  };
 };
 
-export default Index;
+export default Subreddit;
