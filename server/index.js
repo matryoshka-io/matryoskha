@@ -16,7 +16,7 @@ app.prepare()
     // middleware & auth
 
     // routes
-    server.get('/api', apiRoutes);
+    server.use('/api', apiRoutes);
     const pageRoutes = require('./routes').pages(server, app);
 
     // fallback route
