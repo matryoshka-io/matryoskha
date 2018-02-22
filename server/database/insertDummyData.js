@@ -32,19 +32,25 @@ db.once('open', function () {
   const modelNames = Object.keys(models);
   const promises = [];
   for (const modelName of modelNames) {
-    models[modelName].remove().then(function (response) {
-      for (const fakeData of data[modelName]) {
-        promises.push(new models[modelName](fakeData).save());
-      }
-    }).catch(function (error) {
-      console.log('Error when clearing collection: ' + error);
-    });
+    promises.push(models[modelName].remove());
   }
   
   Promise.all(promises).then(function () {
-    console.log('Insertion of dummy data complete!');
+    const finalPromises = [];
+    for (const fakeData of data[modelName]) {
+      finalPromises.push(new models[modelName](fakeData).save());
+    }
+    Promise.all(finalPromises).then(function () {
+      console.log('Insertion of dummy data complete!');
+      process.exit();
+    }).catch(function (error) {
+      console.log(error);
+      console.log('Error when inserting dummy data: ' + error);
+      process.exit();
+    })
   }).catch(function (error) {
-    console.log('Error when inserting data: ' + data);
+    console.log('Error when clearing collection: ' + data);
+    process.exit();
   });
 });
 
