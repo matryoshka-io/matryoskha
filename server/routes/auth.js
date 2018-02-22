@@ -24,3 +24,5 @@ router.post('/login', (req, res) => {
 router.post('/logout');
 
 router.post('/signup');
+
+module.exports = router;

@@ -1,5 +1,4 @@
 const addPageRoutes = (server, app) => {
-
   // public views
   server.get('/r/:sub/:post/:comment', (req, res) => {
     const queryParams = { subreddit: req.params.sub, post: req.params.post, comment: req.params.comment };
@@ -23,7 +22,7 @@ const addPageRoutes = (server, app) => {
   // default :: posts
   server.get('/u/:name/:content', (req, res) => {
     const queryParams = { name: req.params.name, content: req.params.content };
-    app.render(req, res, "/user/profile", queryParams);
+    app.render(req, res, '/user/profile', queryParams);
   });
 
   server.get('/u/:name', (req, res) => app.render(req, res, '/user/profile', req.params));
@@ -39,10 +38,8 @@ const addPageRoutes = (server, app) => {
 
   server.get('/', (req, res) => {
     const queryParams = {};
-    app.render(req, res, "/index", queryParams);
+    app.render(req, res, '/index', queryParams);
   });
-
-
 };
 
 module.exports = addPageRoutes;
