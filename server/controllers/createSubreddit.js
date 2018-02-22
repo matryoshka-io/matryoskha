@@ -4,7 +4,7 @@ const models = require('../models');
 module.exports = function (req, res) {
   // For testing.
   req.session = {
-    user: '5a8e0e077f911450d4600d96',
+    user: '5a8e0e077f911450d4600d96', // i.e. admin, see dummy data
   };
   // Use shortcut later. Omitting the date because the default is "now."
   const newSubredditSkeleton = {
@@ -15,6 +15,6 @@ module.exports = function (req, res) {
 
   const newSubreddit = new models.Subreddit(newSubredditSkeleton);
   newSubreddit.save().then(function (subreddit) {
-    res.status(201).end(JSON.stringify(subreddit));
+    res.status(201).end(JSON.stringify(subreddit)); // Does this violate REST? Then again, the TA...
   });
 };
