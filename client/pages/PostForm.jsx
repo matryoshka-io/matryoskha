@@ -1,6 +1,7 @@
-const React = require('react');
-const axios = require('axios')
-const ReactMarkdown = require('react-markdown');
+import React from 'react';
+import axios from 'axios';
+import ReactMarkdown from 'react-markdown'
+import LinkBar from './LinkBar.js'
 
 // const input = 'hello from **textbox** heheheheh'
 
@@ -13,10 +14,9 @@ class PostForm extends React.Component {
       titleText: '',
       bodyText: '',
       isBodyTextHidden: false,
+      isLinkBarHidden: true,
       selectedType: '',
     }
-    this.onTitleTextChangeHandler = this.onTitleTextChangeHandler.bind(this);
-    this.onBodyTextChangeHandler = this.onBodyTextChangeHandler.bind(this);
   }
 
   onTitleTextChangeHandler = (e) => {
@@ -35,12 +35,15 @@ class PostForm extends React.Component {
   onDropdownChangeHandler = (e) => {
     if (e.target.value === 'text') {
       this.setState({ isBodyTextHidden: false })
+      this.setState({ isLinkBarHidden: true })
     }
     if (e.target.value === 'image') {
-
+      this.setState({ isLinkBarHidden: false })
+      this.setState({ isBodyTextHidden: true })
     }
-    if (e.target.value === 'video') {
-
+    if (e.target.value === 'vide') {
+      this.setState({ isLinkBarHidden: false })
+      this.setState({ isBodyTextHidden: true })
     }
   }
 
@@ -72,12 +75,18 @@ class PostForm extends React.Component {
         </select>
         <br />
 
-        {/* Video/Img Link: <br />
-        <input val="text" /> <br /> */}
+        <div id="linkBar">
 
-        Text: <br />
-        <textarea row="5" cols="50" value={this.state.bodyText} onChange={this.onBodyTextChangeHandler}>
-        </textarea>
+          {this.state.isLinkBarHidden ? null : <LinkBar />}
+
+        </div>
+
+        <div id="textbar">
+          Text: <br />
+          <textarea row="5" cols="50" value={this.state.bodyText} onChange={this.onBodyTextChangeHandler}>
+          </textarea>
+        </div>
+
 
         {/* Markdown render test here */}
         {/* <ReactMarkdown source={this.state.bodyText} /> */}
