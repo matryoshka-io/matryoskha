@@ -63,10 +63,11 @@ module.exports = {
       // console.log(typeof req.session.user === 'string');
       // That sexy loose equality though.
       if (subreddit.creator._id == req.session.user) {
-        subreddit.title = req.body.title;
-        subreddit.description = req.body.description; // Might as well update both. Check with front-end.
-        subreddit.save().then((subreddit) => {
-          res.status(201).end(JSON.stringify(subreddit));
+        models.Subreddit.update({ _id: subreddit._id }, {
+          title: req.body.title,
+          description: req.body.description, // Use shorthand later.
+        }).then((response) => {
+          res.status(201).end('Subreddit updated!');          
         });
       } else {
         res.status(401).end('You are not the owner of this subreddit.');
