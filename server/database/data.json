@@ -49,12 +49,27 @@
       "author": "5a8e0e077f911450d4600d96",
       "date": "2018-02-21T23:59:43.960Z",
       "parent": "5a8e0e367f911450d4600d9a"
+    },
+    {
+      "_id": "5a8e31c49bc60f57d0051c11",
+      "subreddit": "5a8e0e217f911450d4600d98",
+      "title": "Cats are better than dogs",
+      "type": "Text",
+      "body": "Cats are more independent than dogs",
+      "author": "5a8e0e0b7f911450d4600d97",
+      "date": "2018-02-22T03:00:15.847Z"
     }
   ],
   "Vote": [
     {
       "post": "5a8e0e367f911450d4600d9a",
       "date": "2018-02-22T00:01:13.847Z",
+      "user": "5a8e0e077f911450d4600d96",
+      "value": 1
+    },
+    {
+      "post": "5a8e31c49bc60f57d0051c11",
+      "date": "2018-02-22T03:00:52.723Z",
       "user": "5a8e0e077f911450d4600d96",
       "value": 1
     }
