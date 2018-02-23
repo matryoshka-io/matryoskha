@@ -1,18 +1,36 @@
 const db = require('../../database');
 const models = require('../../models');
 
-const matryoksha = post => new Promise((resolve, reject) => {
-  models.Post.find({ type: 'Comment', parent: post._id }).lean().then((comments) => {
-    post.comments = comments;
-    const promises = [];
-    post.comments.forEach((comment) => {
-      promises.push(matryoksha(comment));
-    });
-    Promise.all(promises).then(() => {
-      resolve();
+// May not need promises for some of these.
+const matryoksha = post =>
+  new Promise((resolve, reject) => {
+    models.Post.find({ type: 'Comment', parent: post._id }).lean().then((comments) => {
+      post.comments = comments;
+      const promises = [];
+      post.comments.forEach((comment) => {
+        promises.push(matryoksha(comment));
+      });
+      Promise.all(promises).then(() => {
+        resolve();
+      });
     });
   });
-});
+
+const evilMatryoksha = (postId, commentsList = []) =>
+  new Promise((resolve, reject) => {
+    models.Post.find({ type: 'Comment', parent: postId }).then((comments) => {
+      commentsList = commentsList.concat(comments);
+      const promises = [];
+      comments.forEach((comment) => {
+        promises.push(evilMatryoksha(comment._id));
+      });
+      Promise.all(promises).then((childrenComments) => {
+        let arr = childrenComments.pop();
+        arr = arr ? arr : [];
+        resolve(commentsList.concat(arr));
+      });
+    });
+  });
 
 const getKarmaAndSort = (posts, callback) => {
   const promises = [];
@@ -38,5 +56,6 @@ const getKarmaAndSort = (posts, callback) => {
 
 module.exports = {
   matryoksha,
+  evilMatryoksha,
   getKarmaAndSort,
 };

@@ -7,10 +7,10 @@ const cookieParser = require('cookie-parser');
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dir: './client', dev });
 
-// middleware
+// Middleware
 const sessions = require('./middleware/index').validateSession;
 
-// Route Handlers
+// Route handlers
 const authRoutes = require('./routes').auth;
 const apiRoutes = require('./routes').api;
 const addPageRoutes = require('./routes').pages;
@@ -19,13 +19,13 @@ app.prepare()
   .then(() => {
     const server = express();
 
-    // middleware & auth
+    // Middleware & Auth
     server.use(bodyParser.json());
     server.use(bodyParser.urlencoded({ extended: true }));
-    server.use(cookieParser());
-    server.use(sessions);
+    // server.use(cookieParser());
+    // server.use(sessions);
 
-    // routes
+    // Routes
     server.use('/auth', authRoutes);
     server.use('/api', apiRoutes);
     addPageRoutes(server, app);
