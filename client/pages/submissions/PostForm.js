@@ -72,10 +72,16 @@ class PostForm extends React.Component {
         let responseArr = JSON.parse(res.request.response)
         responseArr.forEach(responseData => {
           console.log('responsedata', responseData.subreddit.title)
+          let subredditTitle = responseData.subreddit.title;
+          let subredditUniqueId = responseData.subreddit._id;
+          if (subredditTitle === this.state.subredditText) {
+            this.setState({ subredditId: subredditUniqueId }, () => {
+              console.log('are we getting the right id?', this.state.subredditId)
+            })
+          } else {
+            console.log('No such subreddit exists.')
+          }
         })
-        if (res.subreddit.title === this.state.subredditText) {
-          return this.setState({ subredditId: res.subreddit._id })
-        }
       })
       .then(res => {
         axios.post(`/api/sub/${this.state.subredditId}/post`, { title: titleText, type: this.state.type, body: bodyText })
