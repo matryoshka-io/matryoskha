@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  karma: Number, // Cache value for the combined value of upvotes and downvotes for a User's content
+  karma: Number, // Cache value for the combined value of upvotes and downvotes for a User's content.
 });
 
 // userSchema.pre('save', (next) => {

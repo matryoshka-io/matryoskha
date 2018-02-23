@@ -5,6 +5,8 @@ const models = require('../models');
 
 const utils = require('./utils');
 
+// What about the authed route? There must be some logic there,
+// as per subscriptions. Gotta figure out the middleware for authentication.
 module.exports = {
   GET(req, res) {
     models.Post.find({ type: { $not: /Comment/ } })
