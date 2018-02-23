@@ -55,17 +55,19 @@ class ParentPost extends React.Component {
       .then(res => {
         console.log('res', res)
       })
-
-    render() {
-      return (
-        <div>
-          <div>
-            <ReactMarkdown source={this.state.newBodyText} />
-          </div>
-        </div>
-
-      )
-    }
   }
 
-  export default ParentPost;
+  render() {
+    return (
+      <div>
+        <div>
+          <ReactMarkdown source={this.state.newBodyText} />
+        </div>
+      </div>
+
+    )
+  }
+}
+
+
+export default ParentPost;
