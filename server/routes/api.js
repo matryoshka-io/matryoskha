@@ -1,5 +1,8 @@
 const router = require('express').Router();
 const controllers = require('../controllers');
+const gateway = require('../middleware/gateway');
+
+// Will use the gateway to block routes that require authorization.
 
 router.get('/', controllers.home.GET);
 
