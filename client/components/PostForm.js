@@ -1,9 +1,8 @@
 import axios from 'axios';
-import LinkBar from '../../components/LinkBar.js';
-import TextBox from '../../components/TextBox.js';
-import SubredditNameBox from '../../components/subredditNameBox';
-import React from 'react'
-import exampleData from '../../../server/database/data.json'
+import LinkBar from './LinkBar';
+import TextBox from './TextBox'
+import SubredditNameBox from './subredditNameBox';
+import exampleData from '../../server/database/data.json'
 
 class PostForm extends React.Component {
   constructor(props) {
@@ -80,7 +79,7 @@ class PostForm extends React.Component {
       })
       .then(res => {
         //will re-test this post when route is created
-        axios.post(`/api/sub/${this.state.subredditId}/post`, { title: titleText, type: this.state.type, body: bodyText })
+        axios.post(`/api/sub/${this.state.subredditId}`, { title: titleText, type: this.state.type, body: bodyText })
       })
       .then(res => {
         console.log('SUCCESSFUL TEXT POST')
