@@ -1,7 +1,11 @@
 const addPageRoutes = (server, app) => {
-  // public views
+  // Public Views
   server.get('/r/:sub/:post/:comment', (req, res) => {
-    const queryParams = { subreddit: req.params.sub, post: req.params.post, comment: req.params.comment };
+    const queryParams = {
+      subreddit: req.params.sub,
+      post: req.params.post,
+      comment: req.params.comment,
+    };
     app.render(req, res, '/comment', queryParams);
   });
 
@@ -15,8 +19,7 @@ const addPageRoutes = (server, app) => {
     app.render(req, res, '/subreddit', queryParams);
   });
 
-
-  // all user lists views are indicated by a :content param
+  // All User lists views are indicated by a :content param
   // getInitialProps will submit the appropriate query based on the content type requested
   // content :: posts, comments, subscriptions, subreddits
   // default :: posts
@@ -27,7 +30,7 @@ const addPageRoutes = (server, app) => {
 
   server.get('/u/:name', (req, res) => app.render(req, res, '/user/profile', req.params));
 
-  // auth
+  // Auth
   server.get('/u/login', (req, res) => {
     app.render(req, res, '/auth/login', req.params);
   });

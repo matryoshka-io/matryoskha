@@ -1,16 +1,17 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const next = require('next');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
-// nextjs environment
+// Next.js Environment
 const dev = process.env.NODE_ENV !== 'production';
-const app = next({dir: './client', dev});
+const app = next({ dir: './client', dev });
 
 // middleware
 const sessions = require('./middleware/index').validateSession;
 
-// route handlers
+// Route Handlers
 const authRoutes = require('./routes').auth;
 const apiRoutes = require('./routes').api;
 const addPageRoutes = require('./routes').pages;
@@ -30,16 +31,17 @@ app.prepare()
     server.use('/api', apiRoutes);
     addPageRoutes(server, app);
 
-    // fallback route
+    // Fallback Route
     const nextHandler = app.getRequestHandler();
     server.get('*', (req, res) => nextHandler(req, res));
 
-    // start server
+    // Start the server
     server.listen(3000, (err) => {
       if (err) {
-        console.error(err);
+        console.log(`Error starting server: ${err}`);
+      } else {
+        console.log('MATRYOSHKA ARE STACKING ON: 3000');
       }
-      console.log('MATRYOSHKA ARE STACKING ON: 3000');
     });
   })
   .catch((err) => {
