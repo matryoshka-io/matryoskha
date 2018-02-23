@@ -5,9 +5,12 @@
   "main": "index.js",
   "dependencies": {
     "axios": "^0.18.0",
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
     "isomorphic-unfetch": "^2.0.0",
+    "jsonwebtoken": "^8.1.1",
     "mongoose": "^5.0.6",
     "next": "^5.0.0",
     "react": "^16.2.0",

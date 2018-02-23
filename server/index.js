@@ -1,26 +1,34 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const next = require('next');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 // Next.js Environment
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dir: './client', dev });
 
-// Route handlers
+// middleware
+const sessions = require('./middleware/index').validateSession;
+
+// Route Handlers
+const authRoutes = require('./routes').auth;
 const apiRoutes = require('./routes').api;
-const pageRoutes = require('./routes').pages;
+const addPageRoutes = require('./routes').pages;
 
 app.prepare()
   .then(() => {
     const server = express();
 
-    // Middleware & Auth
-    server.use(bodyParser.urlencoded({ extended: true }));
+    // middleware & auth
     server.use(bodyParser.json());
+    server.use(bodyParser.urlencoded({ extended: true }));
+    server.use(cookieParser());
+    server.use(sessions);
 
-    // Routes
+    // routes
+    server.use('/auth', authRoutes);
     server.use('/api', apiRoutes);
-    pageRoutes(server, app);
+    addPageRoutes(server, app);
 
     // Fallback Route
     const nextHandler = app.getRequestHandler();
