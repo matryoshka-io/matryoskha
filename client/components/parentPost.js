@@ -56,29 +56,16 @@ class ParentPost extends React.Component {
         console.log('res', res)
       })
 
-    // axios.get('/api/sub/')
-    //   .then(res => {
-    //     console.log('res', res.data.body)
-    //   })
-  }
-
-  // getBodyTextFromDB = () => {
-  //   axios.get('/')
-  //     .then(res => {
-  //       console.log('res on post', res)
-  //     })
-  // }
-
-  render() {
-    return (
-      <div>
+    render() {
+      return (
         <div>
-          <ReactMarkdown source={this.state.newBodyText} />
+          <div>
+            <ReactMarkdown source={this.state.newBodyText} />
+          </div>
         </div>
-      </div>
 
-    )
+      )
+    }
   }
-}
 
-export default ParentPost;
+  export default ParentPost;
