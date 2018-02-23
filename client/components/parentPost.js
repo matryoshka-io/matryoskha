@@ -11,7 +11,8 @@ class ParentPost extends React.Component {
     super(props)
     this.state = {
       subreddit: '',
-      newBodyText: ''
+      title: '',
+      newBodyText: '',
     }
   }
 
@@ -20,25 +21,28 @@ class ParentPost extends React.Component {
       .then(res => {
         return res.data.forEach(post => {
           let subredditID = post.subreddit._id;
-          let bodyTextForEachPost = post.body
+          let bodyTextForEachPost = post.body;
           this.setState({
             subredditId: subredditID,
+            title: post.title,
             newBodyText: bodyTextForEachPost
           })
         })
         // return axios.get(`/api/sub/${this.state.subredditId}/post`)
       })
       .then(res => {
-        console.log('res', res)
+        console.log('SUCCESSFUL GET')
       })
   }
 
   render() {
     return (
       <div>
+        {this.state.title}
         <div>
           <ReactMarkdown source={this.state.newBodyText} />
         </div>
+        {/* Render comments here */}
       </div>
 
     )
