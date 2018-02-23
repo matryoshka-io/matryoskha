@@ -17,11 +17,19 @@ module.exports = {
     req.session = {
       username: 'admin',
     };
-    models.User.findOne(req.session)
-      .then((user) => {
-        return models.Post.findOne({ type: 'Comment', _id: req.params.commentId });
+    models.Post.findOne({ type: 'Comment', _id: req.params.commentId })
+      .populate('author')
+      .then((comment) => {
+        if (comment.author.username === req.session.username) {
+          return models.Post.update({
+            type: 'Comment',
+            _id: req.params.commentId,
+          }, req.body);
+        }
       })
-      .then(())
+      .then((response) => {
+        res.status(201).end('Successfully updated comment!');
+      });
   },
   DELETE(req, res) {
 
