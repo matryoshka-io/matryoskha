@@ -2,9 +2,10 @@ import Link from 'next/link'
 import SubRedditBar from './subbredditBar'
 import Rating from './rating'
 
-export default ({_id, subreddit, title, body, date, comments}) => (
+export default ({author, subreddit, title, body, date, comments}) => (
   
   <div style={{'border': 'solid', 'margin' : '10px', 'padding': '10px'}}>
+    {console.log(author)}
      <Link href={subreddit}><a>{subreddit.title}</a></Link>
      <span style={{'float': 'right'}}>created at: {subreddit.date}</span>
      <div>desc: {subreddit.description}</div>
