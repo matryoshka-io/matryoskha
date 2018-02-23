@@ -44,19 +44,16 @@ module.exports = {
   // Admins/owners of subreddits should be able to delete all posts/comments in that subreddit.
   DELETE(req, res) {
     req.session = {
-      username: 'test',
+      username: 'admin',
     };
     // Same as above.
-    models.User.findOne(req.session).then((user) => {
-      // Wanna avoid the loose equality issue, so populate.
-      // It definitely is necessary to use findOne, else we get an array, which is annoying.
-      return models.Post.findOne({ _id: req.params.postId }).populate('author');
-    }).then((post) => {
+    models.User.findOne(req.session).then(user =>
+      models.Post.findOne({ _id: req.params.postId }).populate('author') // eslint-disable-line
+    ).then((post) => { // eslint-disable-line
       if (post.author.username === req.session.username) {
         return models.Post.remove({ _id: req.params.postId });
-      } else {
-        res.status(401).end('You are not the author of this post.');
       }
+      res.status(401).end('You are not the author of this post.');
     }).then((response) => {
       utils.evilMatryoksha(req.params.postId).then((commentsToDelete) => {
         const promises = [];
@@ -66,7 +63,7 @@ module.exports = {
         Promise.all(promises).then((response) => {
           res.status(200).end('Deleted post!');
         });
-      }); 
+      });
     });
   },
 };

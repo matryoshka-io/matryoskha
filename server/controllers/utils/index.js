@@ -20,10 +20,14 @@ const evilMatryoksha = (postId, commentsList = []) =>
   new Promise((resolve, reject) => {
     models.Post.find({ type: 'Comment', parent: postId }).then((comments) => {
       commentsList = commentsList.concat(comments);
+      const promises = [];
       comments.forEach((comment) => {
-        evilMatryoksha(comment._id, commentsList);
+        promises.push(evilMatryoksha(comment._id));
       });
-      resolve(commentsList);
+      Promise.all(promises).then((childrenComments) => {
+        console.log(commentsList, childrenComments);
+        resolve(commentsList.concat(childrenComments));
+      });
     });
   });
 

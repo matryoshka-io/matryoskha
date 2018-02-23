@@ -10,7 +10,7 @@ const app = next({ dir: './client', dev });
 // Middleware
 const sessions = require('./middleware/index').validateSession;
 
-// Route handles
+// Route handlers
 const authRoutes = require('./routes').auth;
 const apiRoutes = require('./routes').api;
 const addPageRoutes = require('./routes').pages;

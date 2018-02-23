@@ -3,6 +3,7 @@ const models = require('../models');
 
 const utils = require('./utils');
 
+// Gotta be consistent with catching errors and sending responses for those errors.
 module.exports = {
   GET(req, res) {
     models.Post.findOne({ type: 'Comment', _id: req.params.commentId })
