@@ -1,18 +1,19 @@
 const db = require('../../database');
 const models = require('../../models');
 
-const matryoksha = post => new Promise((resolve, reject) => {
-  models.Post.find({ type: 'Comment', parent: post._id }).lean().then((comments) => {
-    post.comments = comments;
-    const promises = [];
-    post.comments.forEach((comment) => {
-      promises.push(matryoksha(comment));
-    });
-    Promise.all(promises).then(() => {
-      resolve();
+const matryoksha = post =>
+  new Promise((resolve, reject) => {
+    models.Post.find({ type: 'Comment', parent: post._id }).lean().then((comments) => {
+      post.comments = comments;
+      const promises = [];
+      post.comments.forEach((comment) => {
+        promises.push(matryoksha(comment));
+      });
+      Promise.all(promises).then(() => {
+        resolve();
+      });
     });
   });
-});
 
 const getKarmaAndSort = (posts, callback) => {
   const promises = [];

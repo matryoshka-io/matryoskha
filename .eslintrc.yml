@@ -14,3 +14,5 @@ rules:
     off
   max-len:
     off
+  consistent-return:
+    off

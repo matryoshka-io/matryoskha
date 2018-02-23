@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+
 const db = require('../database');
 const models = require('../models');
 
@@ -67,7 +69,7 @@ module.exports = {
           title: req.body.title,
           description: req.body.description, // Use shorthand later.
         }).then((response) => {
-          res.status(201).end('Subreddit updated!');          
+          res.status(201).end('Subreddit updated!');
         });
       } else {
         res.status(401).end('You are not the owner of this subreddit.');
