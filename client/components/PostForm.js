@@ -79,7 +79,7 @@ class PostForm extends React.Component {
       })
       .then(res => {
         //will re-test this post when route is created
-        axios.post(`/api/sub/${this.state.subredditId}/post`, { title: titleText, type: this.state.type, body: bodyText })
+        axios.post(`/api/sub/${this.state.subredditId}`, { title: titleText, type: this.state.type, body: bodyText })
       })
       .then(res => {
         console.log('SUCCESSFUL TEXT POST')
