@@ -72,14 +72,16 @@ class PostForm extends React.Component {
       <div className="postSubmission">
         <h3>Submit a post</h3>
 
-        Title: <br />
-        <textarea rows="1" cols="80" value={this.state.titleText} onChange={this.onTitleTextChangeHandler}>
-        </textarea> <br />
-
         <div id="subredditNameBox">
           Your subreddit:
           <SubredditNameBox />
         </div>
+
+        Title: <br />
+        <textarea rows="1" cols="80" value={this.state.titleText} onChange={this.onTitleTextChangeHandler}>
+        </textarea> <br />
+
+
 
         Type:
         <select id="typeDropdown" onChange={this.onDropdownChangeHandler} >
