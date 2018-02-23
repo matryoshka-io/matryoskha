@@ -1,34 +1,41 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const next = require('next');
 
-// nextjs environment
+// Next.js Environment
 const dev = process.env.NODE_ENV !== 'production';
-const app = next({dir: './client', dev});
+const app = next({ dir: './client', dev });
 
-// route handlers
+// Route handlers
 const apiRoutes = require('./routes').api;
-const addPageRoutes = require('./routes').pages;
+const pageRoutes = require('./routes').pages;
 
 app.prepare()
   .then(() => {
     const server = express();
 
-    // middleware & auth
+    // Middleware & Auth
+    server.use(bodyParser.urlencoded({ extended: true }));
+    server.use(bodyParser.json());
 
-    // routes
+    // Routes
     server.use('/api', apiRoutes);
-    const pageRoutes = require('./routes').pages(server, app);
+    pageRoutes(server, app);
 
-    // fallback route
+    // Fallback Route
     const nextHandler = app.getRequestHandler();
     server.get('*', (req, res) => nextHandler(req, res));
 
-    // start server
+    // Start the server
     server.listen(3000, (err) => {
-      console.log('MATRYOSHKA ARE STACKING ON: 3000');
+      if (err) {
+        console.log(`Error starting server: ${err}`);
+      } else {
+        console.log('MATRYOSHKA ARE STACKING ON: 3000');
+      }
     });
   })
-  .catch(err => {
+  .catch((err) => {
     console.log(err);
     process.exit(1);
   });

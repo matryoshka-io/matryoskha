@@ -8,7 +8,7 @@ const linkSchema = mongoose.Schema({
     ref: 'Post',
   },
   metadata: Object, // e.g. if an Image, then post a preview, if an article, post a snippet.
-});  
+});
 
 const Link = mongoose.model('Link', linkSchema);
 
