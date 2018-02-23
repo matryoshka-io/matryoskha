@@ -18,7 +18,6 @@ export default Homepage
 //             jsonData: post
 //         }
 //     }
-  
 //     render() {
 //       return (
 //           <Page>
