@@ -33,7 +33,7 @@ module.exports = {
       });
   },
   DELETE(req, res) {
-
+    
   },
   POST(req, res) {
 
