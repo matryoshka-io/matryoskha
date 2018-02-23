@@ -24,6 +24,13 @@ router.delete('/post/:postId', controllers.post.DELETE);
 // Comment on a post in a subreddit.
 router.post('/sub/:subId/post/:postId', controllers.post.POST);
 
-// What about commenting on a comment?
+// Get a comment.
+router.get('/comment/:commentId', controllers.comment.GET);
+// Edit a comment.
+router.put('/comment/:commentId', controllers.comment.PUT);
+// Delete a comment.
+router.delete('/comment/:commentId', controllers.comment.DELETE);
+// Comment on a comment.
+router.post('/comment/:commentId', controllers.comment.POST);
 
 module.exports = router;

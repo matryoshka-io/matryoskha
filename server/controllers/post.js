@@ -40,11 +40,16 @@ module.exports = {
       res.status(201).end(JSON.stringify(comment));
     });
   },
+
+  // Admins/owners of subreddits should be able to delete all posts/comments in that subreddit.
   DELETE(req, res) {
+    req.session = {
+      username: 'test',
+    };
     // Same as above.
     models.User.findOne(req.session).then((user) => {
       // Wanna avoid the loose equality issue, so populate.
-      // Also it's probably not necessary to use findOne, but whatever.
+      // It definitely is necessary to use findOne, else we get an array, which is annoying.
       return models.Post.findOne({ _id: req.params.postId }).populate('author');
     }).then((post) => {
       if (post.author.username === req.session.username) {
