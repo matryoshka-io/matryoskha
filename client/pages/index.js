@@ -30,13 +30,14 @@
 //   }
 import PostForm from '../pages/submissions/PostForm.js'
 import axios from 'axios'
+import ReactMarkdown from 'react-markdown'
 
 class Index extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       subredditId: '',
-      newBodyText: '**hello**'
+      newBodyText: ''
     }
   }
 
@@ -46,8 +47,12 @@ class Index extends React.Component {
         console.log(res.data) //this is our textpost
         return res.data.forEach(post => {
           let subredditID = post.subreddit._id;
-          res.data.body ? <ReactMarkdown source={res.data.body} /> : null
-          this.setState({ subredditId: subredditID })
+          let bodyTextForEachPost = post.body
+          res.data.body ? <ReactMarkdown source={bodyTextForEachPost} /> : null
+          this.setState({
+            subredditId: subredditID,
+            newBodyText: bodyTextForEachPost
+          })
         })
         return axios.get(`/api/sub/${this.state.subredditId}/post`)
       })
