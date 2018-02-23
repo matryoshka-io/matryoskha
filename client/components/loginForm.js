@@ -15,8 +15,8 @@ export default () => (
      <input type="password" className="passwordInput"/>
     </div>
     <div>
-        <button className="loginButton"><Link href="/login">Login</Link></button>
-        <button className="signinBUtton"><Link href="/signup">Sign Up</Link></button>
+        <button className="loginButton"><Link href="/login"><a>Login</a></Link></button>
+        <button className="signinBUtton"><Link href="/signup"><a>Sign Up</a></Link></button>
     </div>
       <style jsx>{`
         h1 {
