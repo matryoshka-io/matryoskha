@@ -10,11 +10,12 @@ module.exports = {
         username: 'admin',
       };
       const newSubredditData = req.body;
-      newSubredditData.creator = req.session.username;
-
-      const newSubreddit = new models.Subreddit(newSubredditData);
-      newSubreddit.save().then((subreddit) => {
-        res.status(201).end(JSON.stringify(subreddit)); // Does this violate REST? Then again, the TA...
+      models.User.findOne(req.session).then((user) => {
+        newSubredditData.creator = user._id;
+        const newSubreddit = new models.Subreddit(newSubredditData);
+        newSubreddit.save().then((subreddit) => {
+          res.status(201).end(JSON.stringify(subreddit)); // Does this violate REST? Then again, the TA...
+        });
       });
     },
     post(req, res) {
@@ -24,12 +25,14 @@ module.exports = {
         };
 
         const newPostData = req.body;
-        newPostData.author = req.session.username;
         newPostData.subreddit = subreddit._id;
 
-        const newPost = new models.Post(newPostData);
-        newPost.save().then((post) => {
-          res.status(201).end(JSON.stringify(post));
+        models.User.findOne(req.session).then((user) => {
+          newPostData.author = user._id;
+          const newPost = new models.Post(newPostData);
+          newPost.save().then((post) => {
+            res.status(201).end(JSON.stringify(post));
+          });
         });
       });
     },

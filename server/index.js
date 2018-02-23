@@ -22,8 +22,8 @@ app.prepare()
     // Middleware & Auth
     server.use(bodyParser.json());
     server.use(bodyParser.urlencoded({ extended: true }));
-    server.use(cookieParser());
-    server.use(sessions);
+    // server.use(cookieParser());
+    // server.use(sessions);
 
     // Routes
     server.use('/auth', authRoutes);
