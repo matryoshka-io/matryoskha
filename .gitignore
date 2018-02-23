@@ -59,3 +59,6 @@ typings/
 
 # next.js
 /client/.next
+
+# package lock
+./package-lock.json
