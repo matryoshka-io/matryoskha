@@ -1,6 +1,7 @@
 const db = require('../../database');
 const models = require('../../models');
 
+// May not need promises for some of these.
 const matryoksha = post =>
   new Promise((resolve, reject) => {
     models.Post.find({ type: 'Comment', parent: post._id }).lean().then((comments) => {
@@ -12,6 +13,17 @@ const matryoksha = post =>
       Promise.all(promises).then(() => {
         resolve();
       });
+    });
+  });
+
+const evilMatryoksha = (postId, commentsList = []) =>
+  new Promise((resolve, reject) => {
+    models.Post.find({ type: 'Comment', parent: postId }).then((comments) => {
+      commentsList = commentsList.concat(comments);
+      comments.forEach((comment) => {
+        evilMatryoksha(comment._id, commentsList);
+      });
+      resolve(commentsList);
     });
   });
 
@@ -39,5 +51,6 @@ const getKarmaAndSort = (posts, callback) => {
 
 module.exports = {
   matryoksha,
+  evilMatryoksha,
   getKarmaAndSort,
 };

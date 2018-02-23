@@ -42,6 +42,16 @@ module.exports = {
     });
   },
   DELETE(req, res) {
-    // Oh boy...
-  }
+    models.Post.remove({ _id: req.params.postId }).then((response) => {
+      utils.evilMatryoksha(req.params.postId).then((commentsToDelete) => {
+        const promises = [];
+        commentsToDelete.forEach((comment) => {
+          promises.push(models.Post.remove(comment));
+        });
+        Promise.all(promises).then((response) => {
+          res.status(200).end('Deleted post!');
+        });
+      });
+    });
+  },
 };
