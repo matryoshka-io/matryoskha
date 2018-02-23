@@ -1,4 +1,4 @@
-const auth = require('../utils/auth');
+const auth = require('../controllers/utils/auth')
 
 const validateSession = (req, res, next) => {
   const token = req.cookies['x-access-token'];
