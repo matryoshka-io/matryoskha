@@ -33,9 +33,43 @@ module.exports = {
       });
   },
   DELETE(req, res) {
-    
+    req.session = {
+      username: 'admin',
+    };
+    // Same as above.
+    models.User.findOne(req.session).then(user =>
+      models.Post.findOne({ _id: req.params.postId, type: 'Comment' }).populate('author') // eslint-disable-line
+    ).then((comment) => { // eslint-disable-line
+      if (comment.author.username === req.session.username) {
+        return models.Post.remove({ _id: req.params.postId });
+      }
+      res.status(401).end('You are not the author of this comment.');
+    }).then((response) => {
+      utils.evilMatryoksha(req.params.postId).then((commentsToDelete) => {
+        const promises = [];
+        commentsToDelete.forEach((comment) => {
+          promises.push(models.Post.remove(comment));
+        });
+        Promise.all(promises).then((response) => {
+          res.status(200).end('Deleted comment!');
+        });
+      });
+    });
   },
   POST(req, res) {
+    req.session = {
+      username: 'admin',
+    };
+    const newCommentData = req.body;
+    newCommentData.parent = req.params.commentId;
 
+    // req.session ONLY has username?
+    models.User.findOne(req.session).then((user) => {
+      newCommentData.author = user._id;
+      const newComment = new models.Post(newCommentData);
+      return newComment.save();
+    }).then((comment) => { // Woo, chaining.
+      res.status(201).end(JSON.stringify(comment));
+    });
   },
 };
