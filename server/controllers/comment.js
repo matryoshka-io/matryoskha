@@ -27,8 +27,7 @@ module.exports = {
             _id: req.params.commentId,
           }, req.body);
         }
-      })
-      .then((response) => {
+      }).then((response) => {
         res.status(201).end('Successfully updated comment!');
       });
   },
@@ -43,8 +42,7 @@ module.exports = {
           return models.Post.remove({ _id: req.params.commentId });
         }
         res.status(401).end('You are not the author of this comment.');
-      })
-      .then((response) => {
+      }).then((response) => {
         utils.evilMatryoksha(req.params.commentId).then((commentsToDelete) => {
           const promises = [];
           commentsToDelete.forEach((comment) => {
