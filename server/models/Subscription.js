@@ -13,7 +13,7 @@ const subscriptionSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Subreddit',
   },
-});  
+});
 
 const Subscription = mongoose.model('Subscription', subscriptionSchema);
 

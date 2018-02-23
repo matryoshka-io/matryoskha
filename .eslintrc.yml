@@ -1,0 +1,16 @@
+extends: airbnb
+plugins:
+  - import
+rules:
+  no-console:
+    off
+  no-underscore-dangle:
+    off
+  no-shadow:
+    off
+  no-unused-vars:
+    off
+  no-param-reassign:
+    off
+  max-len:
+    off

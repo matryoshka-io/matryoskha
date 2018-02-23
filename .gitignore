@@ -60,5 +60,10 @@ typings/
 # next.js
 /client/.next
 
+<<<<<<< HEAD
 # package lock
 ./package-lock.json
+=======
+# npm
+package\-lock.json
+>>>>>>> master
