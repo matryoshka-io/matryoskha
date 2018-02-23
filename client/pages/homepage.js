@@ -1,17 +1,30 @@
 import Nav from '../components/nav'
 import Posts from '../components/posts'
+import LoginForm from '../components/loginForm'
+import Footer from '../components/footer'
 import Data from '../../server/database/data.json'
 
+
 const Homepage = props => (
-    <div>
+    <div >
       {/* <h1>{props.url.asPath}</h1> */}
       <h2>Welcome to Matryoshka Io</h2>
       <Nav />
-      <h2>You are everywhere and nowhere all at once</h2>
-      <Posts myPosts={props.posts} />
-      
+        <table className="pageContent">                        
+          <tr className="posts" > 
+            <p>This is left panel for posts</p> 
+            <Posts myPosts={props.posts}/>
+          </tr>                     
+          <tr className="login" > 
+            <LoginForm />
+          </tr>   
+        </table>
+        <Footer />
       <style jsx>
         {`
+          .pageContent {
+            width: 100%;
+          }
           h1 {
             font-size: 36px;
             color: #333;
@@ -20,9 +33,22 @@ const Homepage = props => (
           h2 {
             margin-left: 16px;
           }
+          .posts {
+            border: solid 2px;
+            float: left;
+            width: 75%;
+          }
+          .login {
+            border: solid 2px;
+            float: right;
+            width: 22%;
+            height: 80%;
+          } * {
+            border:1
+          }
         `}
       </style>
-    
+     
     </div>
   );
   
@@ -30,7 +56,6 @@ const Homepage = props => (
     // initial data requests happen in here
     // they are passed to props above automatically
     // let ourPosts = await res.json()
-    console.log(Data)
     return {
       user: {},
       posts: Data
