@@ -1,9 +1,13 @@
 import ParentPost from '../components/parentPost'
+import CommentForm from '../components/commentForm'
 
 const PostPage = (props) => (
   <div>
     <h1>{props.url.asPath}</h1>
     <ParentPost />
+
+    Post a comment:
+    <CommentForm />
   </div>
 )
 
