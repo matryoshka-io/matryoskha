@@ -1,28 +1,8 @@
 const router = require('express').Router();
-const auth = require('../utils/auth');
+const controllers = require('../controllers');
 
-router.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  auth.authenticateUser(username, password)
-    .then((isValid) => {
-      if (!isValid) {
-        res.status(403).send({
-          success: false,
-          token: null,
-          message: 'Invalid credentials',
-        });
-      }
-      const userToken = auth.generateToken(username);
-      res.status(200).send({
-        success: true,
-        token: userToken,
-        message: 'Successfully Authenticated',
-      });
-    });
-});
-
-router.post('/logout');
-
-router.post('/signup');
+router.post('/login', controllers.auth.POST.login);
+router.post('/logout', controllers.auth.POST.logout);
+router.post('/signup', controllers.auth.POST.signup);
 
 module.exports = router;
