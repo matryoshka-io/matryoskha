@@ -1,12 +1,13 @@
-import Homepage from './homepage'
-export default Homepage
+// import Homepage from './homepage';
+
+// export default Homepage;
 
 // class Page extends React.Component {
 //     static async getInitialProps(args) {
 //       let ourPosts = await res.json() // supposedly an array of objects, an object will be individual Post
 //       post = {
 //           Title: String,
-//           UserId: Number, //the userId associated with it 
+//           UserId: Number, //the userId associated with it
 //           Body: String, //or the content of the subReddit Link and Image will be part of it
 //           Votes: Number, //the ranking will be based on the number of votes from the users
 //           Date: Date, // the date the subReddit was created
@@ -27,3 +28,55 @@ export default Homepage
 //       )
 //     }
 //   }
+import PostForm from '../pages/submissions/PostForm.js'
+import axios from 'axios'
+
+class Index extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      subredditId: '',
+      newBodyText: '**hello**'
+    }
+  }
+
+  componentDidMount = () => {
+    axios.get('/api')
+      .then(res => {
+        console.log(res.data) //this is our textpost
+        return res.data.forEach(post => {
+          let subredditID = post.subreddit._id;
+          res.data.body ? <ReactMarkdown source={res.data.body} /> : null
+          this.setState({ subredditId: subredditID })
+        })
+        return axios.get(`/api/sub/${this.state.subredditId}/post`)
+      })
+      .then(res => {
+        console.log('res', res)
+      })
+
+    // axios.get('/api/sub/')
+    //   .then(res => {
+    //     console.log('res', res.data.body)
+    //   })
+  }
+
+  // getBodyTextFromDB = () => {
+  //   axios.get('/')
+  //     .then(res => {
+  //       console.log('res on post', res)
+  //     })
+  // }
+
+
+
+  render() {
+    return (
+      <div>
+        {this.state.newBodyText}
+      </div>
+    )
+  }
+}
+
+export default Index;
