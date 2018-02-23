@@ -60,44 +60,31 @@ class PostForm extends React.Component {
     this.createNewTextPost(this.state.titleText, this.state.type, this.state.bodyText)
   }
 
-  //client side requests here
-  // '/api/sub/1asdfasasdfasdfdf/post'
   createNewTextPost = (titleText, type, bodyText, url) => {
-    //get list of subreddits
-    //if text in the subreddit title box = subreddit's title key
-    //get that subreddit's ID
-    //pass that id to the POST request
     axios.get('/api')
       .then(res => {
         let responseArr = JSON.parse(res.request.response)
+        console.log('our response', responseArr)
         responseArr.forEach(responseData => {
-          console.log('responsedata', responseData.subreddit.title)
           let subredditTitle = responseData.subreddit.title;
           let subredditUniqueId = responseData.subreddit._id;
           if (subredditTitle === this.state.subredditText) {
-            this.setState({ subredditId: subredditUniqueId }, () => {
-              console.log('are we getting the right id?', this.state.subredditId)
+            return this.setState({ subredditId: subredditUniqueId }, () => {
+              console.log('ID?', this.state.subredditId)
             })
           } else {
             console.log('No such subreddit exists.')
+            return res;
           }
         })
       })
       .then(res => {
+        //will re-test this post when route is created
         axios.post(`/api/sub/${this.state.subredditId}/post`, { title: titleText, type: this.state.type, body: bodyText })
       })
       .then(res => {
         console.log('SUCCESSFUL TEXT POST')
       })
-    //work on changing the type here
-    // if (this.state.type === 'text') {
-    //   //POST 404 - figure out how to get subId ! 
-    //   axios.post('/api/sub/:subId/post', { title: titleText, type: this.state.type, body: bodyText })
-    //     .then(res => {
-    //       console.log('SUCCESSFUL TEXT POST')
-    //     })
-
-    // }
     //work on links later
   }
 
