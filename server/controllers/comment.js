@@ -37,24 +37,24 @@ module.exports = {
       username: 'admin',
     };
     // Same as above.
-    models.User.findOne(req.session).then(user =>
-      models.Post.findOne({ _id: req.params.postId, type: 'Comment' }).populate('author') // eslint-disable-line
-    ).then((comment) => { // eslint-disable-line
-      if (comment.author.username === req.session.username) {
-        return models.Post.remove({ _id: req.params.postId });
-      }
-      res.status(401).end('You are not the author of this comment.');
-    }).then((response) => {
-      utils.evilMatryoksha(req.params.postId).then((commentsToDelete) => {
-        const promises = [];
-        commentsToDelete.forEach((comment) => {
-          promises.push(models.Post.remove(comment));
-        });
-        Promise.all(promises).then((response) => {
-          res.status(200).end('Deleted comment!');
+    models.Post.findOne({ _id: req.params.commentId, type: 'Comment' }).populate('author')
+      .then((comment) => {
+        if (comment.author.username === req.session.username) {
+          return models.Post.remove({ _id: req.params.commentId });
+        }
+        res.status(401).end('You are not the author of this comment.');
+      })
+      .then((response) => {
+        utils.evilMatryoksha(req.params.commentId).then((commentsToDelete) => {
+          const promises = [];
+          commentsToDelete.forEach((comment) => {
+            promises.push(models.Post.remove(comment));
+          });
+          Promise.all(promises).then((response) => {
+            res.status(200).end('Deleted comment!');
+          });
         });
       });
-    });
   },
   POST(req, res) {
     req.session = {
