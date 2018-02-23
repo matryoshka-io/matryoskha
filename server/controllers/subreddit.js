@@ -1,5 +1,3 @@
-/* eslint-disable eqeqeq */
-
 const db = require('../database');
 const models = require('../models');
 
@@ -8,38 +6,28 @@ const utils = require('./utils');
 module.exports = {
   POST: {
     subreddit(req, res) {
-      // For testing.
       req.session = {
-        user: '5a8e0e077f911450d4600d96', // i.e. admin, see dummy data
+        username: 'admin',
       };
-      // Use shortcut later. Omitting the date because the default is "now."
-      const newSubredditSkeleton = {
-        creator: req.session.user, // I'm assuming that we're using npm – express-session, in which case the User's ID will be attached to the session
-        description: req.body.description,
-        title: req.body.title,
-      };
+      const newSubredditData = req.body;
+      newSubredditData.creator = req.session.username;
 
-      const newSubreddit = new models.Subreddit(newSubredditSkeleton);
+      const newSubreddit = new models.Subreddit(newSubredditData);
       newSubreddit.save().then((subreddit) => {
         res.status(201).end(JSON.stringify(subreddit)); // Does this violate REST? Then again, the TA...
       });
     },
     post(req, res) {
-      models.Subreddit.findOne({ title: req.params.subName }).then((subreddit) => {
+      models.Subreddit.findOne({ _id: req.params.subId }).then((subreddit) => {
         req.session = {
-          user: '5a8e0e077f911450d4600d96',
+          username: 'admin',
         };
 
-        // Test of type Text. Put a body, a long rant, for example.
-        const newPostSkeleton = {
-          author: req.session.user,
-          subreddit: subreddit._id,
-          title: req.body.title,
-          type: req.body.type, // Figure this out from the client end, as I understand there are two different kinds of submission forms.
-          body: req.body.body,
-        };
+        const newPostData = req.body;
+        newPostData.author = req.session.username;
+        newPostData.subreddit = subreddit._id;
 
-        const newPost = new models.Post(newPostSkeleton);
+        const newPost = new models.Post(newPostData);
         newPost.save().then((post) => {
           res.status(201).end(JSON.stringify(post));
         });
@@ -47,28 +35,19 @@ module.exports = {
     },
   },
   GET(req, res) {
-    models.Subreddit.findOne({ title: req.params.subName }).then((subreddit) => {
-      models.Post.find({ subreddit: subreddit._id }).lean().then((posts) => {
-        utils.getKarmaAndSort(posts, (posts) => {
-          res.status(200).end(JSON.stringify(posts)); // Don't nest, figure out depth thing later.
-        });
+    models.Post.find({ subreddit: req.params.subId }).lean().then((posts) => {
+      utils.getKarmaAndSort(posts, (posts) => {
+        res.status(200).end(JSON.stringify(posts)); // Don't nest, figure out depth thing later.
       });
     });
   },
   PUT(req, res) {
     req.session = {
-      user: '5a8e0e077f911450d4600d96',
+      username: 'admin',
     };
-    // Perhaps no need for populating.
-    models.Subreddit.findOne({ title: req.params.subName }).populate('creator').lean().then((subreddit) => {
-      // console.log(typeof subreddit.creator._id === 'object');
-      // console.log(typeof req.session.user === 'string');
-      // That sexy loose equality though.
-      if (subreddit.creator._id == req.session.user) {
-        models.Subreddit.update({ _id: subreddit._id }, {
-          title: req.body.title,
-          description: req.body.description, // Use shorthand later.
-        }).then((response) => {
+    models.Subreddit.findOne({ _id: req.params.subId }).populate('creator').lean().then((subreddit) => {
+      if (subreddit.creator.username === req.session.username) {
+        models.Subreddit.update({ _id: subreddit._id }, req.body).then((response) => {
           res.status(201).end('Subreddit updated!');
         });
       } else {

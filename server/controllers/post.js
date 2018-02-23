@@ -19,30 +19,40 @@ module.exports = {
   PUT(req, res) {
     models.Post.update({
       _id: req.params.postId,
-    }, {
-      title: req.body.title,
-      body: req.body.body, // Shorthand later.
-    }).then((response) => {
+    }, req.body).then((response) => {
       res.status(201).end('Post updated!');
     });
   },
   POST(req, res) {
-    // Some things to standardize later...
-    // 1) The shorthand, after which I tack on new properties.
-    // 2) Using the name of the sub, or the id, probably the id, for consistency.
-    const newComment = new models.Post({
-      subreddit: req.params.subId,
-      title: req.body.title,
-      type: req.body.type,
-      author: req.session.username, // NOPE! | Find id of user via username, then do this insert.
-      parent: req.params.postId,
-    });
-    newComment.save().then((comment) => {
+    req.session = {
+      username: 'admin',
+    };
+    const newCommentData = req.body;
+    newCommentData.subreddit = req.params.subId;
+    newCommentData.parent = req.params.postId;
+
+    // req.session ONLY has username?
+    models.User.findOne(req.session).then((user) => {
+      newCommentData.author = user._id;
+      const newComment = new models.Post(newCommentData);
+      return newComment.save();
+    }).then((comment) => { // Woo, chaining.
       res.status(201).end(JSON.stringify(comment));
     });
   },
   DELETE(req, res) {
-    models.Post.remove({ _id: req.params.postId }).then((response) => {
+    // Same as above.
+    models.User.findOne(req.session).then((user) => {
+      // Wanna avoid the loose equality issue, so populate.
+      // Also it's probably not necessary to use findOne, but whatever.
+      return models.Post.findOne({ _id: req.params.postId }).populate('author');
+    }).then((post) => {
+      if (post.author.username === req.session.username) {
+        return models.Post.remove({ _id: req.params.postId });
+      } else {
+        res.status(401).end('You are not the author of this post.');
+      }
+    }).then((response) => {
       utils.evilMatryoksha(req.params.postId).then((commentsToDelete) => {
         const promises = [];
         commentsToDelete.forEach((comment) => {
@@ -51,7 +61,7 @@ module.exports = {
         Promise.all(promises).then((response) => {
           res.status(200).end('Deleted post!');
         });
-      });
+      }); 
     });
   },
 };
