@@ -12,7 +12,7 @@ class SubredditNameBox extends React.Component {
     this.setState({
       subredditNameText: e.target.value
     }, () => {
-      console.log('texttext', this.state.subredditNameText)
+      console.log('box text', this.state.subredditNameText)
     })
   }
 
