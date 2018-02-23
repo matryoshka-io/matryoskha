@@ -1,9 +1,11 @@
 import PostForm from '../components/PostForm'
+import ParentPost from '../components/parentPost'
 
 const Post = (props) => (
   <div>
     <h1>{props.url.asPath}</h1>
     <PostForm />
+    <ParentPost />
   </div>
 )
 
