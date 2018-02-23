@@ -6,8 +6,8 @@ export default (props) => (
    {/* {console.log(props.myPosts)} */}
     {
        props.myPosts.map((post, i) => {
-         
-          <Post {...post} />
+        //  {console.log({...post})}
+          <Post  item={item} />
             // <div className="Post">
             //   <Post />
             // <div/>

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
-import LinkBar from '../../components/LinkBar.js';
-import TextBox from '../../components/TextBox.js';
+import LinkBar from './LinkBar';
+import TextBox from './TextBox';
 import React from 'react'
 
 // const input = 'hello from **textbox** heheheheh'
