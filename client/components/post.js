@@ -2,23 +2,23 @@ import Link from 'next/link'
 import SubRedditBar from './subbredditBar'
 import Rating from './rating'
 
-export default ({_id, subreddit, title, body, date, comments}) => (
-  
-  <div style={{'border': 'solid', 'margin' : '10px', 'padding': '10px'}}>
-     <Link href={subreddit}><a>{subreddit.title}</a></Link>
-     <span style={{'float': 'right'}}>created at: {subreddit.date}</span>
-     <div>desc: {subreddit.description}</div>
-     <Rating />
-     <div>
-       <SubRedditBar className="subbredditbar"/>
-     </div>
-     <style jsx>{`
+export default ({ _id, subreddit, title, body, date, comments }) => (
+
+  <div style={{ 'border': 'solid', 'margin': '10px', 'padding': '10px' }}>
+    <Link href={subreddit}><a>{subreddit.title}</a></Link>
+    <span style={{ 'float': 'right' }}>created at: {subreddit.date}</span>
+    <div>desc: {subreddit.description}</div>
+    <Rating />
+    <div>
+      <SubRedditBar className="subbredditbar" />
+    </div>
+    <style jsx>{`
        .subbredditbar {
          float: left
        }
      `}
-     </style>
-   </div>
+    </style>
+  </div>
 
 )
 
@@ -55,7 +55,7 @@ export default ({_id, subreddit, title, body, date, comments}) => (
 //       <Link >
 //         <a>{props.post.title}</a>
 //       </Link>
-  
+
 //       <style jsx>{`
 //         li {
 //           display: inline-block;
