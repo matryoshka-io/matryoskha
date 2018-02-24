@@ -1,7 +1,8 @@
 
-import Page from '../components/Page';
+import Page from '../components/page';
 import Posts from '../components/posts';
 import UserPanelBody from '../components/UserPanelBody';
+import LoginForm from '../components/loginForm';
 
 import Data from '../../server/database/dataFrontEnd.json';
 import auth from '../utils/auth';
