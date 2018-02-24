@@ -119,7 +119,7 @@ class PostForm extends React.Component {
         </div>
 
         <div id="textbox">
-          {this.state.isTextBoxHidden ? null : <TextBox />}
+          {this.state.isTextBoxHidden ? null : <TextBox onBodyTextChangeHandler={this.onBodyTextChangeHandler} />}
         </div>
 
         <button onClick={this.onCreateNewTextPostWithUserText}>Post!</button>
