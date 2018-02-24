@@ -17,7 +17,7 @@ module.exports = {
         });
     },
     post(req, res) {
-      models.Subreddit.findOne({ _id: req.params.subId })
+      models.Subreddit.findOne({ title: req.params.subName })
         .then((subreddit) => {
           const newPostData = req.body;
           newPostData.subreddit = subreddit._id;
@@ -33,21 +33,24 @@ module.exports = {
     },
   },
   GET(req, res) {
-    models.Post.find({ subreddit: req.params.subId }).lean()
-      .then((posts) => {
-        utils.getKarmaAndSort(posts, (posts) => {
-          const promises = [];
-          posts.forEach((post) => {
-            promises.push(utils.matryoksha(post));
+    models.Subreddit.find({ title: req.params.subName })
+      .then((subreddit) => {
+        models.Post.find({ subreddit: subreddit._id }).lean()
+          .then((posts) => {
+            utils.getKarmaAndSort(posts, (posts) => {
+              const promises = [];
+              posts.forEach((post) => {
+                promises.push(utils.matryoksha(post));
+              });
+              Promise.all(promises).then(() => {
+                res.status(200).end(JSON.stringify(posts));
+              });
+            });
           });
-          Promise.all(promises).then(() => {
-            res.status(200).end(JSON.stringify(posts));
-          });
-        });
-      });
+    });
   },
   PUT(req, res) {
-    models.Subreddit.findOne({ _id: req.params.subId }).populate('creator').lean()
+    models.Subreddit.findOne({ title: req.params.subName }).populate('creator').lean()
       .then((subreddit) => {
         if (subreddit.creator.username === req.session.username) {
           models.Subreddit.update({ _id: subreddit._id }, req.body).then((response) => {
