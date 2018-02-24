@@ -1,16 +1,16 @@
 import Link from "next/link"
 
 export default () => (
-    <footer className="footer">
+    <div className="footerDiv">  
         <Link href="#"><p>About</p></Link>
          <p>Please dont contact us</p>
         <Link href="#"><p>Matryoshka-Io copyright</p></Link>
-        <style jsx>{
-            `.footer {
-                display: block;
+        <style jsx>{`
+            .footerDiv {
                 float: bottom;
                 text-align: center;
-            }`
-        }</style>
-    </footer>
+                height: calc(100% - 60px);
+            }
+        `}</style>
+    </div>
 )
