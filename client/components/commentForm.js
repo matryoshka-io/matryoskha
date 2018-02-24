@@ -23,23 +23,40 @@
 
 class CommentForm extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      commentText: ''
-    }
+      commentText: '',
+      subredditId: '',
+      postId: ''
+    };
   }
 
-  commentOnChangeHandler(e) {
+  onCommentBoxChangeHandler = (e) => {
     this.setState({ commentText: e.target.value }, () => {
       console.log('hello', this.state.commentText)
     })
   }
 
+  postCommentWithText = () => {
+    this.props.postComment(this.state.commentText)
+  }
+
+  postComment = (text) => {
+    axios.get('/api')
+      .then(res => {
+        console.log('res', res.data)
+        res.data.forEach(data => {
+          if (data.subreddit.title === )
+            console.log('data', data.subreddit._id)
+        })
+      })
+  }
+
   render() {
     return (
       <div>
-        <textarea onChange={this.commentOnChangeHandler} />
-        <button>add comment</button>
+        <textarea value={this.state.commentText} onChange={this.onCommentBoxChangeHandler} />
+        <button onClick={this.postCommentWithText} > add comment</button>
         <style jsx>{`
           textarea {
             width: 400px;
