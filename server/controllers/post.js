@@ -38,7 +38,7 @@ module.exports = {
       body: req.body.body,
     };
     newCommentData.parent = req.params.postId;
-    
+
     models.User.findOne({ username: req.session.username }).then((user) => {
       newCommentData.author = user._id;
       const newComment = new models.Post(newCommentData);
