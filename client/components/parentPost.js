@@ -38,11 +38,11 @@ class ParentPost extends React.Component {
   render() {
     return (
       <div>
-        {this.state.title}
         <div>
-          <ReactMarkdown source={this.state.newBodyText} />
+          Title of post: <br />
+          {this.state.title} <br /><br />
+          Body: <ReactMarkdown source={this.state.newBodyText} />
         </div>
-        {/* Render comments here */}
       </div>
 
     )
