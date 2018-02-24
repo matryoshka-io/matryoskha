@@ -9,7 +9,7 @@ module.exports = {
       const newSubredditData = {
         title: req.body.title,
         description: req.body.description,
-      }
+      };
       models.User.findOne({ username: req.session.username })
         .then((user) => {
           newSubredditData.creator = user._id;
@@ -54,7 +54,7 @@ module.exports = {
               });
             });
           });
-    });
+      });
   },
   PUT(req, res) {
     models.Subreddit.findOne({ title: req.params.subName }).populate('creator').lean()
