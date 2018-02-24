@@ -34,7 +34,7 @@ class ParentPost extends React.Component {
             newBodyText: bodyTextForEachPost,
             postId: post._id,
             comments: post.comments,
-          }, () => console.log('???', this.state.comments))
+          }, () => console.log('WORK PLEASE', this.state.comments))
         })
           .then(res => {
             axios.get(`/api/sub/${this.state.subredditId}/post/${this.state.postId}`)
@@ -58,6 +58,11 @@ class ParentPost extends React.Component {
   //   // axios.get(`/post/${postID}`)
   // }
 
+  changeToString = () => {
+    this.state.comments.toString();
+    thi
+  }
+
 
   render() {
     return (
@@ -69,6 +74,7 @@ class ParentPost extends React.Component {
         </div>
 
         <CommentForm title={this.state.title} subredditId={this.state.subredditId} />
+
 
         {this.state.comments.toString()}
       </div>
