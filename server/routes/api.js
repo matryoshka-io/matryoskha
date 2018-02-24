@@ -53,4 +53,9 @@ router.delete('/comment/:commentId', controllers.comment.DELETE);
 // Comment on a comment.
 router.post('/comment/:commentId', controllers.comment.POST);
 
+// Add a vote.
+router.post('/vote/:postId', controllers.vote.POST);
+// Remove a vote.
+router.delete('/vote/:postId', controllers.vote.DELETE);
+
 module.exports = router;
