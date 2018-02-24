@@ -1,5 +1,5 @@
 
-import Page from '../components/page';
+import Page from '../components/Page';
 import Posts from '../components/posts';
 import UserPanelBody from '../components/UserPanelBody';
 
@@ -51,9 +51,9 @@ const Homepage = props => (
 
 Homepage.getInitialProps = async function GetInitialPropsForHomepage(context) {
   const token = sessions.getToken('jwt', context.req);
-  const user = await auth.authenticateToken(token);
+  const tokenData = await auth.authenticateToken(token);
   return {
-    user,
+    user: tokenData.user || null,
     token,
     posts: Data,
   };
