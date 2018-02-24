@@ -16,5 +16,5 @@ install:
 before_script:
   - sleep 15
   - npm run seed
-  - next build
-  - next start
+  - npm run build
+  - npm run start
