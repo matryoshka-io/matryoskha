@@ -1,7 +1,7 @@
 const auth = require('../controllers/utils/auth');
 
 const validateSession = (req, res, next) => {
-  const token = req.cookies['x-access-token'];
+  const token = req.headers['x-access-token'];
   if (token) {
     auth.verifyToken(token)
       .then((decoded) => {

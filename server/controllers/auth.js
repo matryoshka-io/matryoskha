@@ -3,20 +3,36 @@ const auth = require('./utils/auth');
 
 module.exports = {
   POST: {
+    authenticateToken: (req, res) => {
+      const token = req.get('x-access-token');
+      if (!token) {
+        res.status(200).send({});
+        return;
+      }
+      auth.verifyToken(token)
+        .then(decoded => res.status(200).send(decoded))
+        .catch(err => res.status(200).send({}));
+    },
     login: (req, res) => {
+      console.log('hello');
       const { username, password } = req.body;
+      console.log(`USER LOGIN REQUEST, ${username}`);
       auth.authenticateUser(username, password)
-        .then((isValid) => {
-          if (!isValid) {
+        .then((result) => {
+          if (!result.isValid) {
             res
               .status(403)
               .send({
                 success: false,
                 token: null,
-                message: 'Invalid credentials',
+                message: result.message,
               });
           }
-          const userToken = auth.generateToken(username);
+          const userValues = {};
+          userValues._id = result.user._id;
+          userValues.username = result.user.username;
+
+          const userToken = auth.generateToken(userValues);
           res
             .status(200)
             .send({
@@ -34,11 +50,11 @@ module.exports = {
       auth.createUser(username, password)
         .then((newUser) => {
           if (newUser) {
-            const userToken = auth.generateToken(newUser.username);
             const userValues = {
               _id: newUser._id,
               username: newUser.username,
             };
+            const userToken = auth.generateToken(userValues);
             res
               .status(200)
               .send({

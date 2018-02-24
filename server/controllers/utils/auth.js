@@ -10,44 +10,49 @@ const createUser = (username, password) =>
       .findOne({ username })
       .exec()
       .then((foundUser) => {
-        console.log('FOUNDUSER: ', foundUser);
         if (foundUser !== null) {
           return foundUser;
         }
         const createUser = new User({ username, password });
-        console.log('CREATE USER: ', createUser);
         return createUser.save();
       })
-      .then((newUser) => {
-        console.log('NEWUSER: ', newUser);
-        return resolve(newUser);
-      })
-      .catch((err) => {
-        console.log(err);
-        return reject(err);
-      });
+      .then(newUser => resolve(newUser))
+      .catch(err => reject(err));
   });
 
 const authenticateUser = (username, password) =>
   new Promise((resolve, reject) => {
+    const result = {};
     User
       .findOne({ username })
       .exec()
       .then((foundUser) => {
-        if (!foundUser) return false;
+        if (!foundUser) {
+          result.user = null;
+          return false;
+        }
+        result.user = foundUser;
         return User.comparePassword(password);
       })
-      .then(isMatch => resolve(isMatch))
-      .catch(err => reject(err));
+      .then((isMatch) => {
+        result.isValid = true;
+        result.message = 'Credentials are valid';
+        return resolve(result);
+      })
+      .catch((err) => {
+        result.isValid = false;
+        result.message = 'Error, user could not be verified';
+        return reject(result);
+      });
   });
 
-const generateToken = username =>
+const generateToken = user =>
   webtoken.sign(
     {
-      username,
+      user,
       xsrfToken: crypto
         .createHash('md5')
-        .update(username)
+        .update(user.username)
         .digest('hex'),
     },
     tokenSecret,
