@@ -29,7 +29,11 @@ module.exports = {
   },
   DELETE(req, res) {
     models.User.findOne({ username: req.session.username }).then((user) => {
+<<<<<<< HEAD
       models.Vote.findOne({
+=======
+      models.Vote.remove({
+>>>>>>> Favor explicitness
         user: user._id,
         post: req.params.postId,
       }).then((vote) => {
