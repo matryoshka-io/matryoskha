@@ -8,9 +8,6 @@ class PostPage extends React.Component {
 
   }
 
-
-
-
   getInitialProps = async function () {
 
     return {
@@ -24,8 +21,6 @@ class PostPage extends React.Component {
       comments: {}          //  initial comments load
     };
   };
-
-
 
   render() {
     return (
