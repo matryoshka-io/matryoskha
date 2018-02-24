@@ -1,11 +1,13 @@
 import ParentPost from '../components/parentPost'
 import CommentForm from '../components/commentForm'
+import axios from 'axios'
 
 class PostPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      commentText: ''
+      subredditId: '',
+      postId: ''
     }
 
   }
@@ -13,6 +15,8 @@ class PostPage extends React.Component {
   componentDidMount() {
     //all comments related to thread post
   }
+
+
 
   getInitialProps = async function () {
 
@@ -37,7 +41,7 @@ class PostPage extends React.Component {
         <ParentPost />
 
         Post a comment:
-        <CommentForm commentText={this.state.commentText} commentOnChangeHandler={this.commentOnChangeHandler} />
+        <CommentForm />
       </div>
     )
   }
