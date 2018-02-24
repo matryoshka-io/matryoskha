@@ -25,22 +25,24 @@ const Item = ({ href, children }) => (
       <a>{ children }</a>
     </Link>
 
-    <style jsx>{`
-      li {
-        display: inline-block;
-      }
-      a {
-        display: inline-block;
-        padding: 10px;
-        margin-right: 10px;
-        font-size: 12px;
-        text-transform: uppercase;
-        text-decoration: none;
-        color: #000;
-      }
-      a:hover {
-        color: #fff;
-      }
-    `}</style>
+    <style jsx>
+      {`
+        li {
+          display: inline-block;
+        }
+        a {
+          display: inline-block;
+          padding: 10px;
+          margin-right: 10px;
+          font-size: 12px;
+          text-transform: uppercase;
+          text-decoration: none;
+          color: #000;
+        }
+        a:hover {
+          color: #fff;
+        }
+      `}
+    </style>
   </li>
 )
