@@ -7,8 +7,11 @@ const utils = require('./utils');
 module.exports = {
   GET(req, res) {
     models.Post.findOne({ type: 'Comment', _id: req.params.commentId })
+      .lean()
       .then((comment) => {
-        res.status(200).end(JSON.stringify(comment));
+        utils.matryoksha(comment).then(() => {
+          res.status(200).json(comment);
+        });
       }).catch((err) => {
         res.status(404).end(`No such comment found for id: ${req.params.commendId}`);
       });
@@ -22,7 +25,9 @@ module.exports = {
           return models.Post.update({
             type: 'Comment',
             _id: req.params.commentId,
-          }, req.body);
+          }, {
+            body: req.body.body, // Favor explicitness, maybe shorthand is better.
+          });
         }
       }).then((response) => {
         res.status(201).end('Successfully updated comment!');
@@ -49,11 +54,12 @@ module.exports = {
       });
   },
   POST(req, res) {
-    const newCommentData = req.body;
+    const newCommentData = {
+      body: req.body.body,
+    };
     newCommentData.parent = req.params.commentId;
 
-    // req.session ONLY has username?
-    models.User.findOne(req.session).then((user) => {
+    models.User.findOne({ username: req.session.username }).then((user) => {
       newCommentData.author = user._id;
       const newComment = new models.Post(newCommentData);
       return newComment.save();

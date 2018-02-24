@@ -9,6 +9,7 @@ const utils = require('./utils');
 // as per subscriptions. Gotta figure out the middleware for authentication.
 module.exports = {
   GET(req, res) {
+    req.session = null; // Testing purposes.
     if (req.session === null) {
       models.Post.find({ type: { $not: /Comment/ } })
         .populate('subreddit')
