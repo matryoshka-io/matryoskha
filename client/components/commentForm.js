@@ -20,6 +20,7 @@
 //       `}</style>
 //   </div>
 // )
+import axios from 'axios'
 
 class CommentForm extends React.Component {
   constructor(props) {
@@ -38,16 +39,22 @@ class CommentForm extends React.Component {
   }
 
   postCommentWithText = () => {
-    this.props.postComment(this.state.commentText)
+    this.postComment(this.state.commentText)
   }
 
   postComment = (text) => {
     axios.get('/api')
       .then(res => {
-        console.log('res', res.data)
         res.data.forEach(data => {
-          if (data.subreddit.title === )
-            console.log('data', data.subreddit._id)
+          console.log('data', data)
+          console.log('passed down data', this.props.subredditId)
+          console.log('right subreddit id?', data.subreddit._id)
+          if (data.subreddit._id === this.props.subredditId) {
+            this.setState({ subredditId: data.subreddit._id })
+          }
+          if (this.props.title === data.title) {
+            this.setState({ postId: data._id })
+          }
         })
       })
   }
