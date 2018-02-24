@@ -15,14 +15,23 @@ class SignupPage extends Component {
   }
 
   registerUser(username, password) {
-    const result = auth.registerUser(username, password);
-    if (result.success) {
-      Router.replace('/');
-    } else {
-      this.setState({
-        message: result.message,
-      }, setTimeout(() => this.setState({ message: '' }), 3000));
-    }
+    console.log(`register ${username}, ${password}`);
+    auth.registerUser(username, password)
+      .then((result) => {
+        console.log(result);
+        if (result.success) {
+          Router.replace('/');
+        } else {
+          this.setState({
+            message: result.message,
+          }, () => setTimeout(() => this.setState({ message: '' }), 3000));
+        }
+      })
+      .catch((err) => {
+        this.setState({
+          message: result.message,
+        }, () => setTimeout(() => this.setState({ message: ''}), 3000));
+      });
   }
 
   render() {
