@@ -24,17 +24,19 @@ module.exports = {
     });
   },
   POST(req, res) {
-    const newCommentData = req.body;
-    newCommentData.subreddit = req.params.subId;
-    newCommentData.parent = req.params.postId;
+    models.Subreddit.findOne({ title: req.params.subName }).then((subreddit) => {
+      const newCommentData = req.body;
+      newCommentData.subreddit = subreddit._id;
+      newCommentData.parent = req.params.postId;
 
-    // req.session ONLY has username?
-    models.User.findOne(req.session).then((user) => {
-      newCommentData.author = user._id;
-      const newComment = new models.Post(newCommentData);
-      return newComment.save();
-    }).then((comment) => { // Woo, chaining.
-      res.status(201).end(JSON.stringify(comment));
+      // req.session ONLY has username?
+      models.User.findOne(req.session).then((user) => {
+        newCommentData.author = user._id;
+        const newComment = new models.Post(newCommentData);
+        return newComment.save();
+      }).then((comment) => { // Woo, chaining.
+        res.status(201).end(JSON.stringify(comment));
+      });
     });
   },
 

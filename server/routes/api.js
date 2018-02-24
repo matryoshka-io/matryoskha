@@ -23,7 +23,7 @@ const gateway = require('../middleware/gateway');
 router.get('/', controllers.home.GET);
 
 // Get posts top posts for a given subreddit.
-router.get('/sub/:subId', controllers.subreddit.GET);
+router.get('/sub/:subName', controllers.subreddit.GET);
 // Get a post.
 router.get('/post/:postId', controllers.post.GET);
 // Get a comment.
@@ -35,16 +35,16 @@ router.use(gateway);
 // Create a subreddit.
 router.post('/sub', controllers.subreddit.POST.subreddit);
 // Create a post in a subreddit.
-router.post('/sub/:subId', controllers.subreddit.POST.post);
+router.post('/sub/:subName', controllers.subreddit.POST.post);
 // Edit a subreddit's details.
-router.put('/sub/:subId', controllers.subreddit.PUT);
+router.put('/sub/:subName', controllers.subreddit.PUT);
 
 // Edit a post.
 router.put('/post/:postId', controllers.post.PUT);
 // Delete a post.
 router.delete('/post/:postId', controllers.post.DELETE);
 // Comment on a post in a subreddit.
-router.post('/sub/:subId/post/:postId', controllers.post.POST);
+router.post('/sub/:subName/post/:postId', controllers.post.POST);
 
 // Edit a comment.
 router.put('/comment/:commentId', controllers.comment.PUT);
