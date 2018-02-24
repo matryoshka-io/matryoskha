@@ -3,20 +3,40 @@ const auth = require('./utils/auth');
 
 module.exports = {
   POST: {
+    authenticateToken: (req, res) => {
+      const token = req.get('x-access-token');
+      if (!token) {
+        res.status(200).send({});
+        return;
+      }
+      auth.verifyToken(token)
+        .then((decoded) => {
+          console.log('decoded: ', decoded);
+          res.status(200).send(decoded);
+        })
+        .catch((err) => {
+          console.log('token no bueno ', err);
+          res.status(200).send({});
+        });
+    },
     login: (req, res) => {
       const { username, password } = req.body;
       auth.authenticateUser(username, password)
-        .then((isValid) => {
-          if (!isValid) {
+        .then((result) => {
+          if (!result.isValid) {
             res
               .status(403)
               .send({
                 success: false,
                 token: null,
-                message: 'Invalid credentials',
+                message: result.message,
               });
           }
-          const userToken = auth.generateToken(username);
+          const userValues = {};
+          userValues._id = result.user._id;
+          userValues.username = result.user.username;
+
+          const userToken = auth.generateToken(userValues);
           res
             .status(200)
             .send({

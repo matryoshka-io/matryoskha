@@ -4,14 +4,16 @@ import Posts from '../components/posts';
 import LoginForm from '../components/LoginForm';
 
 import Data from '../../server/database/dataFrontEnd.json';
+import auth from '../utils/auth';
+import sessions from '../utils/sessions';
 
 
 const Homepage = props => (
   <Page>
     <div className="pageContent">
       <div className="posts" >
-        <p>This is left panel for posts</p>
-        <Posts myPosts={props.posts}/>
+        <p>{JSON.stringify(props.user)}</p>
+        <Posts myPosts={props.posts} />
       </div>
       <div className="login" >
         <LoginForm />
@@ -48,9 +50,12 @@ const Homepage = props => (
   </Page>
 );
 
-Homepage.getInitialProps = async function GetInitialPropsForHomepage() {
+Homepage.getInitialProps = async function GetInitialPropsForHomepage(context) {
+  const token = sessions.getToken('jwt', context.req);
+  const user = await auth.authenticateToken(token);
   return {
-    user: {},
+    user,
+    token,
     posts: Data,
   };
 };
