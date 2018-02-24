@@ -47,18 +47,11 @@ class CommentForm extends React.Component {
       .then(res => {
         res.data.forEach(data => {
           console.log('data', data)
-          if (data.subreddit._id === this.props.subredditId) {
-            this.setState({ subredditId: data.subreddit._id })
-          }
-          if (this.props.title === data.title) {
-            this.setState({ postId: data._id })
-          }
-          console.log('subreddit id', this.state.subredditId)
-          console.log('postId', this.state.postId)
+          data.comments.push(this.state.commentText)
         })
       })
       .then(res => {
-        axios.post(`/sub/${this.state.subredditId}/post/${this.state.postId}`, { type: 'Comment', body: commentText }, () => {
+        return axios.post(`/sub/:5a8e0e217f911450d4600d98/post/:5a8e0e2b7f911450d4600d99`, { type: 'Comment', body: commentText }, () => {
           console.log('am i working?')
         })
       })
