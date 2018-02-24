@@ -44,7 +44,7 @@ router.put('/post/:postId', controllers.post.PUT);
 // Delete a post.
 router.delete('/post/:postId', controllers.post.DELETE);
 // Comment on a post in a subreddit.
-router.post('/sub/:subName/post/:postId', controllers.post.POST);
+router.post('/post/:postId', controllers.post.POST);
 
 // Edit a comment.
 router.put('/comment/:commentId', controllers.comment.PUT);
