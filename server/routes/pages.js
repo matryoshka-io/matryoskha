@@ -36,12 +36,12 @@ const addPageRoutes = (server, app) => {
   });
 
   server.get('/u/signup', (req, res) => {
-    app.render(req, res, '/user/signup', req.params);
+    app.render(req, res, '/signup', req.params);
   });
 
   server.get('/', (req, res) => {
     const queryParams = {};
-    app.render(req, res, '/index', queryParams);
+    app.render(req, res, '/homepage', queryParams);
   });
 };
 

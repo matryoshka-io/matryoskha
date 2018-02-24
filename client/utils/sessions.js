@@ -1,35 +1,40 @@
 const cookie = ('js-cookie');
 
-const initSession = () => {
-  let token = getToken('')
-  //  if no, session doesn't exist, return empty user
-  //  if yes, authenticate
-};
-
 const setCookie = (key, value) => {
   if (process.browser) {
-    cookie.set(key, value, { expires: 1, path: '/' });
+    cookie.set(key, value);
   }
 };
 
 const deleteCookie = (key) => {
-  cookie.remove(key);
+  if (process.browser) {
+    cookie.remove(key);
+  }
 };
 
 const getBrowserCookie = (key) => {
-
+  return cookie.get(key);
 };
 
-const getServerToken = (req) => {
-
+const getServerCookie = (key, req) => {
+  if (!req.headers.cookie) {
+    return undefined;
+  }
+  const rawCookie = req.headers.cookie
+    .split(';')
+    .find(c => c.trim().startsWith(`${key}=`));
+  if (!rawCookie) {
+    return undefined;
+  }
+  return rawCookie.split('=')[1];
 };
 
 const getToken = (key, req) => {
-  return process.browser ? getBrowserToken(key) : getServerToken(key, req);
+  return process.browser ? getBrowserCookie(key) : getServerCookie(key, req);
 };
 
 module.exports = {
-  setToken,
-  deleteToken,
+  setCookie,
+  deleteCookie,
   getToken,
 };
