@@ -32,11 +32,11 @@ const addPageRoutes = (server, app) => {
 
   // Auth
   server.get('/u/login', (req, res) => {
-    app.render(req, res, '/auth/login', req.params);
+    app.render(req, res, '/user/login', req.params);
   });
 
   server.get('/u/signup', (req, res) => {
-    app.render(req, res, '/auth/signup', req.params);
+    app.render(req, res, '/user/signup', req.params);
   });
 
   server.get('/', (req, res) => {
