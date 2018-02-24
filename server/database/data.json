@@ -1,76 +1,84 @@
-[
-  {
-      "_id": "5a8e31c49bc60f57d0051c11",
-      "subreddit": {
-          "_id": "5a8e0e217f911450d4600d98",
-          "creator": "5a8e0e077f911450d4600d96",
-          "description": "Share cat photos here.",
-          "title": "Cats are the best animals",
-          "date": "2018-02-21T23:51:42.095Z",
-          "__v": 0
-      },
-      "title": "Cats are better than dogs",
-      "type": "Text",
-      "body": "Cats are more independent than dogs",
-      "author": {
-          "_id": "5a8e0e0b7f911450d4600d97",
-          "username": "test",
-          "password": "alligator1515",
-          "date": "2018-02-21T23:57:10.585Z",
-          "karma": 0,
-          "__v": 0
-      },
-      "date": "2018-02-22T03:00:15.847Z",
-      "__v": 0,
-      "karma": 1,
-      "comments": []
-  },
-  {
+{
+  "User": [
+    {
+      "_id": "5a8e0e077f911450d4600d96",
+      "username": "admin",
+      "password": "admin",
+      "date": "2018-02-21T23:49:20.395Z",
+      "karma": 0
+    },
+    {
+      "_id": "5a8e0e0b7f911450d4600d97",
+      "username": "test",
+      "password": "alligator1515",
+      "date": "2018-02-21T23:57:10.585Z",
+      "karma": 0
+    }
+  ],
+  "Subreddit": [
+    {
+      "_id": "5a8e0e217f911450d4600d98",
+      "creator": "5a8e0e077f911450d4600d96",
+      "description": "Share cat photos here.",
+      "title": "Cats",
+      "date": "2018-02-21T23:51:42.095Z"
+    }
+  ],
+  "Post": [
+    {
       "_id": "5a8e0e2b7f911450d4600d99",
-      "subreddit": {
-          "_id": "5a8e0e217f911450d4600d98",
-          "creator": "5a8e0e077f911450d4600d96",
-          "description": "Share cat photos here.",
-          "title": "Dogs might be the best",
-          "date": "2018-02-21T23:51:42.095Z",
-          "__v": 0
-      },
+      "subreddit": "5a8e0e217f911450d4600d98",
       "title": "Why I like my cat!",
       "type": "Text",
       "body": "My cat can build full-stack apps.",
-      "author": {
-          "_id": "5a8e0e077f911450d4600d96",
-          "username": "admin",
-          "password": "admin",
-          "date": "2018-02-21T23:49:20.395Z",
-          "karma": 0,
-          "__v": 0
-      },
-      "date": "2018-02-21T23:54:30.546Z",
-      "__v": 0,
-      "karma": 0,
-      "comments": [
-          {
-              "_id": "5a8e0e367f911450d4600d9a",
-              "type": "Comment",
-              "body": "Sounds like a really smart cat, checkout Next.js by the way. It's the new big thing.",
-              "author": "5a8e0e0b7f911450d4600d97",
-              "date": "2018-02-21T23:58:33.480Z",
-              "parent": "5a8e0e2b7f911450d4600d99",
-              "__v": 0,
-              "comments": [
-                  {
-                      "_id": "5a8e0e3f7f911450d4600d9b",
-                      "type": "Comment",
-                      "body": "Will definitely check it out.",
-                      "author": "5a8e0e077f911450d4600d96",
-                      "date": "2018-02-21T23:59:43.960Z",
-                      "parent": "5a8e0e367f911450d4600d9a",
-                      "__v": 0,
-                      "comments": []
-                  }
-              ]
-          }
-      ]
-  }
-]
+      "author": "5a8e0e077f911450d4600d96",
+      "date": "2018-02-21T23:54:30.546Z"
+    },
+    {
+      "_id": "5a8e0e367f911450d4600d9a",
+      "type": "Comment",
+      "body":
+        "Sounds like a really smart cat, checkout Next.js by the way. It's the new big thing.",
+      "author": "5a8e0e0b7f911450d4600d97",
+      "date": "2018-02-21T23:58:33.480Z",
+      "parent": "5a8e0e2b7f911450d4600d99"
+    },
+    {
+      "_id": "5a8e0e3f7f911450d4600d9b",
+      "type": "Comment",
+      "body": "Will definitely check it out.",
+      "author": "5a8e0e077f911450d4600d96",
+      "date": "2018-02-21T23:59:43.960Z",
+      "parent": "5a8e0e367f911450d4600d9a"
+    },
+    {
+      "_id": "5a8e31c49bc60f57d0051c11",
+      "subreddit": "5a8e0e217f911450d4600d98",
+      "title": "Cats are better than dogs",
+      "type": "Text",
+      "body": "Cats are more independent than dogs",
+      "author": "5a8e0e0b7f911450d4600d97",
+      "date": "2018-02-22T03:00:15.847Z"
+    }
+  ],
+  "Vote": [
+    {
+      "post": "5a8e0e367f911450d4600d9a",
+      "date": "2018-02-22T00:01:13.847Z",
+      "user": "5a8e0e077f911450d4600d96",
+      "value": 1
+    },
+    {
+      "post": "5a8e31c49bc60f57d0051c11",
+      "date": "2018-02-22T03:00:52.723Z",
+      "user": "5a8e0e077f911450d4600d96",
+      "value": 1
+    }
+  ],
+  "Subscription": [
+    {
+      "user": "5a8e0e0b7f911450d4600d97",
+      "subreddit": "5a8e0e217f911450d4600d98"
+    }
+  ]
+}
