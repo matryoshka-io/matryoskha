@@ -58,3 +58,9 @@ typings/
 package-lock.json
 # next.js
 /client/.next
+
+# npm
+package\-lock.json
+
+# front end data file
+/server/database/dataFrontEnd.js

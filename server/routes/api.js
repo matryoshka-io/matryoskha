@@ -1,61 +1,36 @@
-// Oh boy: https://stackoverflow.com/questions/14504385/why-cant-you-modify-the-data-returned-by-a-mongoose-query-ex-findbyid
-
 const router = require('express').Router();
+const controllers = require('../controllers');
+const gateway = require('../middleware/gateway');
 
-const db = require('../database');
-const models = require('../models');
+// Will use the gateway to block routes that require authorization.
+// ^Scratch that, it will be logic within the GET controller.
+router.get('/', controllers.home.GET);
 
-const matryoksha = function (post) {
-  return new Promise(function (resolve, reject) {
-    models.Post.find({ type: 'Comment', parent: post._id }).lean().then(function (comments) {
-      post.comments = comments;
-      const promises = [];
-      for (const comment of post.comments) {
-        promises.push(matryoksha(comment));
-      }
-      Promise.all(promises).then(function () {
-        resolve();
-      });
-    });
-  });
-};
+// Create a subreddit.
+router.post('/sub', controllers.subreddit.POST.subreddit);
+// Get posts top posts for a given subreddit.
+router.get('/sub/:subId', controllers.subreddit.GET);
+// Create a post in a subreddit.
+router.post('/sub/:subId', controllers.subreddit.POST.post);
+// Edit a subreddit's details.
+router.put('/sub/:subId', controllers.subreddit.PUT);
 
-router.get('/', function (req, res) {
-  models.Post.find({ type: { $not: /Comment/ }})
-    .populate('subreddit')
-    .populate('author')
-    .populate('link')
-    .lean()
-    .then(function (posts) {
-      const promises = [];
-      for (const post of posts) {
-        promises.push(models.Vote.find({ post: post._id }));
-      }
-      Promise.all(promises).then(function (votes) {
-        for (const [index, post] of posts.entries()) {
-          post.karma = votes[index].reduce(function (totalKarma, vote) {
-            return totalKarma + vote.value;
-          }, 0); // 0 might not be necessary, but whatever.
-        }
+// Get a post.
+router.get('/post/:postId', controllers.post.GET);
+// Edit a post.
+router.put('/post/:postId', controllers.post.PUT);
+// Delete a post.
+router.delete('/post/:postId', controllers.post.DELETE);
+// Comment on a post in a subreddit.
+router.post('/sub/:subId/post/:postId', controllers.post.POST);
 
-        posts.sort(function (firstPost, secondPost) {
-          if (firstPost.karma > secondPost.karma) {
-            return -1;
-          } else if (firstPost.karma < secondPost.karma) {
-            return 1;
-          }
-          return 0;
-        });
-
-        const finalPromises = [];
-        for (const post of posts) {
-          finalPromises.push(matryoksha(post));
-        }
-        Promise.all(finalPromises).then(function () {
-          res.status(200).end(JSON.stringify(posts));
-        });
-      });
-    });
-  });
+// Get a comment.
+router.get('/comment/:commentId', controllers.comment.GET);
+// Edit a comment.
+router.put('/comment/:commentId', controllers.comment.PUT);
+// Delete a comment.
+router.delete('/comment/:commentId', controllers.comment.DELETE);
+// Comment on a comment.
+router.post('/comment/:commentId', controllers.comment.POST);
 
 module.exports = router;

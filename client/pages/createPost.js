@@ -1,10 +1,19 @@
+<<<<<<< HEAD:client/pages/post.js
+=======
+import PostForm from '../components/PostForm'
+import ParentPost from '../components/parentPost'
+>>>>>>> 1139e1e5c4267a2d7da8f8369b8befb44cea67fd:client/pages/createPost.js
 
 const Post = (props) => (
   <div>
     <h1>{props.url.asPath}</h1>
+<<<<<<< HEAD:client/pages/post.js
 
+=======
+    <PostForm />
+>>>>>>> 1139e1e5c4267a2d7da8f8369b8befb44cea67fd:client/pages/createPost.js
   </div>
-);
+)
 
 Post.getInitialProps = async function () {
 
