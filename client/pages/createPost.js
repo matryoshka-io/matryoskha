@@ -1,31 +1,24 @@
-<<<<<<< HEAD:client/pages/post.js
-=======
 import PostForm from '../components/PostForm'
 import ParentPost from '../components/parentPost'
->>>>>>> 1139e1e5c4267a2d7da8f8369b8befb44cea67fd:client/pages/createPost.js
 
-const Post = (props) => (
+const Post = props => (
   <div>
     <h1>{props.url.asPath}</h1>
-<<<<<<< HEAD:client/pages/post.js
-
-=======
     <PostForm />
->>>>>>> 1139e1e5c4267a2d7da8f8369b8befb44cea67fd:client/pages/createPost.js
   </div>
 )
 
-Post.getInitialProps = async function () {
+Post.getInitialProps = async function GetInitialPostData() {
 
   return {
-    navigation: {},       //  every page need this?
+    navigation: {},
     user: {
-      session: {},        //  state of the user session
-      profile: {},        //  basic data for the user panel
-      subscriptions: [],  //  or isSubscribed for the parent subreddit
+      session: {},
+      profile: {},
+      subscriptions: [],
     },
-    post: {},             //  main post content
-    comments: {}          //  initial comments load
+    post: {},
+    comments: {},
   };
 };
 
