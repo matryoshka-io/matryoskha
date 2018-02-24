@@ -22,7 +22,11 @@ module.exports = {
     post(req, res) {
       models.Subreddit.findOne({ title: req.params.subName })
         .then((subreddit) => {
-          const newPostData = req
+          const newPostData = {
+            title: req.body.title,
+            type: 'Text',
+            body: req.body.body,
+          };
           newPostData.subreddit = subreddit._id;
 
           models.User.findOne({ usenrame: req.session.username }).then((user) => {
