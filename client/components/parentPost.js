@@ -15,53 +15,39 @@ class ParentPost extends React.Component {
       subredditId: '',
       postId: '',
       title: '',
-      newBodyText: '',
+      postBodyText: '',
       comments: [],
-      commentBody: ''
+      commentBody: '',
     }
   }
 
   componentDidMount() {
     axios.get('/api')
       .then(res => {
-        return res.data.forEach(post => {
-          console.log('comment collection', post.comments)
-          let subredditID = post.subreddit._id;
-          let bodyTextForEachPost = post.body;
-          post.comments.forEach(comment => {
-            console.log('commentttt', comment)
-            this.setState({ commentBody: comment.body })
-          })
+        console.log(res.data)
+        res.data.forEach(post => {
           this.setState({
-            subredditId: subredditID,
             title: post.title,
-            newBodyText: bodyTextForEachPost,
-            postId: post._id,
-            comments: post.comments,
-          }, () => console.log('WORK PLEASE', this.state.comments))
-        })
-          .then(res => {
-            axios.get(`/api/sub/${this.state.subredditId}/post/${this.state.postId}`)
+            postBodyText: post.body,
+            postId: post._id
           })
+          if (post.comments.length === 0) {
+            this.setState({ comments: [] })
+          } else {
+            post.comments.forEach(comment => {
+              console.log('commentBody', this.state.commentBody)
+              this.setState({
+                comments: post.comments,
+                commentBody: comment.body
+              }, () => { console.log(this.state.commentBody) })
+            })
+          }
+        })
       })
       .then(res => {
-        console.log('SUCCESSFUL MOUNT')
+        axios.get(`/api/post/:${this.state.postId}`)
       })
-    // axios.get('post/5a8e0e2b7f911450d4600d99')
   }
-
-  // componentDidMount() {
-  //   axios.get('/api')
-  //     .then(res => {
-  //       res.data.forEach(data => {
-  //         if (res.data.title === /*subreddit title*/) {
-
-  //         }
-  //       })
-  //     })
-  //   // axios.get(`/post/${postID}`)
-  // }
-
 
   render() {
     return (
@@ -69,13 +55,13 @@ class ParentPost extends React.Component {
         <div>
           Title of post: <br />
           {this.state.title} <br /><br />
-          Body: <ReactMarkdown source={this.state.newBodyText} />
+          Body: <ReactMarkdown source={this.state.postBodyText} />
         </div>
 
         <CommentForm title={this.state.title} subredditId={this.state.subredditId} />
 
 
-        {this.state.commentBody}
+        {/* {this.state.commentBody} */}
       </div>
 
     )
