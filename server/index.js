@@ -26,7 +26,7 @@ app.prepare()
     // Middleware & Auth
     server.use(bodyParser.json());
     server.use(bodyParser.urlencoded({ extended: true }));
-    // server.use(cookieParser());
+    server.use(cookieParser());
     // server.use(sessions);
 
     // Testing

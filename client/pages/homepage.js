@@ -1,20 +1,22 @@
 
-import Page from '../components/Page';
+import Page from '../components/page';
 import Posts from '../components/posts';
-import LoginForm from '../components/LoginForm';
+import UserPanelBody from '../components/UserPanelBody';
+import LoginForm from '../components/loginForm';
 
 import Data from '../../server/database/dataFrontEnd.json';
+import auth from '../utils/auth';
+import sessions from '../utils/sessions';
 
 
 const Homepage = props => (
   <Page>
     <div className="pageContent">
       <div className="posts" >
-        <p>This is left panel for posts</p>
-        <Posts myPosts={props.posts}/>
+        <Posts myPosts={props.posts} />
       </div>
       <div className="login" >
-        <LoginForm />
+        <UserPanelBody user={props.user} />
       </div>
     </div>
     <style jsx>
@@ -48,9 +50,12 @@ const Homepage = props => (
   </Page>
 );
 
-Homepage.getInitialProps = async function GetInitialPropsForHomepage() {
+Homepage.getInitialProps = async function GetInitialPropsForHomepage(context) {
+  const token = sessions.getToken('jwt', context.req);
+  const tokenData = await auth.authenticateToken(token);
   return {
-    user: {},
+    user: tokenData.user || null,
+    token,
     posts: Data,
   };
 };

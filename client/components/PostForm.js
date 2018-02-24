@@ -12,9 +12,10 @@ class PostForm extends React.Component {
       isTextBoxHidden: false,
       isLinkBarHidden: true,
       selectedType: '',
-      type: 'text',
-      subredditId: '',
-      subredditText: ''
+      type: 'Text',
+      subredditName: '',
+      subredditText: '',
+      bodyText: '',
     }
   }
 
@@ -55,6 +56,12 @@ class PostForm extends React.Component {
     }
   }
 
+  onBodyTextChangeHandler = (e) => {
+    this.setState({ bodyText: e.target.value }, () => {
+      console.log(this.state.bodyText)
+    })
+  }
+
   onCreateNewTextPostWithUserText = () => {
     this.createNewTextPost(this.state.titleText, this.state.type, this.state.bodyText)
   }
@@ -63,26 +70,22 @@ class PostForm extends React.Component {
     axios.get('/api')
       .then(res => {
         let responseArr = JSON.parse(res.request.response)
-        console.log('our response', responseArr)
         responseArr.forEach(responseData => {
+          console.log('responseData', responseData)
           let subredditTitle = responseData.subreddit.title;
-          let subredditUniqueId = responseData.subreddit._id;
           if (subredditTitle === this.state.subredditText) {
-            return this.setState({ subredditId: subredditUniqueId }, () => {
-              console.log('ID?', this.state.subredditId)
-            })
+            return this.setState({ subredditName: subredditTitle })
           } else {
             console.log('No such subreddit exists.')
-            return res;
           }
         })
+
       })
       .then(res => {
-        //will re-test this post when route is created
-        axios.post(`/api/sub/${this.state.subredditId}`, { title: titleText, type: this.state.type, body: bodyText })
+        axios.post(`/api/sub/${this.state.subredditName}`, { title: titleText, type: this.state.type, body: bodyText })
       })
       .then(res => {
-        console.log('SUCCESSFUL TEXT POST')
+        console.log('successful post')
       })
     //work on links later
   }
@@ -116,7 +119,7 @@ class PostForm extends React.Component {
         </div>
 
         <div id="textbox">
-          {this.state.isTextBoxHidden ? null : <TextBox />}
+          {this.state.isTextBoxHidden ? null : <TextBox onBodyTextChangeHandler={this.onBodyTextChangeHandler} />}
         </div>
 
         <button onClick={this.onCreateNewTextPostWithUserText}>Post!</button>
