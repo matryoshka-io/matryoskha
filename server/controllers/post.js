@@ -31,7 +31,9 @@ module.exports = {
   },
   POST(req, res) {
     models.Subreddit.findOne({ title: req.params.subName }).then((subreddit) => {
-      const newCommentData = req.body;
+      const newCommentData = {
+        body: req.body.body,
+      };
       newCommentData.subreddit = subreddit._id;
       newCommentData.parent = req.params.postId;
 

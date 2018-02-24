@@ -6,7 +6,10 @@ const utils = require('./utils');
 module.exports = {
   POST: {
     subreddit(req, res) {
-      const newSubredditData = req.body;
+      const newSubredditData = {
+        title: req.body.title,
+        description: req.body.description,
+      }
       models.User.findOne({ username: req.session.username })
         .then((user) => {
           newSubredditData.creator = user._id;
@@ -19,7 +22,7 @@ module.exports = {
     post(req, res) {
       models.Subreddit.findOne({ title: req.params.subName })
         .then((subreddit) => {
-          const newPostData = req.body;
+          const newPostData = req
           newPostData.subreddit = subreddit._id;
 
           models.User.findOne({ usenrame: req.session.username }).then((user) => {

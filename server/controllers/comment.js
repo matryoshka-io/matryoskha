@@ -22,7 +22,9 @@ module.exports = {
           return models.Post.update({
             type: 'Comment',
             _id: req.params.commentId,
-          }, req.body);
+          }, {
+            body: req.body.body, // Favor explicitness, maybe shorthand is better.
+          });
         }
       }).then((response) => {
         res.status(201).end('Successfully updated comment!');
@@ -49,7 +51,9 @@ module.exports = {
       });
   },
   POST(req, res) {
-    const newCommentData = req.body;
+    const newCommentData = {
+      body: req.body.body,
+    };
     newCommentData.parent = req.params.commentId;
 
     models.User.findOne({ username: req.session.username }).then((user) => {
