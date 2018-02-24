@@ -16,7 +16,8 @@ class ParentPost extends React.Component {
       postId: '',
       title: '',
       newBodyText: '',
-      comments: []
+      comments: [],
+      commentBody: ''
     }
   }
 
@@ -25,9 +26,12 @@ class ParentPost extends React.Component {
       .then(res => {
         return res.data.forEach(post => {
           console.log('comment collection', post.comments)
-          console.log('type', Array.isArray(post.comments))
           let subredditID = post.subreddit._id;
           let bodyTextForEachPost = post.body;
+          post.comments.forEach(comment => {
+            console.log('commentttt', comment)
+            this.setState({ commentBody: comment.body })
+          })
           this.setState({
             subredditId: subredditID,
             title: post.title,
@@ -58,11 +62,6 @@ class ParentPost extends React.Component {
   //   // axios.get(`/post/${postID}`)
   // }
 
-  changeToString = () => {
-    this.state.comments.toString();
-    thi
-  }
-
 
   render() {
     return (
@@ -76,7 +75,7 @@ class ParentPost extends React.Component {
         <CommentForm title={this.state.title} subredditId={this.state.subredditId} />
 
 
-        {this.state.comments.toString()}
+        {this.state.commentBody}
       </div>
 
     )
