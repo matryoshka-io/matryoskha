@@ -25,9 +25,8 @@ const evilMatryoksha = (postId, commentsList = []) =>
         promises.push(evilMatryoksha(comment._id));
       });
       Promise.all(promises).then((childrenComments) => {
-        let arr = childrenComments.pop();
-        arr = arr ? arr : [];
-        resolve(commentsList.concat(arr));
+        childrenComments = childrenComments.reduce((flatArr, child) => flatArr.concat(child), []);
+        resolve(commentsList.concat(childrenComments));
       });
     });
   });

@@ -7,16 +7,25 @@ const tokenSecret = 'aa69bd0db71d34f400d981b89aeff7f2';
 const createUser = (username, password) =>
   new Promise((resolve, reject) => {
     User
-      .find({ username })
+      .findOne({ username })
       .exec()
       .then((foundUser) => {
-        if (foundUser) {
-          return null;
+        console.log('FOUNDUSER: ', foundUser);
+        if (foundUser !== null) {
+          return foundUser;
         }
-        return new User({ username, password }).save();
+        const createUser = new User({ username, password });
+        console.log('CREATE USER: ', createUser);
+        return createUser.save();
       })
-      .then(newUser => resolve(newUser))
-      .catch(err => reject(new Error('Failed to create user')));
+      .then((newUser) => {
+        console.log('NEWUSER: ', newUser);
+        return resolve(newUser);
+      })
+      .catch((err) => {
+        console.log(err);
+        return reject(err);
+      });
   });
 
 const authenticateUser = (username, password) =>

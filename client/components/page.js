@@ -1,31 +1,33 @@
-// import Header from './header'
-// import Meta from './meta'
+import Nav from './nav';
+import Footer from './footer';
 
 export default ({ children }) => (
   <div className="main">
-    <div>Header</div>
-
+    <h2>Welcome to Matryoshka Io</h2>
+    <Nav />
     <div className="page">
       { children }
     </div>
-
-    <style jsx>{`
-      .main {
-        width: 85%;
-        margin: auto;
-        padding: 10px 0 0 0;
-      }
-      .page {
-        color: #828282;
-        background: #fff;
-        padding: 3px 10px;
-      }
-      @media (max-width: 750px) {
+    <Footer />
+    <style jsx>
+      {`
         .main {
-          padding: 0;
-          width: auto;
+          width: 85%;
+          margin: auto;
+          padding: 10px 0 0 0;
         }
-      }
-    `}</style>
+        .page {
+          color: #828282;
+          background: #fff;
+          padding: 3px 10px;
+        }
+        @media (max-width: 750px) {
+          .main {
+            padding: 0;
+            width: auto;
+          }
+        }
+      `}
+    </style>
   </div>
-)
+);
