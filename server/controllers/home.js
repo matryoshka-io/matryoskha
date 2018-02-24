@@ -8,8 +8,8 @@ const utils = require('./utils');
 // What about the authed route? There must be some logic there,
 // as per subscriptions. Gotta figure out the middleware for authentication.
 module.exports = {
-  req.session = null; // Testing purposes.
   GET(req, res) {
+    req.session = null; // Testing purposes.
     if (req.session === null) {
       models.Post.find({ type: { $not: /Comment/ } })
         .populate('subreddit')

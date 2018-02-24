@@ -12,8 +12,11 @@ module.exports = {
       },
     }).populate('subreddit')
       .populate('author') // Leave out link for now, testing purposes.
+      .lean()
       .then((post) => {
-        res.status(200).end(JSON.stringify(post));
+        utils.matryoksha(post).then(() => {
+          res.status(200).end(JSON.stringify(post));
+        });
       });
   },
   PUT(req, res) {
@@ -25,13 +28,14 @@ module.exports = {
           res.status(201).end('Post updated!');
         });
       } else {
-        res.status(401.end('You did not author this post.');
+        res.status(401).end('You did not author this post.');
       }
     });
   },
   POST(req, res) {
     models.Subreddit.findOne({ title: req.params.subName }).then((subreddit) => {
       const newCommentData = {
+        type: 'Comment',
         body: req.body.body,
       };
       newCommentData.subreddit = subreddit._id;

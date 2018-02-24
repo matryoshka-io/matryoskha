@@ -31,8 +31,9 @@ module.exports = {
     models.User.findOne({ username: req.session.username }).then((user) => {
       models.Vote.findOne({
         user: user._id,
-        _id: req.params.postId,
+        post: req.params.postId,
       }).then((vote) => {
+        console.log(vote);
         models.Post.findOne({ _id: req.params.postId }).then((post) => {
           models.User.update({
             _id: post.author,
@@ -43,7 +44,7 @@ module.exports = {
           }).then((response) => {
             models.Vote.remove({
               user: user._id,
-              _id: post._id,
+              post: post._id,
             }).then((response) => {
               res.status(200).end('Successfully removed vote!');
             });
