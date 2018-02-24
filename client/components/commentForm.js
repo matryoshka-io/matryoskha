@@ -1,25 +1,3 @@
-// export default () => (
-//   <div>
-//     <textarea />
-//     <button>add comment</button>
-//     <style jsx>{`
-//         textarea {
-//           width: 400px;
-//           height: 100px;
-//           display: block;
-//           margin-bottom: 10px;
-//         }
-//         button {
-//           padding: 3px 4px;
-//         }
-//         @media (max-width: 750px) {
-//           textarea {
-//             width: 100%;
-//           }
-//         }
-//       `}</style>
-//   </div>
-// )
 import axios from 'axios'
 
 class CommentForm extends React.Component {
@@ -46,22 +24,15 @@ class CommentForm extends React.Component {
     axios.get('/api')
       .then(res => {
         res.data.forEach(data => {
-          console.log('data', data._id)
-          console.log('comment textttttt', commentText)
-          // data.comments.push(this.state.commentText)
           this.setState({
-            // subredditId: data.subreddit._id,
             subredditName: data.subreddit.title,
             postId: data._id
           })
         })
       })
       .then(res => {
-        return axios.post(`/sub/${this.state.subredditName}/post/:${this.state.postId}`, { type: 'Comment', body: commentText }, () => {
-          console.log('am i working?')
-        })
+        return axios.post(`/api/sub/${this.state.subredditName}/post/${this.state.postId}`, { type: 'Comment', body: commentText })
       })
-      //not sure if this is working  
       .then(res => {
         console.log('SUCCESSFUL COMMENT POST')
       })
