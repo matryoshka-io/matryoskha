@@ -29,7 +29,7 @@ module.exports = {
   comments: {
     GET(req, res) {
       models.User.findOne({ username: req.params.username }).then((user) => {
-        models.Post.find({ author: user._id, type: 'Comment' } }).then((comments) => {
+        models.Post.find({ author: user._id, type: 'Comment' }).then((comments) => {
           const promises = [];
           comments.forEach((comment) => {
             promises.push(utils.matryoksha(comment));
@@ -44,7 +44,7 @@ module.exports = {
   subreddits: {
     GET(req, res) {
       models.User.findOne({ username: req.params.username }).then((user) => {
-        models.Subreddit.find({ creator: user._id } }).then((subreddits) => {
+        models.Subreddit.find({ creator: user._id }).then((subreddits) => {
           res.status(200).json(subreddits);
         });
       });  
