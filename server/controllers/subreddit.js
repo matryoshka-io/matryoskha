@@ -29,7 +29,7 @@ module.exports = {
           };
           newPostData.subreddit = subreddit._id;
 
-          models.User.findOne({ usenrame: req.session.username }).then((user) => {
+          models.User.findOne({ username: req.session.username }).then((user) => {
             newPostData.author = user._id;
             const newPost = new models.Post(newPostData);
             newPost.save().then((post) => {
@@ -40,7 +40,7 @@ module.exports = {
     },
   },
   GET(req, res) {
-    models.Subreddit.find({ title: req.params.subName })
+    models.Subreddit.findOne({ title: req.params.subName })
       .then((subreddit) => {
         models.Post.find({ subreddit: subreddit._id }).lean()
           .then((posts) => {
