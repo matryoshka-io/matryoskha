@@ -36,6 +36,7 @@ app.prepare()
 
     // Start the server
     server.listen(3000, (err) => {
+      server.keepAliveTimeout = 0;
       if (err) {
         console.log(`Error starting server: ${err}`);
       } else {

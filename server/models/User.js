@@ -18,7 +18,6 @@ const userSchema = mongoose.Schema({
 
 userSchema.pre('save', function EncryptUserPasswordOnSave(next) {
   const user = this;
-  console.log(user);
   if (!user.isModified('password')) return next();
 
   bcrypt
