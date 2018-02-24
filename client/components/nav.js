@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from 'next/link';
 
 export default () => (
   <ul>
@@ -8,14 +8,16 @@ export default () => (
     <Item href="/rising">rising</Item>
     <Item href="/top">top</Item>
 
-    <style jsx>{`
-      ul {
-        list-style-type: none;
-        border: solid 2px
-      }
-    `}</style>
+    <style jsx>
+      {`
+        ul {
+          list-style-type: none;
+          border: solid 2px
+        }
+      `}
+    </style>
   </ul>
-)
+);
 
 const Item = ({ href, children }) => (
   <li>
