@@ -1,9 +1,9 @@
-import Link from 'next/link'
-import SubRedditBar from './subbredditBar'
-import Rating from './rating'
-import React from 'react'
-import axios from 'axios'
-import ReactMarkdown from 'react-markdown'
+import React from 'react';
+import axios from 'axios';
+import ReactMarkdown from 'react-markdown';
+import Link from 'next/link';
+import SubRedditBar from './subbredditBar';
+import Rating from './rating';
 
 
 class ParentPost extends React.Component {
@@ -16,7 +16,7 @@ class ParentPost extends React.Component {
     }
   }
 
-  componentDidMount = () => {
+  componentDidMount() {
     axios.get('/api')
       .then(res => {
         return res.data.forEach(post => {
