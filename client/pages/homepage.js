@@ -1,7 +1,7 @@
 
 import Page from '../components/page';
 import Posts from '../components/posts';
-import LoginForm from '../components/loginForm';
+import UserPanelBody from '../components/UserPanelBody';
 
 import Data from '../../server/database/dataFrontEnd.json';
 import auth from '../utils/auth';
@@ -12,11 +12,10 @@ const Homepage = props => (
   <Page>
     <div className="pageContent">
       <div className="posts" >
-        <p>{JSON.stringify(props.user)}</p>
         <Posts myPosts={props.posts} />
       </div>
       <div className="login" >
-        <LoginForm />
+        <UserPanelBody user={props.user} />
       </div>
     </div>
     <style jsx>

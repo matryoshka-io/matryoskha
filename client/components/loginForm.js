@@ -13,6 +13,7 @@ export default class LoginForm extends Component {
       message: '',
     };
     this.getInputValue = this.getInputValue.bind(this);
+    this.submitForm = this.submitForm.bind(this);
   }
 
   getInputValue(e) {
@@ -26,8 +27,7 @@ export default class LoginForm extends Component {
       auth.loginUser(this.state.username, this.state.password)
         .then((result) => {
           if (result.success) {
-            alert('login successful');
-            // Router.replace('/');
+            Router.replace('/');
           }
           this.setState({
             message: result.message,
@@ -36,7 +36,7 @@ export default class LoginForm extends Component {
         .catch((err) => {
           this.setState({
             message: err.message,
-          })
+          });
         });
     }
   }
@@ -73,6 +73,4 @@ export default class LoginForm extends Component {
       </form>
     );
   }
-
-
 }
