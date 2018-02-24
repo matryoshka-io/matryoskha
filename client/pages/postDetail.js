@@ -5,16 +5,9 @@ import axios from 'axios'
 class PostPage extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      subredditId: '',
-      postId: ''
-    }
 
   }
 
-  componentDidMount() {
-    //all comments related to thread post
-  }
 
 
 
@@ -39,9 +32,6 @@ class PostPage extends React.Component {
       <div>
         <h1>{this.props.url.asPath}</h1>
         <ParentPost />
-
-        Post a comment:
-        <CommentForm />
       </div>
     )
   }
