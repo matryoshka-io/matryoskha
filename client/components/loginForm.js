@@ -3,14 +3,14 @@ import Link from 'next/link'
 
 export default () => (
 
-    <form >
+    <form className="logForm">
     <div className="login">
     <h1>Login</h1>
     <div>
-      <span>name</span>
+      <div>name</div>
       <input id="usernameInput" className="usernameInput" />
     </div>
-    <span>password</span>  
+      <div>password</div>  
     <div>
      <input type="password" className="passwordInput"/>
     </div>
@@ -20,12 +20,17 @@ export default () => (
     </div>
       <style jsx>{`
         h1 {
-            text-align: center
+            text-align: center  
+        }
+        div {
+            margin-left: 50px;
         }
         .usernameInput {
-            margin-right: 100px;
+           
         }
-
+        .login {
+        
+        }
 
       `}</style>
     </div> 
