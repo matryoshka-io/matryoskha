@@ -25,13 +25,12 @@ class CommentForm extends React.Component {
       .then(res => {
         res.data.forEach(data => {
           this.setState({
-            subredditName: data.subreddit.title,
             postId: data._id
           })
         })
       })
       .then(res => {
-        return axios.post(`/api/sub/${this.state.subredditName}/post/${this.state.postId}`, { type: 'Comment', body: commentText })
+        return axios.post(`/post/${this.state.postId}`, { type: 'Comment', body: commentText })
       })
       .then(res => {
         console.log('SUCCESSFUL COMMENT POST')
