@@ -30,7 +30,7 @@ class CommentForm extends React.Component {
         })
       })
       .then(res => {
-        return axios.post(`/post/${this.state.postId}`, { type: 'Comment', body: commentText })
+        return axios.post(`/api/post/${this.state.postId}`, { type: 'Comment', body: commentText })
       })
       .then(res => {
         console.log('SUCCESSFUL COMMENT POST')
