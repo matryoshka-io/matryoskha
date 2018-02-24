@@ -5,7 +5,7 @@ const utils = require('./utils');
 
 module.exports = {
   POST(req, res) {
-    models.User.findOne(req.session).then((user) => {
+    models.User.findOne({ username: req.session.username }).then((user) => {
       const newVoteData = {
         user: user._id,
         post: req.params.postId,
@@ -18,7 +18,7 @@ module.exports = {
     });
   },
   DELETE(req, res) {
-    models.User.findOne(req.session).then((user) => {
+    models.User.findOne({ username: req.session.username }).then((user) => {
       models.Vote.remove({
         user: user._id,
         _id: req.params.postId,

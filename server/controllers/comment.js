@@ -52,8 +52,7 @@ module.exports = {
     const newCommentData = req.body;
     newCommentData.parent = req.params.commentId;
 
-    // req.session ONLY has username?
-    models.User.findOne(req.session).then((user) => {
+    models.User.findOne({ username: req.session.username }).then((user) => {
       newCommentData.author = user._id;
       const newComment = new models.Post(newCommentData);
       return newComment.save();

@@ -7,7 +7,7 @@ module.exports = {
   POST: {
     subreddit(req, res) {
       const newSubredditData = req.body;
-      models.User.findOne(req.session)
+      models.User.findOne({ username: req.session.username })
         .then((user) => {
           newSubredditData.creator = user._id;
           const newSubreddit = new models.Subreddit(newSubredditData);
@@ -22,7 +22,7 @@ module.exports = {
           const newPostData = req.body;
           newPostData.subreddit = subreddit._id;
 
-          models.User.findOne(req.session).then((user) => {
+          models.User.findOne({ usenrame: req.session.username }).then((user) => {
             newPostData.author = user._id;
             const newPost = new models.Post(newPostData);
             newPost.save().then((post) => {
