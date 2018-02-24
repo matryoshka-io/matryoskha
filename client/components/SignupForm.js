@@ -30,7 +30,6 @@ export default class SignupForm extends React.Component {
   }
 
   submitUser() {
-    console.log('Submit');
     if (this.checkUsername() && this.checkPassword()) {
       this.props.submitForm(this.state.username, this.state.password);
     }
