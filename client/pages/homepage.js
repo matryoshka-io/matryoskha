@@ -10,18 +10,25 @@ const Homepage = props => (
       {/* <h1>{props.url.asPath}</h1> */}
       <h2>Welcome to Matryoshka Io</h2>
       <Nav />
-        <div className="pageContent">                        
-          <div className="posts" > 
-            <p>This is left panel for posts</p> 
-            <Posts myPosts={props.posts}/>
-          </div>                     
-          <div className="login" > 
-            <LoginForm />
-          </div>   
-        </div>
+      <div className="pageContent">                        
+        <div className="posts" > 
+          <h2>This is left panel for posts</h2> 
+          <Posts myPosts={props.posts}/>
+        </div>                     
+      <div className="login" > 
+        <LoginForm />
+        <div className="createPostDiv">
+          <button className="createPost">Create Post</button>
+        </div>  
+      </div>   
+      <div className="footer">
         <Footer />
+      </div>
+      </div>
       <style jsx>
         {`
+
+         
           .pageContent {
             width: 100%;
           }
@@ -29,9 +36,9 @@ const Homepage = props => (
             font-size: 36px;
             color: #333;
             align-text: center;
-          }
+          } 
           h2 {
-            margin-left: 16px;
+            text-align: center;
           }
           .posts {
             border: solid 2px;
@@ -43,8 +50,19 @@ const Homepage = props => (
             float: right;
             width: 22%;
             height: 80%;
-          } * {
-            border:1
+          }
+          .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+          }
+          .createPostDiv {
+            width: 100px
+            padding: 20px 50px;
+          }
+          .createPost { 
+            width: 250px
+            height: 15px
           }
         `}
       </style>
