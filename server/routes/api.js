@@ -58,4 +58,7 @@ router.post('/vote/:postId', controllers.vote.POST);
 // Remove a vote.
 router.delete('/vote/:postId', controllers.vote.DELETE);
 
+// Get a user's karma.
+router.get('/user/:username', controllers.user.karma.GET);
+
 module.exports = router;

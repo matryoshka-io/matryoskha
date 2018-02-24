@@ -3,6 +3,7 @@ const models = require('../models');
 
 const utils = require('./utils');
 
+// Todo: disallow users from upvoting or downvoting endlessly.
 module.exports = {
   POST(req, res) {
     models.User.findOne({ username: req.session.username }).then((user) => {

@@ -3,6 +3,7 @@ const subreddit = require('./subreddit');
 const post = require('./post');
 const comment = require('./comment');
 const vote = require('./vote');
+const user = require('./user');
 const auth = require('./auth');
 
 module.exports = {
@@ -10,6 +11,7 @@ module.exports = {
   subreddit,
   post,
   comment,
+  user,
   vote,
   auth,
 };

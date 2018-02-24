@@ -3,14 +3,14 @@ const models = require('../models');
 
 const utils = require('./utils');
 
-// Right now without bcrypt.
+// Get date joined?
 module.exports = {
-  user: {
-    POST(req, res) {
-
-    },
-    PUT(req, res) {
-
+  karma: {
+    GET(req, res) {
+      models.User.findOne({ username: req.params.username })
+        .then((user) => {
+          res.status(200).json({ karma: user.karma });
+        });
     },
   },
 };
