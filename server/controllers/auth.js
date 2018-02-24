@@ -29,8 +29,43 @@ module.exports = {
     logout: (req, res) => {
 
     },
-    signup: (req, res) => {
-
+    register: (req, res) => {
+      const { username, password } = req.body;
+      auth.createUser(username, password)
+        .then((newUser) => {
+          if (newUser) {
+            const userToken = auth.generateToken(newUser.username);
+            const userValues = {
+              _id: newUser._id,
+              username: newUser.username,
+            };
+            res
+              .status(200)
+              .send({
+                success: true,
+                user: userValues,
+                token: userToken,
+                message: 'User and session created',
+              });
+          } else {
+            res
+              .status(403)
+              .send({
+                success: false,
+                token: null,
+                message: 'User creation failed.  User already exists',
+              });
+          }
+        })
+        .catch((err) => {
+          res
+            .status(500)
+            .send({
+              success: false,
+              token: null,
+              message: 'An error occurred in signup request.',
+            });
+        });
     },
   },
 };
