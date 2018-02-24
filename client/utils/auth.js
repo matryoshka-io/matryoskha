@@ -20,16 +20,18 @@ const registerUser = (username, password) =>
   });
 
 
-const loginUser = (username, password) => {
-  axios.post(`${BASE_URL}/auth/login`, { username, password })
-    .then((result) => {
-      if (result.success) {
-        sessions.setCookie('jwt', result.token);
-      }
-      return result;
-    })
-    .catch(err => err);
-};
+const loginUser = (username, password) =>
+  new Promise((resolve, reject) => {
+    console.log('LOGIN REQUEST: ', username);
+    return axios.post(`${BASE_URL}/auth/login`, { username, password })
+      .then((result) => {
+        if (result.success) {
+          sessions.setCookie('jwt', result.token);
+        }
+        return resolve(result);
+      })
+      .catch(err => reject(err));
+  });
 
 const makeTokenHeader = (token) => {
   let headers = null;

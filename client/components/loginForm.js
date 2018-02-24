@@ -26,7 +26,8 @@ export default class LoginForm extends Component {
       auth.loginUser(this.state.username, this.state.password)
         .then((result) => {
           if (result.success) {
-            Router.replace('/');
+            alert('login successful');
+            // Router.replace('/');
           }
           this.setState({
             message: result.message,

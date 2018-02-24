@@ -10,20 +10,17 @@ module.exports = {
         return;
       }
       auth.verifyToken(token)
-        .then((decoded) => {
-          console.log('decoded: ', decoded);
-          res.status(200).send(decoded);
-        })
-        .catch((err) => {
-          console.log('token no bueno ', err);
-          res.status(200).send({});
-        });
+        .then(decoded => res.status(200).send(decoded))
+        .catch(err => res.status(200).send({}));
     },
     login: (req, res) => {
+      console.log('hello');
       const { username, password } = req.body;
+      console.log(`USER LOGIN REQUEST, ${username}`);
       auth.authenticateUser(username, password)
         .then((result) => {
           if (!result.isValid) {
+            console.log('USER WAS NOT LOGGED IN');
             res
               .status(403)
               .send({
@@ -32,6 +29,7 @@ module.exports = {
                 message: result.message,
               });
           }
+          console.log(`USER LOGGED IN: ${result.user.username}`);
           const userValues = {};
           userValues._id = result.user._id;
           userValues.username = result.user.username;
@@ -54,11 +52,11 @@ module.exports = {
       auth.createUser(username, password)
         .then((newUser) => {
           if (newUser) {
-            const userToken = auth.generateToken(newUser.username);
             const userValues = {
               _id: newUser._id,
               username: newUser.username,
             };
+            const userToken = auth.generateToken(userValues);
             res
               .status(200)
               .send({
