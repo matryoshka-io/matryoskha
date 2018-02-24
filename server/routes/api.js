@@ -58,7 +58,10 @@ router.post('/vote/:postId', controllers.vote.POST);
 // Remove a vote.
 router.delete('/vote/:postId', controllers.vote.DELETE);
 
-// Get a user's karma.
-router.get('/user/:username', controllers.user.karma.GET);
+// Get a user's karma and date joined, basically.
+router.get('/user/:username', controllers.user.profile.GET);
+router.get('/user/:username/posts', controllers.user.posts.GET);
+router.get('/user/:username/comments', controllers.user.comments.GET);
+router.get('/user/:username/subreddits', controllers.user.subreddits.GET);
 
 module.exports = router;
