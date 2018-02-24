@@ -27,7 +27,7 @@ class CommentForm extends React.Component {
     super(props);
     this.state = {
       commentText: '',
-      subredditId: '',
+      subredditName: '',
       postId: ''
     };
   }
@@ -46,12 +46,18 @@ class CommentForm extends React.Component {
     axios.get('/api')
       .then(res => {
         res.data.forEach(data => {
-          console.log('data', data)
-          data.comments.push(this.state.commentText)
+          console.log('data', data._id)
+          console.log('comment textttttt', commentText)
+          // data.comments.push(this.state.commentText)
+          this.setState({
+            // subredditId: data.subreddit._id,
+            subredditName: data.subreddit.title,
+            postId: data._id
+          })
         })
       })
       .then(res => {
-        return axios.post(`/sub/:5a8e0e217f911450d4600d98/post/:5a8e0e2b7f911450d4600d99`, { type: 'Comment', body: commentText }, () => {
+        return axios.post(`/sub/${this.state.subredditName}/post/:${this.state.postId}`, { type: 'Comment', body: commentText }, () => {
           console.log('am i working?')
         })
       })
