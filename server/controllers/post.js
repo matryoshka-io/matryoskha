@@ -17,10 +17,16 @@ module.exports = {
       });
   },
   PUT(req, res) {
-    models.Post.update({
-      _id: req.params.postId,
-    }, req.body).then((response) => {
-      res.status(201).end('Post updated!');
+    models.Post.findOne({ _id: req.params.postId }).populate('author').then((post) => {
+      if (post.author.username === req.session.username) {
+        models.Post.update({
+          _id: req.params.postId,
+        }, req.body).then((response) => {
+          res.status(201).end('Post updated!');
+        });
+      } else {
+        res.status(401.end('You did not author this post.');
+      }
     });
   },
   POST(req, res) {
@@ -30,7 +36,7 @@ module.exports = {
       newCommentData.parent = req.params.postId;
 
       // req.session ONLY has username?
-      models.User.findOne(req.session).then((user) => {
+      models.User.findOne({ username: req.session.username }).then((user) => {
         newCommentData.author = user._id;
         const newComment = new models.Post(newCommentData);
         return newComment.save();
