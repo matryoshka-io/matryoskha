@@ -13,17 +13,42 @@ module.exports = {
       };
       const newVote = new models.Vote(newVoteData);
       newVote.save().then((vote) => {
-        res.status(201).json(vote);
-      })
+        models.Post.findOne({ _id: req.params.postId }).then((post) => {
+          models.User.update({
+            _id: post.author,
+          }, {
+            $inc: {
+              karma: vote.value,
+            },
+          }).then((response) => {
+            res.status(201).json(vote);
+          });
+        });
+      });
     });
   },
   DELETE(req, res) {
     models.User.findOne({ username: req.session.username }).then((user) => {
-      models.Vote.remove({
+      models.Vote.findOne({
         user: user._id,
         _id: req.params.postId,
-      }).then((response) => {
-        res.status(200).end('Successfully removed vote!');
+      }).then((vote) => {
+        models.Post.findOne({ _id: req.params.postId }).then((post) => {
+          models.User.update({
+            _id: post.author,
+          }, {
+            $inc: {
+              karma: -vote.value,
+            },
+          }).then((response) => {
+            models.Vote.remove({
+              user: user._id,
+              _id: post._id,
+            }).then((response) => {
+              res.status(200).end('Successfully removed vote!');
+            });
+          });
+        });
       });
     });
   },
