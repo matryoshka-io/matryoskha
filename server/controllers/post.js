@@ -24,9 +24,6 @@ module.exports = {
     });
   },
   POST(req, res) {
-    req.session = {
-      username: 'admin',
-    };
     const newCommentData = req.body;
     newCommentData.subreddit = req.params.subId;
     newCommentData.parent = req.params.postId;
@@ -43,27 +40,22 @@ module.exports = {
 
   // Admins/owners of subreddits should be able to delete all posts/comments in that subreddit.
   DELETE(req, res) {
-    req.session = {
-      username: 'admin',
-    };
-    // Same as above.
-    models.User.findOne(req.session).then(user =>
-      models.Post.findOne({ _id: req.params.postId }).populate('author') // eslint-disable-line
-    ).then((post) => { // eslint-disable-line
-      if (post.author.username === req.session.username) {
-        return models.Post.remove({ _id: req.params.postId });
-      }
-      res.status(401).end('You are not the author of this post.');
-    }).then((response) => {
-      utils.evilMatryoksha(req.params.postId).then((commentsToDelete) => {
-        const promises = [];
-        commentsToDelete.forEach((comment) => {
-          promises.push(models.Post.remove(comment));
-        });
-        Promise.all(promises).then((response) => {
-          res.status(200).end('Deleted post!');
+    models.Post.findOne({ _id: req.params.postId }).populate('author')
+      .then((post) => {
+        if (post.author.username === req.session.username) {
+          return models.Post.remove({ _id: req.params.postId });
+        }
+        res.status(401).end('You are not the author of this post.');
+      }).then((response) => {
+        utils.evilMatryoksha(req.params.postId).then((commentsToDelete) => {
+          const promises = [];
+          commentsToDelete.forEach((comment) => {
+            promises.push(models.Post.remove(comment));
+          });
+          Promise.all(promises).then((response) => {
+            res.status(200).end('Deleted post!');
+          });
         });
       });
-    });
   },
 };

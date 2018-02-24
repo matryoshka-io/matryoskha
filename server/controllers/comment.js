@@ -15,9 +15,6 @@ module.exports = {
   },
   // Admins should be able to edit comments (i.e. owners/creators of subreddits).
   PUT(req, res) {
-    req.session = {
-      username: 'admin',
-    };
     models.Post.findOne({ type: 'Comment', _id: req.params.commentId })
       .populate('author')
       .then((comment) => {
@@ -32,9 +29,6 @@ module.exports = {
       });
   },
   DELETE(req, res) {
-    req.session = {
-      username: 'admin',
-    };
     // Same as above.
     models.Post.findOne({ _id: req.params.commentId, type: 'Comment' }).populate('author')
       .then((comment) => {
@@ -55,9 +49,6 @@ module.exports = {
       });
   },
   POST(req, res) {
-    req.session = {
-      username: 'admin',
-    };
     const newCommentData = req.body;
     newCommentData.parent = req.params.commentId;
 

@@ -31,7 +31,7 @@ app.prepare()
 
     // Testing
     server.use(fakeSession);
-    // server.use(fakeLogin);
+    server.use(fakeLogin);
 
     // Routes
     server.use('/auth', authRoutes);
