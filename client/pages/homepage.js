@@ -1,7 +1,7 @@
 
-import Page from '../components/Page';
+import Page from '../components/page';
 import Posts from '../components/posts';
-import LoginForm from '../components/LoginForm';
+import LoginForm from '../components/loginForm';
 
 import Data from '../../server/database/dataFrontEnd.json';
 
@@ -11,7 +11,7 @@ const Homepage = props => (
     <div className="pageContent">
       <div className="posts" >
         <p>This is left panel for posts</p>
-        <Posts myPosts={props.posts}/>
+        <Posts myPosts={props.posts} />
       </div>
       <div className="login" >
         <LoginForm />
