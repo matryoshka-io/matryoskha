@@ -20,7 +20,6 @@ module.exports = {
       auth.authenticateUser(username, password)
         .then((result) => {
           if (!result.isValid) {
-            console.log('USER WAS NOT LOGGED IN');
             res
               .status(403)
               .send({
@@ -29,7 +28,6 @@ module.exports = {
                 message: result.message,
               });
           }
-          console.log(`USER LOGGED IN: ${result.user.username}`);
           const userValues = {};
           userValues._id = result.user._id;
           userValues.username = result.user.username;
