@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 export default () => (
-  <ul>
+  <div>
     <Item href="/comments">comments</Item>
     <Item href="/share">share</Item>
     <Item href="/save">save</Item>
@@ -13,22 +13,22 @@ export default () => (
         list-style-type: none;
       }
     `}</style>
-  </ul>
+  </div>
 )
 
 const Item = ({ href, children }) => (
-  <li>
+  <div>
     <Link prefetch href={href}>
       <a>{ children }</a>
     </Link>
 
     <style jsx>{`
-      li {
+      div {
         display: inline-block;
       }
       a {
         display: inline-block;
-        padding: 5px;
+        padding: 3px;
         font-size: 11px;
         text-transform: uppercase;
         text-decoration: none;
@@ -38,5 +38,5 @@ const Item = ({ href, children }) => (
         color: #fff;
       }
     `}</style>
-  </li>
+  </div>
 )

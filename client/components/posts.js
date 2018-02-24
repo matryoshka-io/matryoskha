@@ -3,10 +3,9 @@ import Post from './post'
 export default (props) => (
 
   <div >
-    {console.log(props.myPosts)}
     {
        props.myPosts.map((post, i) => {
-         return  <Post {...post} key={i}/>
+          return <Post key={i} {...post} />
             // <div className="Post">
             //   <Post />
             // <div/>

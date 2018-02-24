@@ -10,15 +10,15 @@ const Homepage = props => (
       {/* <h1>{props.url.asPath}</h1> */}
       <h2>Welcome to Matryoshka Io</h2>
       <Nav />
-        <table className="pageContent">                        
-          <tr className="posts" > 
+        <div className="pageContent">                        
+          <div className="posts" > 
             <p>This is left panel for posts</p> 
             <Posts myPosts={props.posts}/>
-          </tr>                     
-          <tr className="login" > 
+          </div>                     
+          <div className="login" > 
             <LoginForm />
-          </tr>   
-        </table>
+          </div>   
+        </div>
         <Footer />
       <style jsx>
         {`

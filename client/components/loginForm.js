@@ -1,3 +1,5 @@
+import Link from 'next/link'
+// import Registration from './'
 
 export default () => (
 
@@ -5,14 +7,16 @@ export default () => (
     <div className="login">
     <h1>Login</h1>
     <div>
-      <input type="email" className="usernameInput"/>
+      <span>name</span>
+      <input id="usernameInput" className="usernameInput" />
+    </div>
+    <span>password</span>  
+    <div>
+     <input type="password" className="passwordInput"/>
     </div>
     <div>
-      <input type="password" className="passwordInput"/>
-    </div>
-    <div>
-        <button className="loginButton">Login</button> 
-        <button className="signinBUtton">Sign Up</button>
+        <button className="loginButton"><Link href="/login"><a>Login</a></Link></button>
+        <button className="signinBUtton"><Link href="/signup"><a>Sign Up</a></Link></button>
     </div>
       <style jsx>{`
         h1 {
