@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 
 class CommentForm extends React.Component {
   constructor(props) {
@@ -6,35 +6,31 @@ class CommentForm extends React.Component {
     this.state = {
       commentText: '',
       subredditName: '',
-      postId: ''
+      postId: '',
     };
   }
 
-  onCommentBoxChangeHandler = (e) => {
+  onCommentBoxChangeHandler(e) {
     this.setState({ commentText: e.target.value }, () => {
-      console.log('hello', this.state.commentText)
-    })
+      console.log('hello', this.state.commentText);
+    });
   }
 
-  postCommentWithText = () => {
+  postCommentWithText() {
     this.postComment(this.state.commentText)
   }
 
-  postComment = (commentText) => {
+  postComment(commentText) {
     axios.get('/api')
-      .then(res => {
-        res.data.forEach(data => {
+      .then((res) => {
+        res.data.forEach((data) => {
           this.setState({
-            postId: data._id
-          })
-        })
+            postId: data._id,
+          });
+        });
       })
-      .then(res => {
-        return axios.post(`/api/post/${this.state.postId}`, { type: 'Comment', body: commentText })
-      })
-      .then(res => {
-        console.log('SUCCESSFUL COMMENT POST')
-      })
+      .then(res => axios.post(`/api/post/${this.state.postId}`, { type: 'Comment', body: commentText }))
+      .then(res => console.log('SUCCESSFUL COMMENT POST'))
   }
 
   render() {
@@ -42,22 +38,24 @@ class CommentForm extends React.Component {
       <div>
         <textarea value={this.state.commentText} onChange={this.onCommentBoxChangeHandler} />
         <button onClick={this.postCommentWithText} > add comment</button>
-        <style jsx>{`
-          textarea {
-            width: 400px;
-            height: 100px;
-            display: block;
-            margin-bottom: 10px;
-          }
-          button {
-            padding: 3px 4px;
-          }
-          @media (max-width: 750px) {
+        <style jsx>
+          {`
             textarea {
-              width: 100%;
+              width: 400px;
+              height: 100px;
+              display: block;
+              margin-bottom: 10px;
             }
-          }
-        `}</style>
+            button {
+              padding: 3px 4px;
+            }
+            @media (max-width: 750px) {
+              textarea {
+                width: 100%;
+              }
+            }
+          `}
+        </style>
       </div>
     )
   }
