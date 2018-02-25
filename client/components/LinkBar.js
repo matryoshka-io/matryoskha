@@ -1,11 +1,8 @@
-const LinkBar = (props) => {
-  return (
-    <div>
-      Video and Img Link: <br />
-      <input val="text" /> <br />
-    </div>
-
-  )
-}
+const LinkBar = props => (
+  <div>
+    Video and Img Link: <br />
+    <input val="text" /> <br />
+  </div>
+);
 
 export default LinkBar;

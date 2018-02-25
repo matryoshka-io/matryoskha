@@ -14,7 +14,6 @@ module.exports = {
         .catch(err => res.status(200).send({}));
     },
     login: (req, res) => {
-      console.log('hello');
       const { username, password } = req.body;
       console.log(`USER LOGIN REQUEST, ${username}`);
       auth.authenticateUser(username, password)
@@ -37,6 +36,7 @@ module.exports = {
             .status(200)
             .send({
               success: true,
+              user: userValues,
               token: userToken,
               message: 'Successfully Authenticated',
             });
