@@ -1,5 +1,5 @@
-import ParentPost from '../components/parentPost'
-import CommentForm from '../components/commentForm'
+import ParentPost from '../components/ParentPost'
+import CommentForm from '../components/CommentForm'
 import axios from 'axios'
 
 class PostPage extends React.Component {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import LinkBar from './LinkBar';
 import TextBox from './TextBox'
-import SubredditNameBox from './subredditNameBox';
+import SubredditNameBox from './SubredditNameBox';
 import exampleData from '../../server/database/data.json'
 
 class PostForm extends React.Component {
@@ -19,20 +19,20 @@ class PostForm extends React.Component {
     }
   }
 
-  onSubredditTextChangeHandler = (e) => {
+  onSubredditTextChangeHandler(e) {
     this.setState({ subredditText: e.target.value }, () => {
       console.log('in main form page', this.state.subredditText)
     })
   }
 
-  onTitleTextChangeHandler = (e) => {
+  onTitleTextChangeHandler(e) {
     this.setState({
       titleText: e.target.value
     })
   }
 
   //text posts can't have links & link posts can't have texts
-  onDropdownChangeHandler = (e) => {
+  onDropdownChangeHandler(e) {
     if (e.target.value === 'text') {
       this.setState({
         type: 'text',
@@ -56,37 +56,35 @@ class PostForm extends React.Component {
     }
   }
 
-  onBodyTextChangeHandler = (e) => {
+  onBodyTextChangeHandler(e) {
     this.setState({ bodyText: e.target.value }, () => {
       console.log(this.state.bodyText)
     })
   }
 
-  onCreateNewTextPostWithUserText = () => {
+  onCreateNewTextPostWithUserText() {
     this.createNewTextPost(this.state.titleText, this.state.type, this.state.bodyText)
   }
 
-  createNewTextPost = (titleText, type, bodyText, url) => {
+  createNewTextPost(titleText, type, bodyText, url) {
     axios.get('/api')
-      .then(res => {
-        let responseArr = JSON.parse(res.request.response)
-        responseArr.forEach(responseData => {
+      .then((res) => {
+        const responseArr = JSON.parse(res.request.response)
+        responseArr.forEach((responseData) => {
           console.log('responseData', responseData)
-          let subredditTitle = responseData.subreddit.title;
+          const subredditTitle = responseData.subreddit.title;
           if (subredditTitle === this.state.subredditText) {
             return this.setState({ subredditName: subredditTitle })
-          } else {
-            console.log('No such subreddit exists.')
           }
-        })
-
+          console.log('No such subreddit exists.');
+        });
       })
-      .then(res => {
+      .then((res) => {
         axios.post(`/api/sub/${this.state.subredditName}`, { title: titleText, type: this.state.type, body: bodyText })
       })
-      .then(res => {
+      .then((res) => {
         console.log('successful post')
-      })
+      });
     //work on links later
   }
 
@@ -103,8 +101,6 @@ class PostForm extends React.Component {
         Title: <br />
         <textarea rows="1" cols="80" value={this.state.titleText} onChange={this.onTitleTextChangeHandler}>
         </textarea> <br />
-
-
 
         Type:
         <select id="typeDropdown" onChange={this.onDropdownChangeHandler} >

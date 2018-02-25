@@ -22,6 +22,7 @@ const registerUser = (username, password) =>
 const loginUser = (username, password) => {
   axios.post(`${BASE_URL}/auth/login`, { username, password })
     .then((result) => {
+      console.log('login: ', result);
       if (result.success) {
         sessions.setCookie('jwt', result.token);
       }
@@ -42,10 +43,9 @@ const authenticateToken = (token) => {
   return new Promise((resolve, reject) => {
     const headers = makeTokenHeader(token);
     return axios.post(`${BASE_URL}/auth/authenticate`, {}, headers)
-      .then((result) => {
-        return resolve(result.data);
-      })
+      .then(result => resolve(result.data))
       .catch((err) => {
+        sessions.deleteCookie('jwt');
         return reject(err.data);
       });
   });
