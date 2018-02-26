@@ -3,15 +3,13 @@ class TextBox extends React.Component {
     super(props)
   }
 
-
   render() {
     return (
-      < div >
+      <div>
         Text: <br />
-        <textarea row="8" cols="80" value={this.bodyText} onChange={this.props.onBodyTextChangeHandler}>
-        </textarea>
-      </div >
-    )
+        <textarea row="8" cols="80" value={this.bodyText} onChange={this.props.onBodyTextChangeHandler} />
+      </div>
+    );
   }
 }
 

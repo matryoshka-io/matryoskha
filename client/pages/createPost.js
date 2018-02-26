@@ -1,5 +1,5 @@
-import PostForm from '../components/PostForm'
-import ParentPost from '../components/parentPost'
+import PostForm from '../components/PostForm';
+import ParentPost from '../components/ParentPost';
 
 const Post = props => (
   <div>
