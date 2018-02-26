@@ -23,20 +23,21 @@ const createUser = (username, password) =>
 const authenticateUser = (username, password) =>
   new Promise((resolve, reject) => {
     const result = {};
-    User
+    return User
       .findOne({ username })
       .exec()
       .then((foundUser) => {
-        if (!foundUser) {
-          result.user = null;
-          return false;
-        }
+        // if (foundUser === null) {
+        //   result.user = null;
+        //   return false;
+        // }
         result.user = foundUser;
-        return User.comparePassword(password);
+        return foundUser.comparePassword(password);
       })
       .then((isMatch) => {
-        result.isValid = true;
-        result.message = 'Credentials are valid';
+        console.log(isMatch);
+        result.isValid = isMatch;
+        result.message = isMatch ? 'Credentials are valid' : 'Credentials provided are invalid';
         return resolve(result);
       })
       .catch((err) => {

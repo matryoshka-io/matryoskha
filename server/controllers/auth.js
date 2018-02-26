@@ -11,11 +11,10 @@ module.exports = {
       }
       auth.verifyToken(token)
         .then(decoded => res.status(200).send(decoded))
-        .catch(err => res.status(200).send({}));
+        .catch(err => res.status(201).send(err));
     },
     login: (req, res) => {
       const { username, password } = req.body;
-      console.log(`USER LOGIN REQUEST, ${username}`);
       auth.authenticateUser(username, password)
         .then((result) => {
           if (!result.isValid) {
@@ -26,6 +25,7 @@ module.exports = {
                 token: null,
                 message: result.message,
               });
+            return;
           }
           const userValues = {};
           userValues._id = result.user._id;
@@ -39,6 +39,17 @@ module.exports = {
               user: userValues,
               token: userToken,
               message: 'Successfully Authenticated',
+            });
+        })
+        .catch((err) => {
+          console.log('Authentication Error\n', err);
+          res
+            .status(500)
+            .send({
+              success: false,
+              user: null,
+              token: null,
+              message: 'Authentication Error',
             });
         });
     },

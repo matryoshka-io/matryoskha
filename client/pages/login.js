@@ -5,17 +5,34 @@ import LoginForm from '../components/LoginForm';
 import Page from '../components/Page';
 import auth from '../utils/auth';
 
-const LoginPage = props => (
-  <Page>
-    <LoginForm />
-  </Page>
-);
+class LoginPage extends Component {
+  static async getInitialProps(context) {
+    // check for current session
+    //  redirect if a session exists
+    return {};
+  }
 
-LoginPage.getInitialProps = async function GetInitialPropsForRegistrationPage(context) {
-  // check for session state
-  //    if session is active, redirect?
-  //    if not, continue
-  return {};
-};
+  constructor(props) {
+    super(props);
+    this.state = {
+      message: '',
+    };
+    this.submitLogin = this.submitLogin.bind(this);
+  }
+
+  submitLogin(username, password) {
+    auth.loginUser(username, password)
+      .then(result => console.log(result))
+      .catch(err => console.log(err));
+  }
+
+  render() {
+    return (
+      <Page>
+        <LoginForm submitForm={this.submitLogin} />
+      </Page>
+    );
+  }
+}
 
 export default LoginPage;
