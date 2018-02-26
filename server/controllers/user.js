@@ -38,7 +38,7 @@ module.exports = {
             res.status(200).json(comments);
           });
         });
-      });      
+      });
     },
   },
   subreddits: {
@@ -47,7 +47,7 @@ module.exports = {
         models.Subreddit.find({ creator: user._id }).then((subreddits) => {
           res.status(200).json(subreddits);
         });
-      });  
+      });
     },
   },
 };
