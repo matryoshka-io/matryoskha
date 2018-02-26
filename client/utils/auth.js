@@ -19,29 +19,26 @@ const registerUser = (username, password) =>
       });
   });
 
-const loginUser = (username, password) => {
-  axios.post(`${BASE_URL}/auth/login`, { username, password })
-    .then((result) => {
-      console.log('login: ', result);
-      if (result.success) {
-        sessions.setCookie('jwt', result.token);
-      }
-      return result;
-    })
-    .catch(err => err);
-};
+const loginUser = (username, password) =>
+  new Promise((resolve, reject) => {
+    console.log('LOGIN REQUEST');
+    return axios.post(`${BASE_URL}/auth/login`, { username, password })
+      .then((result) => {
+        console.log('help me');
+        // if (result.success) {
+        //   sessions.setCookie('jwt', result.token);
+        // }
+        return resolve(result);
+      })
+      .catch(err => reject(err));
+  });
 
-const makeTokenHeader = (token) => {
-  let headers = null;
-  if (token) {
-    headers = { headers: { 'x-access-token': token } };
-  }
-  return headers;
-};
+const makeTokenHeader = token => ({ headers: { 'x-access-token': token } });
 
-const authenticateToken = (token) => {
-  return new Promise((resolve, reject) => {
+const authenticateToken = token =>
+  new Promise((resolve, reject) => {
     const headers = makeTokenHeader(token);
+    console.log('authenticating token, headers ', headers);
     return axios.post(`${BASE_URL}/auth/authenticate`, {}, headers)
       .then(result => resolve(result.data))
       .catch((err) => {
@@ -49,7 +46,6 @@ const authenticateToken = (token) => {
         return reject(err.data);
       });
   });
-};
 
 
 module.exports = {

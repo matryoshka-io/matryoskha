@@ -18,8 +18,10 @@ const userSchema = mongoose.Schema({
 
 userSchema.pre('save', function EncryptUserPasswordOnSave(next) {
   const user = this;
-  if (!user.isModified('password')) return next();
-
+  if (!user.isModified('password')) {
+    return next();
+  }
+  console.log('\nUSER:  Updating Password\n');
   bcrypt
     .genSalt(10)
     .then((salt) => {
@@ -33,7 +35,7 @@ userSchema.pre('save', function EncryptUserPasswordOnSave(next) {
     .catch(err => next(err));
 });
 
-userSchema.methods.comparePassword = (candidatePassword) => {
+userSchema.methods.comparePassword = function ValidateUserPassword(candidatePassword) {
   return new Promise((resolve, reject) => {
     bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
       if (err) return reject(err);
