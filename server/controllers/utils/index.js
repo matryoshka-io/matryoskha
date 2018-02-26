@@ -1,19 +1,24 @@
 const db = require('../../database');
 const models = require('../../models');
 
-// May not need promises for some of these.
-const matryoksha = post =>
+const matryoksha = (post, depth = 0) =>
   new Promise((resolve, reject) => {
-    models.Post.find({ type: 'Comment', parent: post._id }).lean().then((comments) => {
-      post.comments = comments;
-      const promises = [];
-      post.comments.forEach((comment) => {
-        promises.push(matryoksha(comment));
+    if (depth > 2) {
+      resolve();
+    } else {
+      models.Post.find({ type: 'Comment', parent: post._id }).lean().then((comments) => {
+        getKarmaAndSort(comments, (comments) => {
+          post.comments = comments;
+          const promises = [];
+          post.comments.forEach((comment) => {
+            promises.push(matryoksha(comment, depth + 1));
+          });
+          Promise.all(promises).then(() => {
+            resolve();
+          });
+        });
       });
-      Promise.all(promises).then(() => {
-        resolve();
-      });
-    });
+    }
   });
 
 const evilMatryoksha = (postId, commentsList = []) =>
@@ -38,19 +43,23 @@ const getKarmaAndSort = (posts, callback) => {
   });
   Promise.all(promises).then((votes) => {
     Object.entries(posts).forEach(([index, post]) => {
-      post.karma = votes[index].reduce((totalKarma, vote) => totalKarma + vote.value, 0);
+      post.karma = votes[index].reduce((totalKarma, vote) =>
+        totalKarma + vote.value,
+      0);
     });
-    posts.sort((firstPost, secondPost) => {
-      if (firstPost.karma > secondPost.karma) {
-        return -1;
-      } else if (firstPost.karma < secondPost.karma) {
-        return 1;
-      }
-      return 0;
-    });
+    posts.sort(karmaSort);
 
     callback(posts);
   });
+};
+
+const karmaSort = (firstPost, secondPost) => {
+  if (firstPost.karma > secondPost.karma) {
+    return -1;
+  } else if (firstPost.karma < secondPost.karma) {
+    return 1;
+  }
+  return 0;
 };
 
 module.exports = {
