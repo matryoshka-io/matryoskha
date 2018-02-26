@@ -1,7 +1,15 @@
+import CommentListEntry from './CommentListEntry'
+
 class CommentList extends React.Component {
   constructor(props) {
     super(props)
+    console.log('props', props)
   }
+
+  componentWillReceiveProps = (newProps) => {
+    console.log('new props', newProps)
+  }
+
   render() {
     return (
       <div>
