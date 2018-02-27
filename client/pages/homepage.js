@@ -13,18 +13,19 @@ class Homepage extends Component {
   static async getInitialProps(context) {
     // getInitialProps runs server side only, unless a client-side redirect / route
     const token = sessions.getToken('jwt', context.req);
-    console.log('token ', token);
     let currentUser = null;
 
     if (token) {
-      console.log('checking token');
       const tokenCheck = await auth.authenticateToken(token);
       console.log(tokenCheck);
-    //   currentUser = tokenCheck.decoded.user || null;
-    //   if (!tokenCheck.session) sessions.deleteCookie('jwt');
+      if (tokenCheck.session) {
+        currentUser = tokenCheck.content.user;
+        sessions.setCookie('jwt', tokenCheck.token); // refreshed expiry
+      } else {
+        sessions.deleteCookie('jwt');
+      }
     }
 
-    // ensure previous token is cleared if token is no longer valid
     return {
       user: currentUser,
       token,
