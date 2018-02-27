@@ -17,10 +17,7 @@ class CommentListEntry extends React.Component {
     return (
       < div >
         {this.props.comment.body}
-        {/* {this.props.comments.map(comment => {
-          return <CommentList key={comment._id} comment={comment} /> */}
-        {/* })} 
-        {/* < CommentList commentsArr={this.props.comment.comments} /> */}
+        <CommentList comments={this.props.comment.comments} />
       </div >
     )
   }
