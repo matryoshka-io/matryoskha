@@ -1,8 +1,8 @@
 import Post from './Post';
 
-export default props => (
+export default ({ posts }) => (
   <div >
-    { props.myPosts.map((post, i) => <Post key={i} {...post} />) }
+    { posts.map((post, i) => <Post key={i} {...post} />) }
     <style jsx>
       {`
         .item {

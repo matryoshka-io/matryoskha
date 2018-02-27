@@ -1,9 +1,13 @@
 import Link from 'next/link';
 
-export default () => (
-  <div className="vote">
+// vote method
+// voted state from response on logged in user
+
+
+export default ({ karma }) => (
+  <div className="post__karma">
     <div className="arrowUp"><Link href="#"><a>&#x25B2;</a></Link></div>
-    <div className="upvotesCount">10.5k </div>
+    <div className="upvotesCount">{karma}</div>
     <Link href="#"><a>&#x25BC;</a></Link>
     <style jsx>
       {`

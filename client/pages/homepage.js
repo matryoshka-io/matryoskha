@@ -6,12 +6,16 @@ import UserPanelBody from '../components/UserPanelBody';
 
 import Data from '../../server/database/dataFrontEnd.json';
 import auth from '../utils/auth';
+import data from '../utils/data';
 import sessions from '../utils/sessions';
 
 
 class Homepage extends Component {
   static async getInitialProps(context) {
     const session = await auth.initializeSession(context);
+    const posts = await data.getPosts(session);
+    console.log(posts);
+
     return {
       user: session.user,
       token: session.token,
@@ -58,7 +62,7 @@ class Homepage extends Component {
       <Page>
         <div className="pageContent">
           <div className="posts" >
-            <Posts myPosts={posts} />
+            <Posts posts={posts} />
           </div>
           <div className="login" >
             <UserPanelBody user={this.state.user} login={this.loginUser} />
