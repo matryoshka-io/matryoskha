@@ -2,10 +2,10 @@ const router = require('express').Router();
 const controllers = require('../controllers');
 const gateway = require('../middleware/gateway');
 
-// Get the home page
+// Get the home page.
 router.get('/', controllers.home.GET);
 
-// Get posts top posts for a given subreddit.
+// Get top posts for a given subreddit.
 router.get('/sub/:subName', controllers.subreddit.GET);
 // Get a post.
 router.get('/post/:postId', controllers.post.GET);
@@ -43,8 +43,15 @@ router.delete('/vote/:postId', controllers.vote.DELETE);
 
 // Get a user's karma and date joined, basically.
 router.get('/user/:username', controllers.user.profile.GET);
+// Get a user's posts.
 router.get('/user/:username/posts', controllers.user.posts.GET);
+// Get a user's comments.
 router.get('/user/:username/comments', controllers.user.comments.GET);
+// Get a user's subreddits (ones they have created).
 router.get('/user/:username/subreddits', controllers.user.subreddits.GET);
+
+// Add and delete subscriptions.
+router.post('/subscription/:subName', controllers.subscription.POST);
+router.delete('/subscription/:subName', controllers.subscription.DELETE);
 
 module.exports = router;

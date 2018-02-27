@@ -5,7 +5,7 @@ const utils = require('./utils');
 
 module.exports = {
   GET(req, res) {
-    req.session = null; // Testing purposes.
+    // req.session = null; // Testing purposes.
     if (req.session === null) {
       models.Post.find({ type: { $not: /Comment/ } })
         .populate('subreddit')
@@ -24,16 +24,16 @@ module.exports = {
         });
     } else {
       models.User.findOne({ username: req.session.username }).then((user) => {
-        models.Subscription.find({ user: user._id }).then((subscriptions) => {
-          models.Post.find({ type: { $not: /Comment/ } }).
-            populate('subreddit')
-            populate('author')
+        models.Subscription.find({ user: user._id }).populate('subreddit').then((subscriptions) => {
+          models.Post.find({ type: { $not: /Comment/ } })
+            .populate('subreddit')
+            .populate('author')
             .lean()
             .then((posts) => {
               posts = posts.filter((post) => {
                 let keep = false;
                 subscriptions.forEach((subscription) => {
-                  if (post.subreddit._id === subscription.subreddit._id) {
+                  if (post.subreddit._id.toString() === subscription.subreddit._id.toString()) {
                     keep = true;
                   }
                 });
