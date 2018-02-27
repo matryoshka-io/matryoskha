@@ -33,7 +33,6 @@ module.exports = {
         });
     },
     login: (req, res) => {
-      console.log('Login \n', req.body);
       const { username, password } = req.body;
       auth.authenticateUser(username, password)
         .then((result) => {
