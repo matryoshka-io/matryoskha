@@ -19,41 +19,71 @@ const registerUser = (username, password) =>
       });
   });
 
-const loginUser = (username, password) => {
-  axios.post(`${BASE_URL}/auth/login`, { username, password })
-    .then((result) => {
-      console.log('login: ', result);
-      if (result.success) {
-        sessions.setCookie('jwt', result.token);
-      }
-      return result;
-    })
-    .catch(err => err);
-};
-
-const makeTokenHeader = (token) => {
-  let headers = null;
-  if (token) {
-    headers = { headers: { 'x-access-token': token } };
-  }
-  return headers;
-};
-
-const authenticateToken = (token) => {
-  return new Promise((resolve, reject) => {
-    const headers = makeTokenHeader(token);
-    return axios.post(`${BASE_URL}/auth/authenticate`, {}, headers)
-      .then(result => resolve(result.data))
+const loginUser = (username, password) =>
+  new Promise((resolve, reject) => {
+    console.log('LOGIN REQUEST');
+    return axios.post(`${BASE_URL}/auth/login`, { username, password })
+      .then((result) => {
+        console.log('LOGIN RESULT: ', result);
+        if (result.success) {
+          sessions.setCookie('jwt', result.token);
+        }
+        return resolve(result.data);
+      })
       .catch((err) => {
+        console.log(err);
         sessions.deleteCookie('jwt');
-        return reject(err.data);
+        return reject(err);
       });
   });
-};
+
+const makeTokenHeader = token => ({ headers: { 'x-access-token': token } });
+
+const authenticateToken = token =>
+  new Promise((resolve, reject) => {
+    if (token) {
+      console.log('AUTH TOKEN WITH SERVER');
+      const headers = makeTokenHeader(token);
+      return axios.post(`${BASE_URL}/auth/authenticate`, {}, headers)
+        .then((result) => {
+          console.log(result.data);
+          return resolve(result.data);
+        })
+        .catch((err) => {
+          sessions.deleteCookie('jwt');
+          return reject(err.data);
+        });
+    }
+    return resolve({
+      session: false,
+    });
+  });
+
+const initializeSession = context =>
+  new Promise((resolve, reject) => {
+    const token = sessions.getToken('jwt', context.req);
+    const sessionData = {
+      user: null,
+      token: null,
+    };
+    authenticateToken(token)
+      .then((result) => {
+        if (result.session) {
+          sessionData.user = result.content.user;
+          sessionData.token = result.token;
+          sessions.setCookie('jwt', result.token);
+        } else {
+          sessions.deleteCookie('jwt');
+        }
+        return resolve(sessionData);
+      })
+      .catch(err => reject(sessionData));
+  });
 
 module.exports = {
   registerUser,
   loginUser,
   makeTokenHeader,
   authenticateToken,
+  initializeSession,
 };

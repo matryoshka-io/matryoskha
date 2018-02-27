@@ -13,50 +13,38 @@ export default class LoginForm extends Component {
       message: '',
     };
     this.getInputValue = this.getInputValue.bind(this);
-    this.submitForm = this.submitForm.bind(this);
+    this.submitLogin = this.submitLogin.bind(this);
   }
 
   getInputValue(e) {
+    const { name, value } = e.target;
     this.setState({
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   }
 
-  submitForm(username, password) {
+  submitLogin(username, password) {
     if (this.state.username.trim() && this.state.password.trim()) {
-      auth.loginUser(this.state.username, this.state.password)
-        .then((result) => {
-          if (result.success) {
-            Router.replace('/');
-          }
-          this.setState({
-            message: result.message,
-          });
-        })
-        .catch((err) => {
-          this.setState({
-            message: err.message,
-          });
-        });
+      this.props.login(this.state.username, this.state.password);
     }
   }
 
   render() {
     return (
-      <form>
+      <div>
         <div className="login">
           <h1>Login</h1>
           <div>
             <span>name</span>
-            <input id="username" className="usernameInput" onChange={this.getInputValue} />
+            <input name="username" className="usernameInput" onChange={this.getInputValue} />
           </div>
           <span>password</span>
           <div>
-            <input type="password" className="passwordInput" onChange={this.getInputValue} />
+            <input name="password" type="password" className="passwordInput" onChange={this.getInputValue} />
           </div>
           <span>{this.state.message}</span>
           <div>
-            <button className="loginButton" onClick={this.submitForm}>Login</button>
+            <button className="loginButton" onClick={this.submitLogin}>Login</button>
             <Link href="/signup"><button className="signinButton">Sign Up</button></Link>
           </div>
         </div>
@@ -70,7 +58,7 @@ export default class LoginForm extends Component {
             }
           `}
         </style>
-      </form>
+      </div>
     );
   }
 }

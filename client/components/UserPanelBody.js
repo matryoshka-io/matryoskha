@@ -9,7 +9,7 @@ const UserPanelBody = (props) => {
       </div>
     );
   }
-  return <LoginForm />;
+  return <LoginForm login={props.login} />;
 };
 
 export default UserPanelBody;
