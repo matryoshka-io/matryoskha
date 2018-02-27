@@ -1,5 +1,5 @@
 import CommentList from './CommentList';
-import ReactMarkdwon from 'react-markdown';
+import ReactMarkdown from 'react-markdown';
 
 class CommentListEntry extends React.Component {
   constructor(props) {
@@ -9,7 +9,7 @@ class CommentListEntry extends React.Component {
     console.log('entry props', this.props)
     return (
       < div >
-        <ReactMarkdown source={this.props.comment.body} /> <br />
+        <ReactMarkdown source={this.props.comment.body} />
         <CommentList comments={this.props.comment.comments} />
       </div >
     )
