@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import SubRedditBar from './subbredditBar';
-import Rating from './rating';
+import SubRedditBar from './SubredditBar';
+import Rating from './Rating';
 import React from 'react';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
-import Postdetail from './postDetails';
-import CommentForm from './commentForm';
+import Postdetail from '../pages/postDetail';
+import CommentForm from './CommentForm';
 
 
 class ParentPost extends React.Component {
