@@ -8,14 +8,20 @@ import Data from '../../server/database/dataFrontEnd.json';
 import auth from '../utils/auth';
 import sessions from '../utils/sessions';
 
+// https://github.com/zeit/next.js/issues/1498
+
+import 'isomorphic-fetch';
 
 class Homepage extends Component {
   static async getInitialProps(context) {
+    console.log(context.query);
     const session = await auth.initializeSession(context);
+    const home = await fetch('http://localhost:3000/api/');
+    const json = await home.json();
     return {
       user: session.user,
       token: session.token,
-      posts: Data,
+      posts: json,
     };
   }
 

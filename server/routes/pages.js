@@ -40,7 +40,9 @@ const addPageRoutes = (server, app) => {
   });
 
   server.get('/', (req, res) => {
-    const queryParams = {};
+    const queryParams = {
+      'test': 'test',
+    };
     app.render(req, res, '/homepage', queryParams);
   });
 };
