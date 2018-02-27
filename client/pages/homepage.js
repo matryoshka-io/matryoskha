@@ -68,11 +68,20 @@ class Homepage extends Component {
   static async getInitialProps(context) {
     // getInitialProps runs server side only, unless a client-side redirect / route
     const token = sessions.getToken('jwt', context.req);
-    const tokenData = await auth.authenticateToken(token);
+    console.log('token ', token);
+    let currentUser = null;
+
+    if (token) {
+      console.log('checking token');
+      const tokenCheck = await auth.authenticateToken(token);
+      console.log(tokenCheck);
+    //   currentUser = tokenCheck.decoded.user || null;
+    //   if (!tokenCheck.session) sessions.deleteCookie('jwt');
+    }
+
     // ensure previous token is cleared if token is no longer valid
-    if (!tokenData.user) sessions.deleteCookie('jwt');
     return {
-      user: tokenData.user || null,
+      user: currentUser,
       token,
       posts: Data,
     };
@@ -83,6 +92,7 @@ class Homepage extends Component {
     this.state = {
       user: this.props.user,
     };
+    this.loginUser = this.loginUser.bind(this);
   }
 
   componentWillMount() {
@@ -90,6 +100,24 @@ class Homepage extends Component {
     if (!this.state.user) {
       sessions.deleteCookie('jwt');
     }
+  }
+
+  loginUser(username, password) {
+    auth.loginUser(username, password)
+      .then((result) => {
+        if (result.success) {
+          sessions.setCookie('jwt', result.token);
+          this.setState({
+            user: result.user,
+          }, () => console.log(this.state.user));
+          return;
+        }
+        sessions.deleteCookie('jwt');
+        this.setState({
+          user: null,
+        });
+      })
+      .catch(err => console.log(err));
   }
 
   render() {
@@ -101,7 +129,7 @@ class Homepage extends Component {
             <Posts myPosts={posts} />
           </div>
           <div className="login" >
-            <UserPanelBody user={user} />
+            <UserPanelBody user={this.state.user} login={this.loginUser} />
           </div>
         </div>
         <style jsx>

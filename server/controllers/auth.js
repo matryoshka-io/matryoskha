@@ -5,13 +5,32 @@ module.exports = {
   POST: {
     authenticateToken: (req, res) => {
       const token = req.get('x-access-token');
+      console.log('authenticating token: ', token);
       if (!token) {
         res.status(200).send({});
         return;
       }
+      const response = {};
       auth.verifyToken(token)
-        .then(decoded => res.status(200).send(decoded))
-        .catch(err => res.status(201).send(err));
+        .then((content) => {
+          console.log('successfully verified ', content);
+          response.content = content;
+          return auth.refreshToken(token);
+        })
+        .then((refreshed) => {
+          console.log('successfully refreshed ', refreshed);
+          response.newToken = refreshed;
+          response.session = true;
+          res.status(200).send(response);
+        })
+        .catch((err) => {
+          response.content = null;
+          response.newToken = null;
+          response.session = false;
+          console.log('token invalid, response: \n', response);
+          console.log('error \n', err);
+          res.status(400).send(response);
+        });
     },
     login: (req, res) => {
       const { username, password } = req.body;
@@ -42,7 +61,6 @@ module.exports = {
             });
         })
         .catch((err) => {
-          console.log('Authentication Error\n', err);
           res
             .status(500)
             .send({

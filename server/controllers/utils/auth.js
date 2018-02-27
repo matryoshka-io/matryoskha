@@ -1,8 +1,10 @@
 const User = require('../../models/User');
 const webtoken = require('jsonwebtoken');
+const webtokenRefresh = require('jsonwebtoken-refresh');
 const crypto = require('crypto');
 
 const tokenSecret = 'aa69bd0db71d34f400d981b89aeff7f2';
+const tokenExpiration = 7 * 60 * 60;
 
 const createUser = (username, password) =>
   new Promise((resolve, reject) => {
@@ -27,10 +29,10 @@ const authenticateUser = (username, password) =>
       .findOne({ username })
       .exec()
       .then((foundUser) => {
-        // if (foundUser === null) {
-        //   result.user = null;
-        //   return false;
-        // }
+        if (foundUser === null) {
+          result.user = null;
+          return false;
+        }
         result.user = foundUser;
         return foundUser.comparePassword(password);
       })
@@ -58,7 +60,7 @@ const generateToken = user =>
     },
     tokenSecret,
     {
-      expiresIn: 60 * 60,
+      expiresIn: tokenExpiration,
     },
   );
 
@@ -70,9 +72,28 @@ const verifyToken = token =>
     });
   });
 
+// is only synchronous
+// const decodeToken = token =>
+//   new Promise((resolve, reject) => {
+//     webtoken.decode(token, { complete: true }, (err, decoded) => {
+//       if (err) return reject(err);
+//       return resolve(decoded);
+//     });
+//   });
+
+const refreshToken = token =>
+  new Promise((resolve, reject) => {
+    const decodedToken = webtoken.decode(token, { complete: true });
+    webtokenRefresh.refresh(decodedToken, tokenExpiration, tokenSecret, (err, token) => {
+      if (err) return reject(err);
+      return resolve(token);
+    });
+  });
+
 module.exports = {
   createUser,
   authenticateUser,
   generateToken,
   verifyToken,
+  refreshToken,
 };
