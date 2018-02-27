@@ -18,7 +18,7 @@ class ParentPost extends React.Component {
       postTitle: '',
       postBodyText: '',
       commentBody: '',
-      comments: []
+      comments: [],
     }
 
   }
