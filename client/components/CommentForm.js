@@ -11,9 +11,7 @@ class CommentForm extends React.Component {
   }
 
   onCommentBoxChangeHandler = (e) => {
-    this.setState({ commentText: e.target.value }, () => {
-      console.log('hello', this.state.commentText)
-    })
+    this.setState({ commentText: e.target.value })
   }
 
   postCommentWithText = () => {
