@@ -29,7 +29,6 @@
   },
   "scripts": {
     "dev": "node server",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "seed": "node server/database/insertDummyData.js",
     "build": "next build client",
     "start": "next start client",

@@ -4,8 +4,7 @@ import axios from 'axios'
 
 class PostPage extends React.Component {
   constructor(props) {
-    super(props)
-
+    super(props);
   }
 
   getInitialProps = async function () {
@@ -28,7 +27,7 @@ class PostPage extends React.Component {
         <h1>{this.props.url.asPath}</h1>
         <ParentPost />
       </div>
-    )
+    );
   }
 }
 

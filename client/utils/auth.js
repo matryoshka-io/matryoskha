@@ -51,7 +51,6 @@ const authenticateToken = (token) => {
   });
 };
 
-
 module.exports = {
   registerUser,
   loginUser,

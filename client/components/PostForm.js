@@ -6,7 +6,7 @@ import exampleData from '../../server/database/data.json'
 
 class PostForm extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       titleText: '',
       isTextBoxHidden: false,
@@ -16,43 +16,44 @@ class PostForm extends React.Component {
       subredditName: '',
       subredditText: '',
       bodyText: '',
-    }
+    };
   }
 
   onSubredditTextChangeHandler(e) {
     this.setState({ subredditText: e.target.value }, () => {
       console.log('in main form page', this.state.subredditText)
-    })
+    });
   }
 
   onTitleTextChangeHandler(e) {
     this.setState({
       titleText: e.target.value
-    })
+    });
   }
 
   //text posts can't have links & link posts can't have texts
+  // James: why isn't this a multi-way else-if?
   onDropdownChangeHandler(e) {
     if (e.target.value === 'text') {
       this.setState({
         type: 'text',
         isTextBoxHidden: false,
         isLinkBarHidden: true
-      })
+      });
     }
     if (e.target.value === 'image') {
       this.setState({
         isLinkBarHidden: false,
         isTextBoxHidden: true,
         type: 'image'
-      })
+      });
     }
     if (e.target.value === 'video') {
       this.setState({
         isLinkBarHidden: false,
         isTextBoxHidden: true,
         type: 'video'
-      })
+      });
     }
   }
 
@@ -120,7 +121,7 @@ class PostForm extends React.Component {
 
         <button onClick={this.onCreateNewTextPostWithUserText}>Post!</button>
       </div>
-    )
+    );
   }
 }
 

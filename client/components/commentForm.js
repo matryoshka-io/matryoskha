@@ -17,7 +17,7 @@ class CommentForm extends React.Component {
   }
 
   postCommentWithText() {
-    this.postComment(this.state.commentText)
+    this.postComment(this.state.commentText);
   }
 
   postComment(commentText) {
@@ -30,7 +30,7 @@ class CommentForm extends React.Component {
         });
       })
       .then(res => axios.post(`/api/post/${this.state.postId}`, { type: 'Comment', body: commentText }))
-      .then(res => console.log('SUCCESSFUL COMMENT POST'))
+      .then(res => console.log('SUCCESSFUL COMMENT POST'));
   }
 
   render() {
@@ -57,7 +57,7 @@ class CommentForm extends React.Component {
           `}
         </style>
       </div>
-    )
+    );
   }
 }
 export default CommentForm;
