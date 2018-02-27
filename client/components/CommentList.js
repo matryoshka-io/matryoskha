@@ -19,14 +19,22 @@ class CommentList extends React.Component {
     return (
       <div >
         {this.props.comments.map((comment, index) => {
-          console.log('commenttttt', comment)
-          console.log('index', index)
-          console.log('this.props', this.props)
-          // return <CommentList key={comment._id} comment={comment} />
+          return <CommentListEntry key={comment._id} comment={comment.comments} />
         })}
       </div >
     )
   }
 }
+
+// const CommentList = (props) => {
+//   let nestedComments = (props.comments || []).map(comment => {
+//     return <CommentList comment={comment} />
+//   })
+//   return (
+//     <div key={this.props.comment._id}>
+//       <span>{this.props.comment.body}</span>
+//     </div>
+//   )
+// }
 
 export default CommentList;
