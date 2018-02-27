@@ -1,9 +1,11 @@
 import { Component } from 'react';
 import Router from 'next/router';
 
+import auth from '../utils/auth';
+import sessions from '../utils/sessions';
+
 import LoginForm from '../components/LoginForm';
 import Page from '../components/Page';
-import auth from '../utils/auth';
 
 class LoginPage extends Component {
   static async getInitialProps(context) {
@@ -17,12 +19,22 @@ class LoginPage extends Component {
     this.state = {
       message: '',
     };
-    this.submitLogin = this.submitLogin.bind(this);
+    this.loginUser = this.loginUser.bind(this);
   }
 
   loginUser(username, password) {
     auth.loginUser(username, password)
-      .then(result => console.log(result))
+      .then((result) => {
+        if (result.success) {
+          sessions.setCookie('jwt', result.token);
+          Router.replace('/');
+          return;
+        }
+        sessions.deleteCookie('jwt');
+        this.setState({
+          message: 'Invalid Credentials',
+        });
+      })
       .catch(err => console.log(err));
   }
 
