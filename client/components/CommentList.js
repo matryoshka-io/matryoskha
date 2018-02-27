@@ -8,7 +8,9 @@ class CommentList extends React.Component {
 
   componentWillReceiveProps = (newProps) => {
     console.log('new props', newProps.comments)
-    this.setState
+    this.setState({ comments: newProps.comment }, () => {
+      console.log('newstateeee', this.state.comments)
+    })
   }
 
   render() {
