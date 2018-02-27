@@ -10,6 +10,13 @@ const karmaSort = (firstPost, secondPost) => {
   return 0;
 };
 
+const getKarma = (post, callback) => {
+  models.Vote.find({ post: post._id }).then((votes) => {
+    post.karma = votes.reduce((totalKarma, vote) => totalKarma + vote.value, 0);
+    callback(post);
+  });
+};
+
 const getKarmaAndSort = (posts, callback) => {
   const promises = [];
   posts.forEach((post) => {
@@ -64,4 +71,5 @@ module.exports = {
   matryoksha,
   evilMatryoksha,
   getKarmaAndSort,
+  getKarma,
 };

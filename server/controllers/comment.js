@@ -3,20 +3,22 @@ const models = require('../models');
 
 const utils = require('./utils');
 
-// Gotta be consistent with catching errors and sending responses for those errors.
+// Some DRY violations for Comments and Posts, vis a vis GET and DELETE. Everything else seems to make sense though.
+// Maybe just DELETE.
 module.exports = {
   GET(req, res) {
     models.Post.findOne({ type: 'Comment', _id: req.params.commentId })
       .lean()
       .then((comment) => {
-        utils.matryoksha(comment).then(() => {
-          res.status(200).json(comment);
+        utils.getKarma(comment, (comment) => {
+          utils.matryoksha(comment).then(() => {
+            res.status(200).json(comment);
+          });
         });
       }).catch((err) => {
         res.status(404).end(`No such comment found for id: ${req.params.commendId}`);
       });
   },
-  // Admins should be able to edit comments (i.e. owners/creators of subreddits).
   PUT(req, res) {
     models.Post.findOne({ type: 'Comment', _id: req.params.commentId })
       .populate('author')
@@ -26,7 +28,7 @@ module.exports = {
             type: 'Comment',
             _id: req.params.commentId,
           }, {
-            body: req.body.body, // Favor explicitness, maybe shorthand is better.
+            body: req.body.body,
           });
         }
       }).then((response) => {
@@ -34,7 +36,6 @@ module.exports = {
       });
   },
   DELETE(req, res) {
-    // Same as above.
     models.Post.findOne({ _id: req.params.commentId, type: 'Comment' }).populate('author')
       .then((comment) => {
         if (comment.author.username === req.session.username) {
@@ -63,8 +64,8 @@ module.exports = {
       newCommentData.author = user._id;
       const newComment = new models.Post(newCommentData);
       return newComment.save();
-    }).then((comment) => { // Woo, chaining.
-      res.status(201).end(JSON.stringify(comment));
+    }).then((comment) => {
+      res.status(201).json(comment);
     });
   },
 };

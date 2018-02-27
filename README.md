@@ -11,11 +11,3 @@ Be sure to have a MongoDB instance running on your local machine (i.e. `localhos
 ## Development
 
 `npm run lint path/to/file` to run ESLint on a JavaScript file, we are using the Airbnb style guide.
-
-
-git status
-git commit
-git pull origin master
-git status
-git commit 
-git push origin frontEnd

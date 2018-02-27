@@ -22,20 +22,37 @@ module.exports = {
     post(req, res) {
       models.Subreddit.findOne({ title: req.params.subName })
         .then((subreddit) => {
-          const newPostData = {
-            title: req.body.title,
-            type: 'Text',
-            body: req.body.body,
-          };
-          newPostData.subreddit = subreddit._id;
-
-          models.User.findOne({ username: req.session.username }).then((user) => {
-            newPostData.author = user._id;
-            const newPost = new models.Post(newPostData);
-            newPost.save().then((post) => {
-              res.status(201).end(JSON.stringify(post));
+          if (req.body.type === 'Text') {
+            const newPostData = {
+              title: req.body.title,
+              type: 'Text',
+              body: req.body.body,
+              subreddit: subreddit._id,
+            };
+            models.User.findOne({ username: req.session.username }).then((user) => {
+              newPostData.author = user._id;
+              const newPost = new models.Post(newPostData);
+              newPost.save().then((post) => {
+                res.status(201).json(post);
+              });
             });
-          });
+          } else if (req.body.type === 'Image') {
+            const newPostData = {
+              title: req.body.title,
+              type: 'Image',
+              url: req.body.url,
+              subreddit: subreddit._id,
+            };
+            models.User.findOne({ username: req.session.username }).then((user) => {
+              newPostData.author = user._id;
+              const newPost = new models.Post(newPostData);
+              newPost.save().then((post) => {
+                res.status(201).json(post);
+              });
+            });
+          } else {
+            res.status(400).end('Unknown post type.');
+          }
         });
     },
   },

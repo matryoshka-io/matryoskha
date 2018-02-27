@@ -4,7 +4,6 @@ mongoose.connect('mongodb://localhost:27017/matryoksha');
 const db = mongoose.connection;
 db.dropDatabase();
 
-// const Link = require('../models/Link');
 const Post = require('../models/Post');
 const Subreddit = require('../models/Subreddit');
 const Subscription = require('../models/Subscription');
@@ -12,7 +11,6 @@ const User = require('../models/User');
 const Vote = require('../models/Vote');
 
 const models = {
-  // Link,
   User,
   Subreddit,
   Post,
