@@ -1,4 +1,5 @@
 import axios from 'axios';
+import homepage from '../pages/homepage'
 
 class CommentForm extends React.Component {
   constructor(props) {
@@ -19,8 +20,10 @@ class CommentForm extends React.Component {
   }
 
   postComment = (commentText) => {
-    axios.get('/api')
+    const auth = { headers: { 'Authorization': 'jwt' + localStorage.getItem('token') } }
+    axios.get('/api', auth)
       .then(res => {
+        console.log('ressss', res)
         res.data.forEach(data => {
           this.setState({
             postId: data._id
