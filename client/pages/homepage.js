@@ -19,7 +19,7 @@ class Homepage extends Component {
     return {
       user: session.user,
       token: session.token,
-      posts: Data,
+      posts: posts,
     };
   }
 
