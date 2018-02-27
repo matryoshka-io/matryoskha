@@ -20,7 +20,7 @@ class LoginPage extends Component {
     this.submitLogin = this.submitLogin.bind(this);
   }
 
-  submitLogin(username, password) {
+  loginUser(username, password) {
     auth.loginUser(username, password)
       .then(result => console.log(result))
       .catch(err => console.log(err));
@@ -29,7 +29,7 @@ class LoginPage extends Component {
   render() {
     return (
       <Page>
-        <LoginForm submitForm={this.submitLogin} />
+        <LoginForm login={this.loginUser} />
       </Page>
     );
   }

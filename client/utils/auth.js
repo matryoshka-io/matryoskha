@@ -24,13 +24,17 @@ const loginUser = (username, password) =>
     console.log('LOGIN REQUEST');
     return axios.post(`${BASE_URL}/auth/login`, { username, password })
       .then((result) => {
-        console.log('help me');
-        // if (result.success) {
-        //   sessions.setCookie('jwt', result.token);
-        // }
-        return resolve(result);
+        console.log('LOGIN RESULT: ', result);
+        if (result.success) {
+          sessions.setCookie('jwt', result.token);
+        }
+        return resolve(result.data);
       })
-      .catch(err => reject(err));
+      .catch((err) => {
+        console.log(err);
+        sessions.deleteCookie('jwt');
+        return reject(err);
+      });
   });
 
 const makeTokenHeader = token => ({ headers: { 'x-access-token': token } });
@@ -38,9 +42,11 @@ const makeTokenHeader = token => ({ headers: { 'x-access-token': token } });
 const authenticateToken = token =>
   new Promise((resolve, reject) => {
     const headers = makeTokenHeader(token);
-    console.log('authenticating token, headers ', headers);
     return axios.post(`${BASE_URL}/auth/authenticate`, {}, headers)
-      .then(result => resolve(result.data))
+      .then((result) => {
+        console.log(result.data);
+        return resolve(result.data);
+      })
       .catch((err) => {
         sessions.deleteCookie('jwt');
         return reject(err.data);

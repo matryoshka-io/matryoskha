@@ -25,8 +25,7 @@ export default class LoginForm extends Component {
 
   submitLogin(username, password) {
     if (this.state.username.trim() && this.state.password.trim()) {
-
-      this.props.submitForm(this.state.username, this.state.password);
+      this.props.login(this.state.username, this.state.password);
     }
   }
 
