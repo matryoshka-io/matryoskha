@@ -1,11 +1,3 @@
-// const CommentListEntry = (props) => {
-//   return (
-//     <div>
-//       Comments:
-//       {props.comment.body}
-//     </div>
-//   )
-// }
 import CommentList from './CommentList';
 
 class CommentListEntry extends React.Component {
@@ -16,7 +8,7 @@ class CommentListEntry extends React.Component {
     console.log('entry props', this.props)
     return (
       < div >
-        {this.props.comment.body}
+        {this.props.comment.body} <br />
         <CommentList comments={this.props.comment.comments} />
       </div >
     )
