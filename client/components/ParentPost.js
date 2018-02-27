@@ -1,12 +1,12 @@
-import React from 'react';
-import axios from 'axios';
 import Link from 'next/link';
-import ReactMarkdown from 'react-markdown';
-
 import SubRedditBar from './SubredditBar';
 import Rating from './Rating';
-import Postdetail from './PostDetails';
+import React from 'react';
+import axios from 'axios';
+import ReactMarkdown from 'react-markdown';
+import Postdetail from '../pages/postDetail';
 import CommentForm from './CommentForm';
+import CommentList from './CommentList';
 
 
 class ParentPost extends React.Component {
@@ -15,55 +15,43 @@ class ParentPost extends React.Component {
     this.state = {
       subredditId: '',
       postId: '',
-      title: '',
+      postTitle: '',
       postBodyText: '',
-      comments: [],
       commentBody: '',
-    };
+      comments: [],
+    }
+
   }
 
   componentDidMount() {
-    axios.get('/api')
-      .then((res) => {
-        console.log(res.data);
-        res.data.forEach((post) => {
-          this.setState({
-            title: post.title,
-            postBodyText: post.body,
-            postId: post._id
-          })
-          if (post.comments.length === 0) {
-            this.setState({ comments: [] })
-          } else {
-            post.comments.forEach((comment) => {
-              console.log('commentBody', this.state.commentBody)
-              this.setState({
-                comments: post.comments,
-                commentBody: comment.body,
-              }, () => { console.log(this.state.commentBody); });
-            });
-          }
-        });
+    // axios.get('/api')
+    //   .then(res => {
+    //     console.log('RESSS', res)
+    //   })
+    axios.get('/api/post/5a8e0e2b7f911450d4600d99')
+      .then(res => {
+        this.setState({
+          postTitle: res.data.title,
+          postBodyText: res.data.body,
+          postId: res.data._id,
+          comments: res.data.comments,
+        })
       })
-      .then((res) => {
-        axios.get(`/api/post/:${this.state.postId}`);
-      });
   }
 
   render() {
     return (
       <div>
-        <div>
-          Title of post: <br />
-          {this.state.title} <br /><br />
-          Body: <ReactMarkdown source={this.state.postBodyText} />
-        </div>
+        Title of post: <br />
+        {this.state.postTitle} < br /> <br />
+        Body: <ReactMarkdown source={this.state.postBodyText} />
 
         <CommentForm title={this.state.title} subredditId={this.state.subredditId} />
-
-
-        {/* {this.state.commentBody} */}
+        All comments:
+        {this.state.comments.body}
+        <CommentList comments={this.state.comments} />
       </div>
+
 
     );
   }
