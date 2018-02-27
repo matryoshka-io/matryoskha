@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 
 class CommentForm extends React.Component {
   constructor(props) {
@@ -6,7 +6,7 @@ class CommentForm extends React.Component {
     this.state = {
       commentText: '',
       subredditName: '',
-      postId: ''
+      postId: '',
     };
   }
 
@@ -55,7 +55,8 @@ class CommentForm extends React.Component {
               width: 100%;
             }
           }
-        `}</style>
+        `}
+        </style>
       </div>
     )
   }
