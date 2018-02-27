@@ -35,14 +35,14 @@ userSchema.pre('save', function EncryptUserPasswordOnSave(next) {
     .catch(err => next(err));
 });
 
-userSchema.methods.comparePassword = candidatePassword =>
-  new Promise((resolve, reject) => {
+userSchema.methods.comparePassword = function ValidateSubmittedPassword(candidatePassword) {
+  return new Promise((resolve, reject) => {
     bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
       if (err) return reject(err);
       return resolve(isMatch);
     });
   });
-
+};
 
 const User = mongoose.model('User', userSchema);
 
