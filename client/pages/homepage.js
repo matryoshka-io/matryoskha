@@ -12,23 +12,24 @@ import sessions from '../utils/sessions';
 class Homepage extends Component {
   static async getInitialProps(context) {
     // getInitialProps runs server side only, unless a client-side redirect / route
-    const token = sessions.getToken('jwt', context.req);
-    let currentUser = null;
+    // const token = sessions.getToken('jwt', context.req);
+    // let currentUser = null;
 
-    if (token) {
-      const tokenCheck = await auth.authenticateToken(token);
-      console.log(tokenCheck);
-      if (tokenCheck.session) {
-        currentUser = tokenCheck.content.user;
-        sessions.setCookie('jwt', tokenCheck.token); // refreshed expiry
-      } else {
-        sessions.deleteCookie('jwt');
-      }
-    }
-
+    // if (token) {
+    //   const tokenCheck = await auth.authenticateToken(token);
+    //   console.log(tokenCheck);
+    //   if (tokenCheck.session) {
+    //     currentUser = tokenCheck.content.user;
+    //     sessions.setCookie('jwt', tokenCheck.token); // refreshed expiry
+    //   } else {
+    //     sessions.deleteCookie('jwt');
+    //   }
+    // }
+    const session = await auth.initializeSession(context);
+    console.log('SESSION\n', session);
     return {
-      user: currentUser,
-      token,
+      user: session.user,
+      token: session.token,
       posts: Data,
     };
   }

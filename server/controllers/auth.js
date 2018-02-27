@@ -19,13 +19,13 @@ module.exports = {
         })
         .then((refreshed) => {
           console.log('successfully refreshed ', refreshed);
-          response.newToken = refreshed;
+          response.token = refreshed;
           response.session = true;
           res.status(200).send(response);
         })
         .catch((err) => {
           response.content = null;
-          response.newToken = null;
+          response.token = null;
           response.session = false;
           console.log('token invalid, response: \n', response);
           console.log('error \n', err);
