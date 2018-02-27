@@ -10,7 +10,7 @@ class SubredditNameBox extends React.Component {
       <div id="subredditNameBox">
         <textarea rows="1" cols="80" value={this.props.subredditNameText} onChange={this.props.onSubredditTextChangeHandler}></textarea>
       </div>
-    )
+    );
   }
 }
 

@@ -2,27 +2,10 @@ const router = require('express').Router();
 const controllers = require('../controllers');
 const gateway = require('../middleware/gateway');
 
-// Questions:
-// 1) Can admins/owners of subreddits delete any and all material in that subreddit? (Posts and comments.)
-// 2) Can you delete subreddits? And therefore all of the material within that subreddit, i.e. posts and comments.
-// 3) Real-life Reddit only wipes the body of the Post/Comment that is "deleted", yet the post/comment is still there along with the,
-//    timestamp. Perhaps they were lazy. The way I have it right now, any deleted comment cascades to the children,
-//    and any deleted post cascades to the comments and their children.
-
-// Issues:
-// 1) As necessary I can switch between /r/subName and /r/subId,
-//    and /u/username and /u/userId. The names/titles of posts
-//    are not unique, however. Comments also do not have names/titles.
-//    This is not an issue, however, since, in Reddit, you cannot see
-//    posts without first going to the subreddit, and you cannot see
-//    comments without first going to the post. Which means that the
-//    front-end will already have all the necessary unique _id properties
-//    to query whichever post or comment they want in "detail view."
-
-// Get the home page
+// Get the home page.
 router.get('/', controllers.home.GET);
 
-// Get posts top posts for a given subreddit.
+// Get top posts for a given subreddit.
 router.get('/sub/:subName', controllers.subreddit.GET);
 // Get a post.
 router.get('/post/:postId', controllers.post.GET);
@@ -57,5 +40,18 @@ router.post('/comment/:commentId', controllers.comment.POST);
 router.post('/vote/:postId', controllers.vote.POST);
 // Remove a vote.
 router.delete('/vote/:postId', controllers.vote.DELETE);
+
+// Get a user's karma and date joined, basically.
+router.get('/user/:username', controllers.user.profile.GET);
+// Get a user's posts.
+router.get('/user/:username/posts', controllers.user.posts.GET);
+// Get a user's comments.
+router.get('/user/:username/comments', controllers.user.comments.GET);
+// Get a user's subreddits (ones they have created).
+router.get('/user/:username/subreddits', controllers.user.subreddits.GET);
+
+// Add and delete subscriptions.
+router.post('/subscription/:subName', controllers.subscription.POST);
+router.delete('/subscription/:subName', controllers.subscription.DELETE);
 
 module.exports = router;

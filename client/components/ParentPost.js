@@ -11,7 +11,7 @@ import CommentForm from './CommentForm';
 
 class ParentPost extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       subredditId: '',
       postId: '',
@@ -19,7 +19,7 @@ class ParentPost extends React.Component {
       postBodyText: '',
       comments: [],
       commentBody: '',
-    }
+    };
   }
 
   componentDidMount() {
@@ -65,9 +65,8 @@ class ParentPost extends React.Component {
         {/* {this.state.commentBody} */}
       </div>
 
-    )
+    );
   }
 }
-
 
 export default ParentPost;

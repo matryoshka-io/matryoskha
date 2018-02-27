@@ -6,7 +6,7 @@ const Post = props => (
     <h1>{props.url.asPath}</h1>
     <PostForm />
   </div>
-)
+);
 
 Post.getInitialProps = async function GetInitialPostData() {
 

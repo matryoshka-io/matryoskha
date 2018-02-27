@@ -11,14 +11,18 @@ module.exports = {
         $not: /Comment/,
       },
     }).populate('subreddit')
-      .populate('author') // Leave out link for now, testing purposes.
+      .populate('author')
       .lean()
       .then((post) => {
-        utils.matryoksha(post).then(() => {
-          res.status(200).end(JSON.stringify(post));
+        utils.getKarma(post, (post) => {
+          utils.matryoksha(post).then(() => {
+            res.status(200).end(JSON.stringify(post));
+          });
         });
       });
   },
+  // Edit options for Text posts: body, and title.
+  // Edit options for Image posts: url, and title.
   PUT(req, res) {
     models.Post.findOne({ _id: req.params.postId }).populate('author').then((post) => {
       if (post.author.username === req.session.username) {
@@ -43,12 +47,10 @@ module.exports = {
       newCommentData.author = user._id;
       const newComment = new models.Post(newCommentData);
       return newComment.save();
-    }).then((comment) => { // Woo, chaining.
+    }).then((comment) => {
       res.status(201).end(JSON.stringify(comment));
     });
   },
-
-  // Admins/owners of subreddits should be able to delete all posts/comments in that subreddit.
   DELETE(req, res) {
     models.Post.findOne({ _id: req.params.postId }).populate('author')
       .then((post) => {

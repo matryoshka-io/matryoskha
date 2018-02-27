@@ -1,4 +1,3 @@
-
 import Page from '../components/Page';
 import Posts from '../components/Posts';
 import UserPanelBody from '../components/UserPanelBody';
@@ -6,7 +5,6 @@ import UserPanelBody from '../components/UserPanelBody';
 import Data from '../../server/database/dataFrontEnd.json';
 import auth from '../utils/auth';
 import sessions from '../utils/sessions';
-
 
 const Homepage = props => (
   <Page>

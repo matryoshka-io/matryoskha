@@ -33,4 +33,3 @@ export default ({ _id, author, subreddit, title }) => (
     </div>
   </div>
 );
-

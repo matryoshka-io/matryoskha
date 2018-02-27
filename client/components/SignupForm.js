@@ -1,7 +1,6 @@
 import React from 'react';
 import auth from '../utils/auth';
 
-
 export default class SignupForm extends React.Component {
   constructor(props) {
     super(props);

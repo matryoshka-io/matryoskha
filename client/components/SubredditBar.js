@@ -16,7 +16,7 @@ export default () => (
       `}
     </style>
   </div>
-)
+);
 
 const Item = ({ href, children }) => (
   <div>
@@ -43,4 +43,4 @@ const Item = ({ href, children }) => (
       `}
     </style>
   </div>
-)
+);

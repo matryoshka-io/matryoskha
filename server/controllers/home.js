@@ -1,20 +1,15 @@
-/* eslint-disable indent */
-
 const db = require('../database');
 const models = require('../models');
 
 const utils = require('./utils');
 
-// What about the authed route? There must be some logic there,
-// as per subscriptions. Gotta figure out the middleware for authentication.
 module.exports = {
   GET(req, res) {
-    req.session = null; // Testing purposes.
+    // req.session = null; // Testing purposes.
     if (req.session === null) {
       models.Post.find({ type: { $not: /Comment/ } })
         .populate('subreddit')
         .populate('author')
-        .populate('link')
         .lean()
         .then((posts) => {
           utils.getKarmaAndSort(posts, (posts) => {
@@ -28,12 +23,34 @@ module.exports = {
           });
         });
     } else {
-      // Find subscriptions (all subreddits the user is subscribed to),
-      // sort by karma, i.e. the posts in those subreddits,
-      // send those posts back.
+      models.User.findOne({ username: req.session.username }).then((user) => {
+        models.Subscription.find({ user: user._id }).populate('subreddit').then((subscriptions) => {
+          models.Post.find({ type: { $not: /Comment/ } })
+            .populate('subreddit')
+            .populate('author')
+            .lean()
+            .then((posts) => {
+              posts = posts.filter((post) => {
+                let keep = false;
+                subscriptions.forEach((subscription) => {
+                  if (post.subreddit._id.toString() === subscription.subreddit._id.toString()) {
+                    keep = true;
+                  }
+                });
+                return keep;
+              });
+              utils.getKarmaAndSort(posts, (posts) => {
+                const promises = [];
+                posts.forEach((post) => {
+                  promises.push(utils.matryoksha(post));
+                });
+                Promise.all(promises).then(() => {
+                  res.status(200).end(JSON.stringify(posts));
+                });
+              });
+            });
+        });
+      });
     }
-  },
-  POST(req, res) {
-    // Eh...
   },
 };
