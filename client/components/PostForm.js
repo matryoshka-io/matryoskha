@@ -22,9 +22,7 @@ class PostForm extends React.Component {
   }
 
   onSubredditTextChangeHandler = (e) => {
-    this.setState({ subredditText: e.target.value }, () => {
-      console.log('in main form page', this.state.subredditText)
-    });
+    this.setState({ subredditText: e.target.value })
   }
 
   onTitleTextChangeHandler = (e) => {
@@ -58,9 +56,7 @@ class PostForm extends React.Component {
   }
 
   onBodyTextChangeHandler = (e) => {
-    this.setState({ bodyText: e.target.value }, () => {
-      console.log(this.state.bodyText)
-    })
+    this.setState({ bodyText: e.target.value })
   }
 
   onCreateNewTextPostWithUserText = () => {
