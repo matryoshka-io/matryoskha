@@ -21,7 +21,7 @@ class CommentForm extends React.Component {
   }
 
   postComment = (commentText) => {
-    axios.get('/api', auth.makeTokenHeader(homepage.token))
+    axios.get('/api', homepage.getInitialProps())
       .then(res => {
         console.log('ressss', res)
         res.data.forEach(data => {
