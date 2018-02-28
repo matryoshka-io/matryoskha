@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 // This model doubles as both a Post and a Comment.
 // If it's a top-level comment, its parent is a Post, and it has no Subreddit property, title property, type property, and so on.
