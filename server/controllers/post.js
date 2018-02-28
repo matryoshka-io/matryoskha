@@ -35,15 +35,13 @@ module.exports = {
     });
   },
   POST(req, res) {
-    const newCommentData = {
+    (new models.Post({
       type: 'Comment',
       body: req.body.body,
       parent: req.params.postId,
-      author: req.session.user._id,
-    };
-    const newComment = new models.Post(newCommentData);
-    newComment.save().then((comment) => {
-      res.status(201).end(JSON.stringify(comment));      
+      author: req.session.user._id,      
+    })).save().then((comment) => {
+      res.status(201).json(comment); 
     });
   },
   DELETE(req, res) {

@@ -1,5 +1,3 @@
-const axios = require('axios');
-
 const db = require('../database');
 const models = require('../models');
 
@@ -8,59 +6,38 @@ const utils = require('./utils');
 module.exports = {
   POST: {
     subreddit(req, res) {
-      const newSubredditData = {
+      (new models.Subreddit({
         title: req.body.title,
         description: req.body.description,
-        creator: req.session.user._id,
-      };
-      const newSubreddit = new models.Subreddit(newSubredditData);
-      newSubreddit.save().then((subreddit) => {
-        res.status(201).end(JSON.stringify(subreddit));
+        creator: req.session.user._id,        
+      })).save().then((subreddit) => {
+        res.status(201).json(subreddit);
       });
     },
     post(req, res) {
       models.Subreddit.findOne({ titleSlug: req.params.subName }).then((subreddit) => {
         if (req.body.type === 'Text') {
-          const newPostData = {
+          (new models.Post({
             title: req.body.title,
             type: 'Text',
             body: req.body.body,
             subreddit: subreddit._id,
-            author: req.session.user._id,
-          };
-          const newPost = new models.Post(newPostData);
-          newPost.save().then((post) => {
+            author: req.session.user._id,            
+          })).save().then((post) => {
             res.status(201).json(post);
           });
         } else if (req.body.type === 'Image' || req.body.type === 'Video') {
-          const newPostData = {
+          (new models.Post({
             title: req.body.title,
             type: req.body.type,
             url: req.body.url,
             subreddit: subreddit._id,
-            author: req.session.user._id,
-          };
-          const newPost = new models.Post(newPostData);
-          newPost.save().then((post) => {
+            author: req.session.user._id,            
+          })).save().then((post) => {
             res.status(201).json(post);
           });
         } else if (req.body.type === 'Article') {
-          /* axios({
-            method: 'get',
-            dataType: 'text/html',
-            url: req.body.url,
-          }).then((response) => {
-            console.log(response.data);
-            res.status(200).end('' + response.data);
-          });
-          const newPostData = {
-            title: req.body.title,
-            type: 'Article',
-            url: req.body.url,
-            metadata: {
-
-            },
-          }; */
+          // Pass...
         } else {
           res.status(400).end('Unknown post type.');
         }

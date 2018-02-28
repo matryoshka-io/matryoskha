@@ -9,13 +9,11 @@ module.exports = {
       if (vote.length !== 0) {
         res.status(409).end('You already voted on this post.');
       } else {
-        const newVoteData = {
+        (new models.Vote({
           user: req.session.user._id,
           post: req.params.postId,
-          value: req.body.vote, // Either -1 for a downvote or 1 for an upvote. This is handled by the client.
-        };
-        const newVote = new models.Vote(newVoteData);
-        newVote.save().then((vote) => {
+          value: req.body.vote,          
+        })).save().then((vote) => {
           models.Post.findOne({ _id: req.params.postId }).then((post) => {
             models.User.update({
               _id: post.author,
@@ -36,7 +34,6 @@ module.exports = {
       user: req.session.user._id,
       post: req.params.postId,
     }).then((vote) => {
-      console.log(vote);
       models.Post.findOne({ _id: req.params.postId }).then((post) => {
         models.User.update({
           _id: post.author,

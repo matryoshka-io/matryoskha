@@ -51,13 +51,12 @@ module.exports = {
     });
   },
   POST(req, res) {
-    const newCommentData = {
+    (new models.Post({
       body: req.body.body,
+      type: 'Comment',
       parent: req.params.commentId,
-      author: req.session.user._id,
-    };
-    const newComment = new models.Post(newCommentData);
-    newComment.save().then((comment) => {
+      author: req.session.user._id,      
+    })).save().then((comment) => {
       res.status(201).json(comment);
     });
   },
