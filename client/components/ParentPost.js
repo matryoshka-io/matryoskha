@@ -47,7 +47,6 @@ class ParentPost extends React.Component {
         Body: <ReactMarkdown source={this.state.postBodyText} />
 
         <CommentForm title={this.state.title} subredditId={this.state.subredditId} />
-        All comments:
         {this.state.comments.body}
         <CommentList comments={this.state.comments} />
       </div>
