@@ -23,10 +23,8 @@ class CommentForm extends React.Component {
 
   postComment = (commentText) => {
     const token = sessions.getToken('jwt');
-    console.log('token', token)
     axios.get('/api', auth.makeTokenHeader(token))
       .then(res => {
-        console.log('ressss data', res)
         res.data.forEach(data => {
           if (this.props.postTitle === data.title) {
             return this.setState({ postId: data._id })
@@ -35,11 +33,9 @@ class CommentForm extends React.Component {
         return this.state.postId
       })
       .then((res) => {
-        console.log('res in then', res)
         return axios.post(`/api/post/${this.state.postId}`, { body: commentText }, auth.makeTokenHeader(token))
       })
       .then((res) => {
-        console.log('res before success', res)
         console.log('SUCCESSFUL COMMENT POST')
       })
   }
