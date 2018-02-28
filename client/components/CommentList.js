@@ -12,16 +12,18 @@ class CommentList extends React.Component {
   }
 
   render() {
+    console.log('thispropscomm from commentlist', this.props.comments)
     return (
       <div className="list">
         {this.props.comments.map((comment, index) => {
-          return <CommentListEntry key={comment._id} comment={comment} />
+          //if comment has a parent post, render different css
+          return (
+            <CommentListEntry key={comment._id} index={index} comment={comment} />
+          )
         })}
         <style>{`
           .list {
-            // background-color: #828282;
-
-            border-style: solid;
+            // border-style: solid;
             border-width: 1px 1px 0px 1px;
             border-color: gray;
           }
