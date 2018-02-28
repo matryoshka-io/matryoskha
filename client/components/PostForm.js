@@ -3,6 +3,8 @@ import LinkBar from './LinkBar';
 import TextBox from './TextBox'
 import SubredditNameBox from './SubredditNameBox';
 import exampleData from '../../server/database/data.json'
+import auth from '../utils/auth';
+import sessions from '../utils/sessions'
 
 class PostForm extends React.Component {
   constructor(props) {
@@ -19,13 +21,11 @@ class PostForm extends React.Component {
     };
   }
 
-  onSubredditTextChangeHandler(e) {
-    this.setState({ subredditText: e.target.value }, () => {
-      console.log('in main form page', this.state.subredditText)
-    });
+  onSubredditTextChangeHandler = (e) => {
+    this.setState({ subredditText: e.target.value })
   }
 
-  onTitleTextChangeHandler(e) {
+  onTitleTextChangeHandler = (e) => {
     this.setState({
       titleText: e.target.value
     });
@@ -33,22 +33,20 @@ class PostForm extends React.Component {
 
   //text posts can't have links & link posts can't have texts
   // James: why isn't this a multi-way else-if?
-  onDropdownChangeHandler(e) {
+  onDropdownChangeHandler = (e) => {
     if (e.target.value === 'text') {
       this.setState({
         type: 'text',
         isTextBoxHidden: false,
         isLinkBarHidden: true
       });
-    }
-    if (e.target.value === 'image') {
+    } else if (e.target.value === 'image') {
       this.setState({
         isLinkBarHidden: false,
         isTextBoxHidden: true,
         type: 'image'
       });
-    }
-    if (e.target.value === 'video') {
+    } else if (e.target.value === 'video') {
       this.setState({
         isLinkBarHidden: false,
         isTextBoxHidden: true,
@@ -57,19 +55,19 @@ class PostForm extends React.Component {
     }
   }
 
-  onBodyTextChangeHandler(e) {
-    this.setState({ bodyText: e.target.value }, () => {
-      console.log(this.state.bodyText)
-    })
+  onBodyTextChangeHandler = (e) => {
+    this.setState({ bodyText: e.target.value })
   }
 
-  onCreateNewTextPostWithUserText() {
+  onCreateNewTextPostWithUserText = () => {
     this.createNewTextPost(this.state.titleText, this.state.type, this.state.bodyText)
   }
 
-  createNewTextPost(titleText, type, bodyText, url) {
-    axios.get('/api')
+  createNewTextPost = (titleText, type, bodyText, url) => {
+    const token = sessions.getToken('jwt');
+    axios.get('/api', auth.makeTokenHeader(token))
       .then((res) => {
+        console.log('ressss', res)
         const responseArr = JSON.parse(res.request.response)
         responseArr.forEach((responseData) => {
           console.log('responseData', responseData)

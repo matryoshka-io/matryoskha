@@ -8,19 +8,27 @@ class CommentList extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.setState({ comments: newProps }, () => {
-      console.log('huh?', this.state.comments.comments);
-      console.log('comments???', this.state.comments)
-    })
+    this.setState({ comments: newProps })
   }
 
   render() {
-    console.log('this.props.comments', this.props.comments)
+    console.log('thispropscomm from commentlist', this.props.comments)
     return (
-      <div >
+      <div className="list">
         {this.props.comments.map((comment, index) => {
-          return <CommentListEntry key={comment._id} comment={comment} />
+          //if comment has a parent post, render different css
+          return (
+            <CommentListEntry key={comment._id} index={index} comment={comment} />
+          )
         })}
+        <style>{`
+          .list {
+            // border-style: solid;
+            border-width: 1px 1px 0px 1px;
+            border-color: gray;
+          }
+          `}
+        </style>
       </div >
     )
   }
