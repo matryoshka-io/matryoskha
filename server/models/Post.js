@@ -31,6 +31,11 @@ const postSchema = mongoose.Schema({
   titleSlug: String, // For the title.
 });
 
+postSchema.pre('save', function (next) {
+  this.titleSlug = slugify(this.title);
+  next();
+});
+
 const Post = mongoose.model('Post', postSchema);
 
 module.exports = Post;

@@ -10,7 +10,6 @@ module.exports = {
       const newSubredditData = {
         title: req.body.title,
         description: req.body.description,
-        titleSlug: slugify(req.body.title),
       };
       models.User.findOne({ username: req.session.username })
         .then((user) => {
@@ -30,7 +29,6 @@ module.exports = {
               type: 'Text',
               body: req.body.body,
               subreddit: subreddit._id,
-              titleSlug: slugify(req.body.title),
             };
             models.User.findOne({ username: req.session.username }).then((user) => {
               newPostData.author = user._id;
@@ -45,7 +43,6 @@ module.exports = {
               type: 'Image',
               url: req.body.url,
               subreddit: subreddit._id,
-              titleSlug: slugify(req.body.title),
             };
             models.User.findOne({ username: req.session.username }).then((user) => {
               newPostData.author = user._id;
