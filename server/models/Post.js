@@ -39,7 +39,7 @@ const postSchema = mongoose.Schema({
 
 postSchema.pre('save', function (next) {
   if (this.title) {
-    this.titleSlug = slugify(this.title);
+    this.titleSlug = slugify(this.title).toLowerCase();
   }
   next();
 });
