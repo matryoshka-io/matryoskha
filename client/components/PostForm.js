@@ -67,7 +67,6 @@ class PostForm extends React.Component {
     const token = sessions.getToken('jwt');
     axios.get('/api', auth.makeTokenHeader(token))
       .then((res) => {
-        console.log('ressss', res)
         const responseArr = JSON.parse(res.request.response)
         responseArr.forEach((responseData) => {
           console.log('responseData', responseData)

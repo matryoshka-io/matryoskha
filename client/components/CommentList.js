@@ -12,7 +12,6 @@ class CommentList extends React.Component {
   }
 
   render() {
-    console.log('thispropscomm from commentlist', this.props.comments)
     return (
       <div className="list">
         {this.props.comments.map((comment, index) => {
