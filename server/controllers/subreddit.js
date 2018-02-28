@@ -1,3 +1,4 @@
+const slugify = require('slugify');
 const db = require('../database');
 const models = require('../models');
 
@@ -9,6 +10,7 @@ module.exports = {
       const newSubredditData = {
         title: req.body.title,
         description: req.body.description,
+        titleSlug: slugify(req.body.title),
       };
       models.User.findOne({ username: req.session.username })
         .then((user) => {
@@ -20,7 +22,7 @@ module.exports = {
         });
     },
     post(req, res) {
-      models.Subreddit.findOne({ title: req.params.subName })
+      models.Subreddit.findOne({ titleSlug: slugify(req.params.subName) })
         .then((subreddit) => {
           if (req.body.type === 'Text') {
             const newPostData = {
@@ -28,6 +30,7 @@ module.exports = {
               type: 'Text',
               body: req.body.body,
               subreddit: subreddit._id,
+              titleSlug: slugify(req.body.title),
             };
             models.User.findOne({ username: req.session.username }).then((user) => {
               newPostData.author = user._id;
@@ -42,6 +45,7 @@ module.exports = {
               type: 'Image',
               url: req.body.url,
               subreddit: subreddit._id,
+              titleSlug: slugify(req.body.title),
             };
             models.User.findOne({ username: req.session.username }).then((user) => {
               newPostData.author = user._id;
@@ -57,7 +61,7 @@ module.exports = {
     },
   },
   GET(req, res) {
-    models.Subreddit.findOne({ title: req.params.subName })
+    models.Subreddit.findOne({ titleSlug: slugify(req.params.subName) })
       .then((subreddit) => {
         models.Post.find({ subreddit: subreddit._id }).lean()
           .then((posts) => {
@@ -74,7 +78,7 @@ module.exports = {
       });
   },
   PUT(req, res) {
-    models.Subreddit.findOne({ title: req.params.subName }).populate('creator').lean()
+    models.Subreddit.findOne({ titleSlug: slugify(req.params.subName) }).populate('creator').lean()
       .then((subreddit) => {
         if (subreddit.creator.username === req.session.username) {
           models.Subreddit.update({ _id: subreddit._id }, req.body).then((response) => {

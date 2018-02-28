@@ -15,6 +15,7 @@ const subredditSchema = mongoose.Schema({
     type: Date,
     default: Date.now,
   }, // Self-explanatory.
+  titleSlug: String, // For the title.
 });
 
 const Subreddit = mongoose.model('Subreddit', subredditSchema);

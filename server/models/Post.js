@@ -28,6 +28,7 @@ const postSchema = mongoose.Schema({
     ref: 'Post',
   }, // See above for top-level Comments, vs. nested Comments, vs. Posts.
   url: String,
+  titleSlug: String, // For the title.
 });
 
 const Post = mongoose.model('Post', postSchema);
