@@ -52,10 +52,8 @@ module.exports = {
           posts.forEach((post) => {
             promises.push(utils.matryoksha(post));
           });
-          Promise.all(promises).then((posts) => {
+          Promise.all(promises).then(() => {
             res.status(200).json(posts);
-          }).catch((err) => {
-            res.status(400).send([]);
           });
         })
       });

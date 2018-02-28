@@ -5,7 +5,7 @@ const utils = require('./utils');
 
 module.exports = {
   POST(req, res) {
-    models.Subreddit.findOne({ title: req.params.subName }).then((subreddit) => {
+    models.Subreddit.findOne({ titleSlug: req.params.subName }).then((subreddit) => {
       models.Subscription.find({
         user: req.session.user._id,
         subreddit: subreddit._id,
@@ -24,7 +24,7 @@ module.exports = {
     });
   },
   DELETE(req, res) {
-    models.Subreddit.findOne({ title: req.params.subName }).then((subreddit) => {
+    models.Subreddit.findOne({ titleSlug: req.params.subName }).then((subreddit) => {
       models.Subscription.remove({
         user: req.session.user._id,
         subreddit: subreddit._id,
