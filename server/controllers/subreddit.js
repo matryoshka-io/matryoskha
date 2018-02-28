@@ -1,4 +1,3 @@
-const slugify = require('slugify');
 const db = require('../database');
 const models = require('../models');
 
@@ -21,7 +20,7 @@ module.exports = {
         });
     },
     post(req, res) {
-      models.Subreddit.findOne({ titleSlug: slugify(req.params.subName) })
+      models.Subreddit.findOne({ titleSlug: req.params.subName })
         .then((subreddit) => {
           if (req.body.type === 'Text') {
             const newPostData = {
@@ -58,7 +57,7 @@ module.exports = {
     },
   },
   GET(req, res) {
-    models.Subreddit.findOne({ titleSlug: slugify(req.params.subName) })
+    models.Subreddit.findOne({ titleSlug: req.params.subName })
       .then((subreddit) => {
         models.Post.find({ subreddit: subreddit._id }).lean()
           .then((posts) => {
@@ -75,7 +74,7 @@ module.exports = {
       });
   },
   PUT(req, res) {
-    models.Subreddit.findOne({ titleSlug: slugify(req.params.subName) }).populate('creator').lean()
+    models.Subreddit.findOne({ titleSlug: req.params.subName }).populate('creator').lean()
       .then((subreddit) => {
         if (subreddit.creator.username === req.session.username) {
           models.Subreddit.update({ _id: subreddit._id }, req.body).then((response) => {
