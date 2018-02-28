@@ -23,7 +23,7 @@ module.exports = {
           });
         });
     } else {
-      models.User.findOne({ username: req.session.username }).then((user) => {
+      models.User.findOne({ username: req.session.user.username }).then((user) => {
         models.Subscription.find({ user: user._id }).populate('subreddit').then((subscriptions) => {
           models.Post.find({ type: { $not: /Comment/ } })
             .populate('subreddit')
