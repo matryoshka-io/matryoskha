@@ -17,6 +17,7 @@ class PostForm extends React.Component {
       type: 'Text',
       subredditName: '',
       subredditText: '',
+      subredditId: '',
       bodyText: '',
     };
   }
@@ -72,16 +73,25 @@ class PostForm extends React.Component {
           console.log('responseData', responseData)
           const subredditTitle = responseData.subreddit.title;
           if (subredditTitle === this.state.subredditText) {
-            return this.setState({ subredditName: subredditTitle })
+            this.setState({
+              subredditName: subredditTitle,
+              subredditId: responseData.subreddit._id
+            }, () => {
+              console.log('subredditId', this.state.subredditId)
+            })
           }
-          console.log('No such subreddit exists.');
         });
+        return this.state.subredditName
+      })
+      .then(res => {
+        return axios.post(`/api/sub/${this.state.subredditName}`,
+          //need to send in subreddit id
+          { title: titleText, type: this.state.type, body: this.state.bodyText, subreddit: this.state.subredditId },
+          auth.makeTokenHeader(token))
       })
       .then((res) => {
-        axios.post(`/api/sub/${this.state.subredditName}`, { title: titleText, type: this.state.type, body: bodyText })
-      })
-      .then((res) => {
-        console.log('successful post')
+        console.log('ressssss', res)
+        console.log('SUCCESSFUL POST POST')
       });
     //work on links later
   }
