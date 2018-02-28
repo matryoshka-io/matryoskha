@@ -30,10 +30,17 @@ const postSchema = mongoose.Schema({
   }, // See above for top-level Comments, vs. nested Comments, vs. Posts.
   url: String,
   titleSlug: String, // For the title.
+  metadata: {
+    title: String, // Of the article.
+    snippet: String, // Beginning sentence of the article, for example.
+    thumbnail: String, // Link to a thumbnail of the article's main image.
+  },
 });
 
 postSchema.pre('save', function (next) {
-  this.titleSlug = slugify(this.title);
+  if (this.title) {
+    this.titleSlug = slugify(this.title);
+  }
   next();
 });
 

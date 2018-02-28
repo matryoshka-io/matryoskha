@@ -5,55 +5,51 @@ const utils = require('./utils');
 
 module.exports = {
   POST(req, res) {
-    models.User.findOne({ username: req.session.username }).then((user) => {
-      models.Vote.find({ user: user._id, post: req.params.postId }).then((vote) => {
-        if (vote.length !== 0) {
-          res.status(409).end('You already voted on this post.');
-        } else {
-          const newVoteData = {
-            user: user._id,
-            post: req.params.postId,
-            value: req.body.vote, // Either -1 for a downvote or 1 for an upvote. This is handled by the client.
-          };
-          const newVote = new models.Vote(newVoteData);
-          newVote.save().then((vote) => {
-            models.Post.findOne({ _id: req.params.postId }).then((post) => {
-              models.User.update({
-                _id: post.author,
-              }, {
-                $inc: {
-                  karma: vote.value,
-                },
-              }).then((response) => {
-                res.status(201).json(vote);
-              });
+    models.Vote.find({ user: req.session.user._id, post: req.params.postId }).then((vote) => {
+      if (vote.length !== 0) {
+        res.status(409).end('You already voted on this post.');
+      } else {
+        const newVoteData = {
+          user: req.session.user._id,
+          post: req.params.postId,
+          value: req.body.vote, // Either -1 for a downvote or 1 for an upvote. This is handled by the client.
+        };
+        const newVote = new models.Vote(newVoteData);
+        newVote.save().then((vote) => {
+          models.Post.findOne({ _id: req.params.postId }).then((post) => {
+            models.User.update({
+              _id: post.author,
+            }, {
+              $inc: {
+                karma: vote.value,
+              },
+            }).then((response) => {
+              res.status(201).json(vote);
             });
           });
-        }
-      });
+        });
+      }
     });
   },
   DELETE(req, res) {
-    models.User.findOne({ username: req.session.username }).then((user) => {
-      models.Vote.findOne({
-        user: user._id,
-        post: req.params.postId,
-      }).then((vote) => {
-        console.log(vote);
-        models.Post.findOne({ _id: req.params.postId }).then((post) => {
-          models.User.update({
-            _id: post.author,
-          }, {
-            $inc: {
-              karma: -vote.value,
-            },
+    models.Vote.findOne({
+      user: req.session.user._id,
+      post: req.params.postId,
+    }).then((vote) => {
+      console.log(vote);
+      models.Post.findOne({ _id: req.params.postId }).then((post) => {
+        models.User.update({
+          _id: post.author,
+        }, {
+          $inc: {
+            karma: -vote.value,
+          },
+        }).then((response) => {
+          models.Vote.remove({
+            user: req.session.user._id,
+            post: post._id,
           }).then((response) => {
-            models.Vote.remove({
-              user: user._id,
-              post: post._id,
-            }).then((response) => {
-              res.status(200).end('Successfully removed vote!');
-            });
+            res.status(200).end('Successfully removed vote!');
           });
         });
       });
