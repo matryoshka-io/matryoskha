@@ -23,22 +23,25 @@ module.exports = {
           });
         });
     } else {
-      models.User.findOne({ username: req.session.username }).then((user) => {
+      models.User.findOne({ username: req.session.user.username }).then((user) => {
         models.Subscription.find({ user: user._id }).populate('subreddit').then((subscriptions) => {
+          console.log('subscriptions ', subscriptions);
           models.Post.find({ type: { $not: /Comment/ } })
             .populate('subreddit')
             .populate('author')
             .lean()
             .then((posts) => {
-              posts = posts.filter((post) => {
-                let keep = false;
-                subscriptions.forEach((subscription) => {
-                  if (post.subreddit._id.toString() === subscription.subreddit._id.toString()) {
-                    keep = true;
-                  }
+              if (subscriptions.length) {
+                posts = posts.filter((post) => {
+                  let keep = false;
+                  subscriptions.forEach((subscription) => {
+                    if (post.subreddit._id.toString() === subscription.subreddit._id.toString()) {
+                      keep = true;
+                    }
+                  });
+                  return keep;
                 });
-                return keep;
-              });
+              }
               utils.getKarmaAndSort(posts, (posts) => {
                 const promises = [];
                 posts.forEach((post) => {

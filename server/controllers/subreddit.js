@@ -67,11 +67,11 @@ module.exports = {
               posts.forEach((post) => {
                 promises.push(utils.matryoksha(post));
               });
-              Promise.all(promises).then(() => {
-                res.status(200).end(JSON.stringify(posts));
-              });
-            });
-          });
+              return Promise.all(promises);
+            })
+          })
+          .then(posts => res.status(200).end(JSON.stringify(posts)))
+          .catch(err => res.status(200).send([]));
       });
   },
   PUT(req, res) {

@@ -10,12 +10,17 @@ import data from '../utils/data';
 import sessions from '../utils/sessions';
 
 
-class Homepage extends Component {
+class Frontpage extends Component {
   static async getInitialProps(context) {
+    const title = context.query.sub !== undefined && context.query.sub !== null ? context.asPath : 'Matryoshka: The Internet, Stacked';
+    console.log('PAGE QUERY PARAMS: ', context.query);
+    console.log('asPath', context.asPath);
+
     const session = await auth.initializeSession(context);
-    const posts = await data.getPosts(session);
+    const posts = await data.getPosts(session, context.query.sub);
 
     return {
+      title,
       user: session.user,
       token: session.token,
       posts,
@@ -25,6 +30,7 @@ class Homepage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      title: this.props.title,
       user: this.props.user,
       token: this.props.token,
       posts: this.props.posts,
@@ -58,21 +64,27 @@ class Homepage extends Component {
           this.setState({
             user: result.user,
             token: result.token,
-          }, () => this.refreshPosts());
+          }, () => {
+            console.log(this.state.user);
+            // this.refreshPosts();
+          });
           return;
         }
         sessions.deleteCookie('jwt');
         this.setState({
           user: null,
           token: null,
-        }, () => this.refreshPosts());
+        }, () => {
+          // this.refreshPosts();
+          console.log(this.state.user);
+        });
       })
       .catch(err => console.log(err));
   }
 
   render() {
     return (
-      <Page>
+      <Page title={this.state.title}>
         <div className="pageContent">
           <div className="posts" >
             <Posts posts={this.state.posts} />
@@ -114,4 +126,4 @@ class Homepage extends Component {
   }
 }
 
-export default Homepage;
+export default Frontpage;
