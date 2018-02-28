@@ -18,9 +18,8 @@ class CommentListEntry extends React.Component {
     };
   }
 
-  onReplyClickHandler() {
-    //when clicked, this.setState isReplyBoxHidden to false
-
+  onReplyClickHandler = () => {
+    this.setState({ isReplyBoxHidden: false })
   }
 
   onDeleteClickHandler() {
@@ -49,8 +48,12 @@ class CommentListEntry extends React.Component {
       <div>
         <MuiThemeProvider>
           <Paper style={this.style} zDepth={2} className="commentEntry">
-            {this.props.comment.author}
+
             <ReactMarkdown source={this.props.comment.body} />
+            <div id="date">
+              {this.props.comment.date}
+            </div>
+
           </Paper>
           <div className="bar">
             <div id="replyComment">
@@ -70,6 +73,9 @@ class CommentListEntry extends React.Component {
             justify-content: space-between;
             max-width: 125px;
             margin: 5px 0px 12px 15px;
+          }
+          #date {
+            font-size: 10px;
           }
           .commentEntry {
             width: 98%;
