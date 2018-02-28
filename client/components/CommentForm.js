@@ -25,7 +25,7 @@ class CommentForm extends React.Component {
     const token = sessions.getToken('jwt');
     axios.get('/api', auth.makeTokenHeader(token))
       .then(res => {
-        console.log('ressss', res)
+        console.log('ressss data', res)
         res.data.forEach(data => {
           this.setState({
             postId: data._id
