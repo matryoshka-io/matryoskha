@@ -1,17 +1,11 @@
 const addPageRoutes = (server, app) => {
   // Public Views
   server.get('/r/:sub/:post/:comment', (req, res) => {
-    const queryParams = {
-      subreddit: req.params.sub,
-      post: req.params.post,
-      comment: req.params.comment,
-    };
-    app.render(req, res, '/comment', queryParams);
+    app.render(req, res, '/comment', req.params);
   });
 
   server.get('/r/:sub/:post', (req, res) => {
-    const queryParams = { subreddit: req.params.sub, post: req.params.post };
-    app.render(req, res, '/post', queryParams);
+    app.render(req, res, '/post', req.params);
   });
 
   server.get('/r/:sub', (req, res) => {
@@ -24,8 +18,7 @@ const addPageRoutes = (server, app) => {
   // content :: posts, comments, subscriptions, subreddits
   // default :: posts
   server.get('/u/:name/:content', (req, res) => {
-    const queryParams = { name: req.params.name, content: req.params.content };
-    app.render(req, res, '/user/profile', queryParams);
+    app.render(req, res, '/user/profile', req.params);
   });
 
   server.get('/u/:name', (req, res) => app.render(req, res, '/user/profile', req.params));
@@ -40,8 +33,7 @@ const addPageRoutes = (server, app) => {
   });
 
   server.get('/', (req, res) => {
-    const queryParams = {};
-    app.render(req, res, '/frontpage', queryParams);
+    app.render(req, res, '/frontpage', req.params);
   });
 };
 
