@@ -4,6 +4,14 @@ import ReactMarkdown from 'react-markdown';
 class CommentListEntry extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      isReplyBoxHidden: true
+    }
+  }
+
+  onReplyClickHandler() {
+    //show commentForm
+
   }
 
   onDeleteClickHandler() {
@@ -24,12 +32,15 @@ class CommentListEntry extends React.Component {
 
   }
 
+
+
   render() {
     console.log('entry props', this.props)
     return (
-      < div className="commentEntry">
-        <ReactMarkdown source={this.props.comment.body} />
-        <div id="replyComment">
+      <div>
+        < div className="commentEntry">
+          <ReactMarkdown source={this.props.comment.body} />
+          <div id="replyComment"></div>
           <a onClick={this.onReplyClickHandler}>reply</a>
         </div>
         <div id="deleteComment">
@@ -54,9 +65,7 @@ class CommentListEntry extends React.Component {
           }
         `}
         </style>
-      </div >
-
-
+      </div>
     )
   }
 }
