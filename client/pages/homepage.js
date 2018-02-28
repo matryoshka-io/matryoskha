@@ -2,7 +2,7 @@ import Nav from '../components/nav'
 import Posts from '../components/posts'
 import LoginForm from '../components/loginForm'
 import Footer from '../components/footer'
-import Data from '../../server/database/data.json'
+import Data from '../../server/database/dataFrontEnd.json'
 
 
 const Homepage = props => (
