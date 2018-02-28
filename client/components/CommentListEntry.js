@@ -49,28 +49,40 @@ class CommentListEntry extends React.Component {
       <div>
         <MuiThemeProvider>
           <Paper style={this.style} zDepth={2} className="commentEntry">
+            {this.props.comment.author}
             <ReactMarkdown source={this.props.comment.body} />
           </Paper>
-
-          <div id="replyComment">
-            <a onClick={this.onReplyClickHandler}>reply</a>
-          </div>
-          <div id="deleteComment">
-            <a onClick={this.onDeleteClickHandler}>delete</a>
-          </div>
-          <div id="editComment">
-            <a onClick={this.onEditClickHandler}>edit</a>
+          <div className="bar">
+            <div id="replyComment">
+              <a onClick={this.onReplyClickHandler}>reply</a>
+            </div>
+            <div id="deleteComment">
+              <a onClick={this.onDeleteClickHandler}>delete</a>
+            </div>
+            <div id="editComment">
+              <a onClick={this.onEditClickHandler}>edit</a>
+            </div>
           </div>
           <CommentList comments={this.props.comment.comments} />
           <style> {`
+          .bar {
+            display: flex;
+            justify-content: space-between;
+            max-width: 125px;
+            margin: 5px 0px 12px 15px;
+          }
           .commentEntry {
             width: 98%;
             margin: auto;
+            padding: 10px 5px 5px 10px;
           }
           #replyComment a, #deleteComment a, #editComment a {
-            display: inline-block;
+            display: flex;
+            align-items: center;
             font-size: 11px;
             text-transform: uppercase;
+            padding: 10px 0 0;
+
           }
           a:hover {
             color: #A9A9A9;
