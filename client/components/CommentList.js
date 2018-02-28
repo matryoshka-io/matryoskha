@@ -8,14 +8,10 @@ class CommentList extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.setState({ comments: newProps }, () => {
-      console.log('huh?', this.state.comments.comments);
-      console.log('comments???', this.state.comments)
-    })
+    this.setState({ comments: newProps })
   }
 
   render() {
-    console.log('this.props.comments', this.props.comments)
     return (
       <div >
         {this.props.comments.map((comment, index) => {
