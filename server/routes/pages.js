@@ -15,8 +15,8 @@ const addPageRoutes = (server, app) => {
   });
 
   server.get('/r/:sub', (req, res) => {
-    const queryParams = { subreddit: req.params.sub };
-    app.render(req, res, '/subreddit', queryParams);
+    // const queryParams = { subreddit: req.params.sub };
+    app.render(req, res, '/frontpage', req.params);
   });
 
   // All User lists views are indicated by a :content param
@@ -41,7 +41,7 @@ const addPageRoutes = (server, app) => {
 
   server.get('/', (req, res) => {
     const queryParams = {};
-    app.render(req, res, '/homepage', queryParams);
+    app.render(req, res, '/frontpage', queryParams);
   });
 };
 
