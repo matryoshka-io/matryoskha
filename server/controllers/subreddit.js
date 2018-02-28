@@ -12,6 +12,9 @@ module.exports = {
         creator: req.session.user._id,        
       })).save().then((subreddit) => {
         res.status(201).json(subreddit);
+      }).catch((err) => {
+        console.log(err.code)
+        res.status(400).end(`Error while creating subreddit: ${err}`);
       });
     },
     post(req, res) {
