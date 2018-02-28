@@ -29,6 +29,9 @@ class CommentListEntry extends React.Component {
     return (
       < div className="commentEntry">
         <ReactMarkdown source={this.props.comment.body} />
+        <div id="replyComment">
+          <a onClick={this.onReplyClickHandler}>reply</a>
+        </div>
         <div id="deleteComment">
           <a onClick={this.onDeleteClickHandler}>delete</a>
         </div>
@@ -41,7 +44,7 @@ class CommentListEntry extends React.Component {
             width: 98%;
             margin: auto;
           }
-          #deleteComment a, #editComment a {
+          #replyComment a, #deleteComment a, #editComment a {
             display: inline-block;
             font-size: 11px;
             text-transform: uppercase;
