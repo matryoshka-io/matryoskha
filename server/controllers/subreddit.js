@@ -57,21 +57,34 @@ module.exports = {
     },
   },
   GET(req, res) {
+    // models.Subreddit.findOne({ title: req.params.subName })
+    //   .then((subreddit) => {
+    //     models.Post.find({ subreddit: subreddit._id }).lean()
+    //       .then((posts) => {
+    //         utils.getKarmaAndSort(posts, (posts) => {
+    //           const promises = [];
+    //           posts.forEach((post) => {
+    //             promises.push(utils.matryoksha(post));
+    //           });
+    //           Promise.all(promises).then(() => {
+    //             res.status(200).end(JSON.stringify(posts));
+    //           });
+    //         });
+    //       });
+    //   });
     models.Subreddit.findOne({ title: req.params.subName })
-      .then((subreddit) => {
-        models.Post.find({ subreddit: subreddit._id }).lean()
-          .then((posts) => {
-            utils.getKarmaAndSort(posts, (posts) => {
-              const promises = [];
-              posts.forEach((post) => {
-                promises.push(utils.matryoksha(post));
-              });
-              Promise.all(promises).then(() => {
-                res.status(200).end(JSON.stringify(posts));
-              });
-            });
+      .then(subreddit => models.Post.find({ subreddit: subreddit._id }).lean())
+      .then((posts) => {
+        utils.getKarmaAndSort(posts, (posts) => {
+          const promises = [];
+          posts.forEach((post) => {
+            promises.push(utils.matryoksha(post));
           });
-      });
+          return Promise.all(promises);
+        });
+      })
+      .then(posts => res.status(200).end(JSON.stringify(posts)))
+      .catch(err => res.status(200).send([]));
   },
   PUT(req, res) {
     models.Subreddit.findOne({ title: req.params.subName }).populate('creator').lean()
