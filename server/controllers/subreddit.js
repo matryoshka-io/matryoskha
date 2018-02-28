@@ -13,8 +13,11 @@ module.exports = {
       })).save().then((subreddit) => {
         res.status(201).json(subreddit);
       }).catch((err) => {
-        console.log(err.code)
-        res.status(400).end(`Error while creating subreddit: ${err}`);
+        if (err.code === 11000) {
+          res.status(409).end('There is already a subreddit with that name!');
+        } else {
+          res.status(400).end(`Error while creating subreddit: ${err}`);
+        }
       });
     },
     post(req, res) {
