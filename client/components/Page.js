@@ -1,6 +1,8 @@
 import Nav from './Nav';
 import Footer from './Footer';
 
+
+
 export default ({ title, children }) => (
   <div className="main">
     <h2>{ title }</h2>
