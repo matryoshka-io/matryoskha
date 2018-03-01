@@ -16,3 +16,9 @@ rules:
     off
   consistent-return:
     off
+  react/jsx-filename-extension:
+    off
+  react/prop-types:
+    off
+  react/react-in-jsx-scope:
+    off

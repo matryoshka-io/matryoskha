@@ -15,6 +15,10 @@ const authRoutes = require('./routes').auth;
 const apiRoutes = require('./routes').api;
 const addPageRoutes = require('./routes').pages;
 
+// Testing
+const fakeSession = require('./middleware/fakeSession');
+const fakeLogin = require('./middleware/fakeLogin');
+
 app.prepare()
   .then(() => {
     const server = express();
@@ -22,8 +26,12 @@ app.prepare()
     // Middleware & Auth
     server.use(bodyParser.json());
     server.use(bodyParser.urlencoded({ extended: true }));
-    // server.use(cookieParser());
+    server.use(cookieParser());
     // server.use(sessions);
+
+    // Testing
+    // server.use(fakeSession);
+    // server.use(fakeLogin);
 
     // Routes
     server.use('/auth', authRoutes);
@@ -36,6 +44,7 @@ app.prepare()
 
     // Start the server
     server.listen(3000, (err) => {
+      server.keepAliveTimeout = 0;
       if (err) {
         console.log(`Error starting server: ${err}`);
       } else {

@@ -1,5 +1,3 @@
-
-
 const Profile = (props) => (
   <div>
     <h1>{props.url.asPath}</h1>

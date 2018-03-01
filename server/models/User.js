@@ -16,31 +16,33 @@ const userSchema = mongoose.Schema({
   karma: Number, // Cache value for the combined value of upvotes and downvotes for a User's content.
 });
 
-// userSchema.pre('save', (next) => {
-//   const user = this;
-//   if (!user.isModified('password')) return next();
+userSchema.pre('save', function EncryptUserPasswordOnSave(next) {
+  const user = this;
+  if (!user.isModified('password')) {
+    return next();
+  }
+  console.log('\nUSER:  Updating Password\n');
+  bcrypt
+    .genSalt(10)
+    .then((salt) => {
+      user.salt = salt;
+      return bcrypt.hash(user.password, salt);
+    })
+    .then((hash) => {
+      user.password = hash;
+      return next();
+    })
+    .catch(err => next(err));
+});
 
-//   bcrypt
-//     .genSalt(10)
-//     .then((salt) => {
-//       user.salt = salt;
-//       return bcrypt.hash(user.password, salt);
-//     })
-//     .then((hash) => {
-//       user.password = hash;
-//       return next();
-//     })
-//     .catch(err => next(err));
-// });
-
-// userSchema.methods.comparePassword = (candidatePassword) => {
-//   return new Promise((resolve, reject) => {
-//     bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-//       if (err) return reject(err);
-//       return resolve(isMatch);
-//     });
-//   });
-// };
+userSchema.methods.comparePassword = function ValidateSubmittedPassword(candidatePassword) {
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+      if (err) return reject(err);
+      return resolve(isMatch);
+    });
+  });
+};
 
 const User = mongoose.model('User', userSchema);
 

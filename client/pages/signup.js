@@ -1,4 +1,58 @@
-import Signup from '../components/signUp'
+import { Component } from 'react';
+import Router from 'next/router';
 
-export default Signup 
+import SignupForm from '../components/SignupForm';
+import Page from '../components/Page';
+import auth from '../utils/auth';
 
+class SignupPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      message: '',
+    };
+    this.registerUser = this.registerUser.bind(this);
+  }
+
+  registerUser(username, password) {
+    console.log(`register ${username}, ${password}`);
+    const app = this;
+    auth.registerUser(username, password)
+      .then((result) => {
+        console.log('RESULT: ', result);
+        if (result.success) {
+          Router.replace('/');
+        } else {
+          app.setState({
+            message: result.message,
+          }, () => setTimeout(() => app.setState({ message: '' }), 3000));
+        }
+      })
+      .catch((err) => {
+        console.log('ERROR: ', err);
+        app.setState({
+          message: err.message,
+        }, () => setTimeout(() => app.setState({ message: ''}), 3000));
+      });
+  }
+
+  render() {
+    return (
+      <Page>
+        <SignupForm
+          submitForm={this.registerUser}
+          message={this.state.message}
+        />
+      </Page>
+    );
+  }
+}
+
+SignupPage.getInitialProps = async function GetInitialPropsForRegistrationPage(context) {
+  // check for session state
+  //    if session is active, redirect?
+  //    if not, continue
+  return {};
+};
+
+export default SignupPage;
