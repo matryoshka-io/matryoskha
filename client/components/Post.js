@@ -5,7 +5,7 @@ import PostDetails from './PostDetails';
 import Rating from './Rating';
 import SubredditBar from './SubredditBar';
 
-const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date }) => {
+const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, castVote }) => {
   const image = null; // need image defaults by post type, image in backend response
   const postImageStyle = {
     background: `url(${image}) top center no-repeat`,
