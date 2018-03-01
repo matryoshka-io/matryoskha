@@ -38,6 +38,7 @@ const SubredditPanelBody = ({ user, subreddit, subscribe }) => {
       </div>
     );
   }
+  return (<div />);
 };
 
 export default SubredditPanelBody;
