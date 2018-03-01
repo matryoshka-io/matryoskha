@@ -9,6 +9,7 @@ import Data from '../../server/database/dataFrontEnd.json';
 import auth from '../utils/auth';
 import data from '../utils/data';
 import profile from '../utils/profile';
+import vote from '../utils/votes';
 import sessions from '../utils/sessions';
 
 class Frontpage extends Component {
@@ -49,6 +50,12 @@ class Frontpage extends Component {
       sessions.deleteCookie('jwt');
     }
     // this.refreshPosts();
+  }
+
+  castVote(id) {
+    vote.castVote(id)
+      .then(result => console.log('voted'))
+      .catch(err => console.log('no vote'));
   }
 
   refreshPosts() {
@@ -109,7 +116,10 @@ class Frontpage extends Component {
       <Page title={this.state.title}>
         <div className="pageContent">
           <div className="posts" >
-            <Posts posts={this.state.posts} />
+            <Posts
+              posts={this.state.posts}
+              vote={this.castVote}
+            />
           </div>
           <div className="login" >
             <UserPanelBody
