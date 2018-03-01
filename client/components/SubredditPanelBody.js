@@ -1,20 +1,15 @@
-import LoginForm from './LoginForm';
-
-// todo: separate into frontpage, subreddit varieties for logged-in
-const UserPanelBody = ({ user, login, logout, subscribe }) => {
-  if (user && user.username) {
+const SubredditPanelBody = ({ user, subreddit, subscribe }) => {
+  if (subreddit && user) {
     return (
-      <div className="user__panel">
-        <h3>{user.username}</h3>
-        <button className="button primary" >Create Post</button>
-        <button className="button primary" >Submit Article</button>
-        <button className="button primary" >Submit Image</button>
+      <div className="body__panel">
+        <h3>{`/r/${subreddit}`}</h3>
+        <button className="button primary" >Subscribe</button>
         <style jsx>
           {`
             h3 {
               text-align: center
             }
-            .user__panel {
+            .body__panel {
               height: 200px;
               display: flex;
               flex-direction: column;
@@ -43,7 +38,6 @@ const UserPanelBody = ({ user, login, logout, subscribe }) => {
       </div>
     );
   }
-  return <LoginForm login={login} />;
 };
 
-export default UserPanelBody;
+export default SubredditPanelBody;

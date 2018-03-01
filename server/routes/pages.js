@@ -9,7 +9,6 @@ const addPageRoutes = (server, app) => {
   });
 
   server.get('/r/:sub', (req, res) => {
-    // const queryParams = { subreddit: req.params.sub };
     app.render(req, res, '/frontpage', req.params);
   });
 

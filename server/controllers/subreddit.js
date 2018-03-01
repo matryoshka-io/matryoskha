@@ -54,17 +54,24 @@ module.exports = {
   },
   GET(req, res) {
     models.Subreddit.findOne({ titleSlug: req.params.subName }).then((subreddit) => {
-      models.Post.find({ subreddit: subreddit._id }).lean().then((posts) => {
-        utils.getKarmaAndSort(posts, (posts) => {
-          const promises = [];
-          posts.forEach((post) => {
-            promises.push(utils.matryoksha(post));
-          });
-          Promise.all(promises).then(() => {
-            res.status(200).json(posts);
+      models.Post.find({ subreddit: subreddit._id })
+        .populate('subreddit')
+        .populate('author')
+        .lean()
+        .then((posts) => {
+          utils.getKarmaAndSort(posts, (posts) => {
+            const promises = [];
+            posts.forEach((post) => {
+              promises.push(utils.matryoksha(post));
+            });
+            Promise.all(promises)
+              .then(() => {
+                res.status(200).json(posts);
+              })
+              .catch(err => res.status(200).send([]));
           });
         })
-      });
+        .catch(err => res.status(200).send([]));
     });
   },
   PUT(req, res) {

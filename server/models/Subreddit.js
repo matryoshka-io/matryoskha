@@ -22,10 +22,14 @@ const subredditSchema = mongoose.Schema({
   },
 });
 
-subredditSchema.pre('save', function (next) {
+subredditSchema.pre('save', function CreateSlugFromTitle(next) {
   // Hopefully there are no collisions in terms of uniqueness. e.g. 'Cats' and 'cats' are different, but
   // both resolve to 'cats'. This 'save' thing should throw an error, we'll see.
-  this.titleSlug = slugify(this.title).toLowerCase();
+  this.titleSlug = slugify(this.title, {
+    replacement: '-',
+    remove: /[$*_+~.()'"!\-:@]/g,
+    lower: true,
+  });
   next();
 });
 
