@@ -5,7 +5,6 @@ import Posts from '../components/Posts';
 import UserPanelBody from '../components/UserPanelBody';
 import SubredditPanelBody from '../components/SubredditPanelBody';
 
-import auth from '../utils/auth';
 import profile from '../utils/profile';
 import data from '../utils/data';
 import sessions from '../utils/sessions';
@@ -13,15 +12,8 @@ import sessions from '../utils/sessions';
 
 class Homepage extends Component {
   static async getInitialProps(context) {
-    const session = await auth.initializeSession(context);
-    const posts = await data.getPosts(session);
-
-    return {
-      subreddit: context.query.sub || null,
-      user: session.user,
-      token: session.token,
-      posts,
-    };
+    const initialProps = data.prepPostView(context);
+    return initialProps;
   }
 
   constructor(props) {
