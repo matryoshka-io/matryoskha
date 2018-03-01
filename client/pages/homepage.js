@@ -3,9 +3,10 @@ import { Component } from 'react';
 import Page from '../components/Page';
 import Posts from '../components/Posts';
 import UserPanelBody from '../components/UserPanelBody';
+import SubredditPanelBody from '../components/SubredditPanelBody';
 
-import Data from '../../server/database/dataFrontEnd.json';
 import auth from '../utils/auth';
+import profile from '../utils/profile';
 import data from '../utils/data';
 import sessions from '../utils/sessions';
 
@@ -16,6 +17,7 @@ class Homepage extends Component {
     const posts = await data.getPosts(session);
 
     return {
+      subreddit: context.query.sub || null,
       user: session.user,
       token: session.token,
       posts,
@@ -25,12 +27,15 @@ class Homepage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      subreddit: this.props.subreddit,
       user: this.props.user,
       token: this.props.token,
       posts: this.props.posts,
     };
     this.loginUser = this.loginUser.bind(this);
     this.refreshPosts = this.refreshPosts.bind(this);
+    this.logoutUser = this.logoutUser.bind(this);
+    this.subscribe = this.subscribe.bind(this);
   }
 
   componentWillMount() {
@@ -41,13 +46,30 @@ class Homepage extends Component {
   }
 
   refreshPosts() {
-    data.getPosts({ user: this.state.user, token: this.state.token })
+    data.getPosts({ user: this.state.user, token: this.state.token }, this.state.subreddit)
       .then((posts) => {
         this.setState({
           posts,
         });
       })
       .catch(err => console.log(err));
+  }
+
+  subscribe() {
+    if (this.state.subreddit && this.state.user) {
+      profile.subscribe({ user: this.state.user, token: this.state.token }, this.state.subreddit)
+        .then(result => console.log(result))
+        .catch(err => console.log(err));
+    }
+  }
+
+  logoutUser() {
+    // todo: submit token value to backend for blacklist
+    sessions.deleteCookie('jwt');
+    this.setState({
+      user: null,
+      token: null,
+    }, () => this.refreshPosts());
   }
 
   loginUser(username, password) {
@@ -78,7 +100,15 @@ class Homepage extends Component {
             <Posts posts={this.state.posts} />
           </div>
           <div className="login" >
-            <UserPanelBody user={this.state.user} login={this.loginUser} />
+            <UserPanelBody
+              user={this.state.user}
+              login={this.loginUser}
+              logout={this.logoutUser}
+            />
+            <SubredditPanelBody
+              subreddit={this.state.subreddit}
+              subscribe={this.subscribe}
+            />
           </div>
         </div>
         <style jsx>

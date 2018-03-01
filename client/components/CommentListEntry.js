@@ -43,7 +43,6 @@ class CommentListEntry extends React.Component {
 
 
   render() {
-    console.log('entry props', this.props)
     return (
       <div>
         <MuiThemeProvider>
