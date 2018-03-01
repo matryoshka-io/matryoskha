@@ -7,8 +7,10 @@ class CommentListEntry extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isReplyBoxHidden: true
+      isReplyBoxHidden: true,
+      commentBody: '',
     }
+
     const style = {
       height: 100,
       width: 100,
@@ -17,6 +19,8 @@ class CommentListEntry extends React.Component {
       display: 'inline-block',
     };
   }
+
+
 
   onReplyClickHandler = () => {
     this.setState({ isReplyBoxHidden: false })
@@ -43,12 +47,14 @@ class CommentListEntry extends React.Component {
 
 
   render() {
+    // console.log('commentbody', this.props.comment.body)
     return (
       <div>
         <MuiThemeProvider>
           <Paper style={this.style} zDepth={2} className="commentEntry">
 
             <ReactMarkdown source={this.props.comment.body} />
+
             <div id="date">
               {this.props.comment.date}
             </div>
@@ -66,6 +72,7 @@ class CommentListEntry extends React.Component {
             </div>
           </div>
           <CommentList comments={this.props.comment.comments} />
+
           <style> {`
           .bar {
             display: flex;

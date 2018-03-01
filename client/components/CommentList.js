@@ -1,10 +1,19 @@
 import React from 'react';
 import CommentListEntry from './CommentListEntry';
-
+import ReactMarkdown from 'react-markdown';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import Paper from 'material-ui/Paper';
 
 class CommentList extends React.Component {
   constructor(props) {
     super(props);
+    const style = {
+      height: 100,
+      width: 100,
+      margin: 20,
+      textAlign: 'center',
+      display: 'inline-block',
+    };
   }
 
   componentWillReceiveProps(newProps) {
@@ -13,21 +22,26 @@ class CommentList extends React.Component {
 
   render() {
     return (
-      <div className="list">
-        {this.props.comments.map((comment, index) => {
-          //if comment has a parent post, render different css
-          return (
-            <CommentListEntry key={comment._id} index={index} comment={comment} />
-          )
-        })}
-        <style>{`
+      <div>
+        <MuiThemeProvider>
+          <div className="list">
+            {this.props.comments.map((comment, index) => {
+              return (
+                <CommentListEntry key={comment._id} index={index} comment={comment} newCommentBody={this.props.newCommentBody}
+                />
+              )
+            })}
+          </div>
+
+          <style>{`
           .list {
             // border-style: solid;
             border-width: 1px 1px 0px 1px;
             border-color: gray;
           }
           `}
-        </style>
+          </style>
+        </MuiThemeProvider>
       </div >
     )
   }
