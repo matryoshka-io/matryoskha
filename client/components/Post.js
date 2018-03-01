@@ -5,7 +5,7 @@ import PostDetails from './PostDetails';
 import Rating from './Rating';
 import SubredditBar from './SubredditBar';
 
-const Post = ({ _id, type, author, subreddit, title, karma, date }) => {
+const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date }) => {
   const image = null; // need image defaults by post type, image in backend response
   const postImageStyle = {
     background: `url(${image}) top center no-repeat`,
@@ -16,9 +16,9 @@ const Post = ({ _id, type, author, subreddit, title, karma, date }) => {
   return (
     <div className="post__tile">
       <div className="post__karma">
-        <div className="arrowUp"><Link href="#"><a>&#x25B2;</a></Link></div>
-        <div className="upvotesCount">{karma}</div>
-        <Link href="#"><a>&#x25BC;</a></Link>
+        <div className="post__vote">&#x25B2;</div>
+        <div>{karma}</div>
+        <div className="post__vote">&#x25BC;</div>
       </div>
       <div className="post__image" style={postImageStyle} />
       <div className="post__content">
@@ -27,13 +27,13 @@ const Post = ({ _id, type, author, subreddit, title, karma, date }) => {
           <ul>
             <li>submitted {moment(subreddit.date).fromNow()}</li>
             <li>by <Link href={`/u/${author.username}`}><a>{author.username}</a></Link></li>
-            <li>to <Link href={`/r/${subreddit._id}`} as={`/r/${subreddit.title.toLowerCase()}`}><a>{`/r/${subreddit.title.toLowerCase()}`}</a></Link></li>
+            <li>to <Link href={`/r/${subreddit.titleSlug}`}><a>{`/r/${subreddit.titleSlug}`}</a></Link></li>
           </ul>
         </div>
         <div className="post__actions">
           <ul>
             <li>
-              <Link href={`/r/${subreddit._id}/${_id}`} as={`/r/${subreddit.title.toLowerCase()}/${title.toLowerCase()}`}><a>Comments</a></Link>
+              <Link href={`/r/${subreddit.titleSlug}/${titleSlug}`}><a>Comments</a></Link>
             </li>
           </ul>
         </div>
@@ -57,6 +57,9 @@ const Post = ({ _id, type, author, subreddit, title, karma, date }) => {
           }
           .post__karma > * {
             flex: 1;
+          }
+          .post__vote {
+            text-decoration: none;
           }
           .post__image {
             width: 80px;

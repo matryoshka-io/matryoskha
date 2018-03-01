@@ -9,8 +9,8 @@ const getPosts = (session, subreddit = null, offset = 0) => {
   if (session.user) {
     headers = auth.makeTokenHeader(session.token);
   }
-  const requestUrl = subreddit ? `${BASE_URL}/api/sub/${subreddit}` : `${BASE_URL}/api/`;
-  console.log(`GET POSTS FROM: ${subreddit ? subreddit : 'Frontpage'} ${session.user ? session.user.username : 'No User'}`);
+  const requestUrl = subreddit !== null ? `${BASE_URL}/api/sub/${subreddit}` : `${BASE_URL}/api/`;
+  console.log(`GET ${requestUrl} for user: ${session.user ? session.user.username : 'N/A'}`);
   return new Promise((resolve, reject) => {
     return axios.get(requestUrl, headers)
       .then(result => resolve(result.data))
