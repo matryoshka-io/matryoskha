@@ -5,6 +5,7 @@ import SubredditNameBox from './SubredditNameBox';
 import exampleData from '../../server/database/data.json'
 import auth from '../utils/auth';
 import sessions from '../utils/sessions'
+import slugify from 'slugify';
 
 class PostForm extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class PostForm extends React.Component {
       type: 'Text',
       subredditName: '',
       subredditText: '',
+      subredditId: '',
       bodyText: '',
     };
   }
@@ -67,22 +69,30 @@ class PostForm extends React.Component {
     const token = sessions.getToken('jwt');
     axios.get('/api', auth.makeTokenHeader(token))
       .then((res) => {
-        console.log('ressss', res)
         const responseArr = JSON.parse(res.request.response)
         responseArr.forEach((responseData) => {
           console.log('responseData', responseData)
           const subredditTitle = responseData.subreddit.title;
           if (subredditTitle === this.state.subredditText) {
-            return this.setState({ subredditName: subredditTitle })
+            const slugAndLowerSubredditName = slugify(this.state.subredditText).toLowerCase();
+            this.setState({
+              subredditName: slugAndLowerSubredditName,
+              subredditId: responseData.subreddit._id
+            }, () => {
+              console.log('subredditId', this.state.subredditName)
+            })
           }
-          console.log('No such subreddit exists.');
         });
+        return this.state.subredditName
+      })
+      .then(res => {
+        return axios.post(`/api/sub/${this.state.subredditName}`,
+          { title: titleText, type: this.state.type, body: this.state.bodyText, subreddit: this.state.subredditName },
+          auth.makeTokenHeader(token))
       })
       .then((res) => {
-        axios.post(`/api/sub/${this.state.subredditName}`, { title: titleText, type: this.state.type, body: bodyText })
-      })
-      .then((res) => {
-        console.log('successful post')
+        console.log('ressssss', res)
+        console.log('SUCCESSFUL POST POST')
       });
     //work on links later
   }

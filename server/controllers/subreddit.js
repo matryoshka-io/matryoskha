@@ -9,7 +9,7 @@ module.exports = {
       (new models.Subreddit({
         title: req.body.title,
         description: req.body.description,
-        creator: req.session.user._id,        
+        creator: req.session.user._id,
       })).save().then((subreddit) => {
         res.status(201).json(subreddit);
       }).catch((err) => {
@@ -21,14 +21,16 @@ module.exports = {
       });
     },
     post(req, res) {
+      console.log('params', req.params)
       models.Subreddit.findOne({ titleSlug: req.params.subName }).then((subreddit) => {
+        console.log('subreddit', subreddit)
         if (req.body.type === 'Text') {
           (new models.Post({
             title: req.body.title,
             type: 'Text',
             body: req.body.body,
             subreddit: subreddit._id,
-            author: req.session.user._id,            
+            author: req.session.user._id,
           })).save().then((post) => {
             res.status(201).json(post);
           });
@@ -38,7 +40,7 @@ module.exports = {
             type: req.body.type,
             url: req.body.url,
             subreddit: subreddit._id,
-            author: req.session.user._id,            
+            author: req.session.user._id,
           })).save().then((post) => {
             res.status(201).json(post);
           });
