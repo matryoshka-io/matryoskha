@@ -9,7 +9,7 @@ module.exports = {
       (new models.Subreddit({
         title: req.body.title,
         description: req.body.description,
-        creator: req.session.user._id,        
+        creator: req.session.user._id,
       })).save().then((subreddit) => {
         res.status(201).json(subreddit);
       }).catch((err) => {
@@ -28,7 +28,7 @@ module.exports = {
             type: 'Text',
             body: req.body.body,
             subreddit: subreddit._id,
-            author: req.session.user._id,            
+            author: req.session.user._id,
           })).save().then((post) => {
             res.status(201).json(post);
           });
@@ -38,7 +38,7 @@ module.exports = {
             type: req.body.type,
             url: req.body.url,
             subreddit: subreddit._id,
-            author: req.session.user._id,            
+            author: req.session.user._id,
           })).save().then((post) => {
             res.status(201).json(post);
           });
@@ -52,17 +52,24 @@ module.exports = {
   },
   GET(req, res) {
     models.Subreddit.findOne({ titleSlug: req.params.subName }).then((subreddit) => {
-      models.Post.find({ subreddit: subreddit._id }).lean().then((posts) => {
-        utils.getKarmaAndSort(posts, (posts) => {
-          const promises = [];
-          posts.forEach((post) => {
-            promises.push(utils.matryoksha(post));
-          });
-          Promise.all(promises).then(() => {
-            res.status(200).json(posts);
+      models.Post.find({ subreddit: subreddit._id })
+        .populate('subreddit')
+        .populate('author')
+        .lean()
+        .then((posts) => {
+          utils.getKarmaAndSort(posts, (posts) => {
+            const promises = [];
+            posts.forEach((post) => {
+              promises.push(utils.matryoksha(post));
+            });
+            Promise.all(promises)
+              .then(() => {
+                res.status(200).json(posts);
+              })
+              .catch(err => res.status(200).send([]));
           });
         })
-      });
+        .catch(err => res.status(200).send([]));
     });
   },
   PUT(req, res) {
