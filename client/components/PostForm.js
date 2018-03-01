@@ -5,6 +5,7 @@ import SubredditNameBox from './SubredditNameBox';
 import exampleData from '../../server/database/data.json'
 import auth from '../utils/auth';
 import sessions from '../utils/sessions'
+import slugify from 'slugify';
 
 class PostForm extends React.Component {
   constructor(props) {
@@ -73,11 +74,12 @@ class PostForm extends React.Component {
           console.log('responseData', responseData)
           const subredditTitle = responseData.subreddit.title;
           if (subredditTitle === this.state.subredditText) {
+            const slugAndLowerSubredditName = slugify(this.state.subredditText).toLowerCase();
             this.setState({
-              subredditName: subredditTitle,
+              subredditName: slugAndLowerSubredditName,
               subredditId: responseData.subreddit._id
             }, () => {
-              console.log('subredditId', this.state.subredditId)
+              console.log('subredditId', this.state.subredditName)
             })
           }
         });
@@ -85,8 +87,7 @@ class PostForm extends React.Component {
       })
       .then(res => {
         return axios.post(`/api/sub/${this.state.subredditName}`,
-          //need to send in subreddit id
-          { title: titleText, type: this.state.type, body: this.state.bodyText, subreddit: this.state.subredditId },
+          { title: titleText, type: this.state.type, body: this.state.bodyText, subreddit: this.state.subredditName },
           auth.makeTokenHeader(token))
       })
       .then((res) => {
