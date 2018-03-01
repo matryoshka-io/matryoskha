@@ -3,51 +3,56 @@ import { Component } from 'react';
 import Page from '../components/Page';
 import Posts from '../components/Posts';
 import UserPanelBody from '../components/UserPanelBody';
+import SubredditPanelBody from '../components/SubredditPanelBody';
 
 import Data from '../../server/database/dataFrontEnd.json';
 import auth from '../utils/auth';
 import data from '../utils/data';
+import profile from '../utils/profile';
 import sessions from '../utils/sessions';
-
 
 class Frontpage extends Component {
   static async getInitialProps(context) {
     const title = context.query.sub !== undefined && context.query.sub !== null ? context.asPath : 'Matryoshka: The Internet, Stacked';
-    console.log('PAGE QUERY PARAMS: ', context.query);
-    console.log('asPath', context.asPath);
+    const subreddit = context.query.sub === null || context.query.sub === 'null' ? null : context.query.sub;
 
     const session = await auth.initializeSession(context);
-    const posts = await data.getPosts(session, context.query.sub);
+    const posts = await data.getPosts(session, subreddit);
 
-    return {
+    const initialProps = {
+      subreddit,
       title,
       user: session.user,
       token: session.token,
       posts,
     };
+    return initialProps;
   }
 
   constructor(props) {
     super(props);
+    // const posts = JSON.parse(this.props.posts);
     this.state = {
-      title: this.props.title,
-      user: this.props.user,
-      token: this.props.token,
+      subreddit: this.props.subreddit || null,
+      title: this.props.title || 'Hello',
+      user: this.props.user || null,
+      token: this.props.token || null,
       posts: this.props.posts,
     };
     this.loginUser = this.loginUser.bind(this);
     this.refreshPosts = this.refreshPosts.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // ensure session is cleared on client
     if (!this.state.user) {
       sessions.deleteCookie('jwt');
     }
+    // this.refreshPosts();
   }
 
   refreshPosts() {
-    data.getPosts({ user: this.state.user, token: this.state.token })
+    data.getPosts({ user: this.state.user, token: this.state.token }, this.state.subreddit)
       .then((posts) => {
         this.setState({
           posts,
@@ -82,6 +87,23 @@ class Frontpage extends Component {
       .catch(err => console.log(err));
   }
 
+  logoutUser() {
+    // todo: submit token value to backend for blacklist
+    sessions.deleteCookie('jwt');
+    this.setState({
+      user: null,
+      token: null,
+    }, () => this.refreshPosts());
+  }
+
+  subscribe() {
+    if (this.state.subreddit && this.state.user) {
+      profile.subscribe({ user: this.state.user, token: this.state.token }, this.state.subreddit)
+        .then(result => console.log(result))
+        .catch(err => console.log(err));
+    }
+  }
+
   render() {
     return (
       <Page title={this.state.title}>
@@ -90,7 +112,15 @@ class Frontpage extends Component {
             <Posts posts={this.state.posts} />
           </div>
           <div className="login" >
-            <UserPanelBody user={this.state.user} login={this.loginUser} />
+            <UserPanelBody
+              user={this.state.user}
+              login={this.loginUser}
+              logout={this.logoutUser}
+            />
+            <SubredditPanelBody
+              subreddit={this.state.subreddit}
+              subscribe={this.subscribe}
+            />
           </div>
         </div>
         <style jsx>
