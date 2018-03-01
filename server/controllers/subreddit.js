@@ -21,13 +21,15 @@ module.exports = {
       });
     },
     post(req, res) {
+      console.log('params', req.params)
       models.Subreddit.findOne({ titleSlug: req.params.subName }).then((subreddit) => {
+        console.log('subreddit', subreddit)
         if (req.body.type === 'Text') {
           (new models.Post({
             title: req.body.title,
             type: 'Text',
             body: req.body.body,
-            subreddit: req.body.subreddit,
+            subreddit: subreddit._id,
             author: req.session.user._id,
           })).save().then((post) => {
             res.status(201).json(post);
