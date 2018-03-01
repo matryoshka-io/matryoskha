@@ -32,7 +32,7 @@ class ParentPost extends React.Component {
     //   })
     axios.get('/api/post/5a8e0e2b7f911450d4600d99')
       .then(res => {
-        console.log('res from parentpost', res)
+        // console.log('res from parentpost', res)
         this.setState({
           postTitle: res.data.title,
           postBodyText: res.data.body,
@@ -45,16 +45,18 @@ class ParentPost extends React.Component {
   render() {
     return (
       <div>
-        <div class="postTitle">
+        <div className="postTitle">
           {this.state.postTitle}
         </div>
         <MuiThemeProvider>
-          <Paper style={this.style} zDepth={2} class="postBody">
-            <ReactMarkdown source={this.state.postBodyText} />
-          </Paper> <br />
+          <div>
+            <Paper style={this.style} zDepth={2} className="postBody">
+              <ReactMarkdown source={this.state.postBodyText} />
+            </Paper> <br />
+          </div>
         </MuiThemeProvider>
         Add a new comment
-        <CommentForm title={this.state.title} subredditId={this.state.subredditId} />
+        <CommentForm title={this.state.title} subredditId={this.state.subredditId} postTitle={this.state.postTitle} />
         {this.state.comments.body}
         <CommentList comments={this.state.comments} />
         <style>{`

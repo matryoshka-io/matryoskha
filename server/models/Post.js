@@ -37,9 +37,13 @@ const postSchema = mongoose.Schema({
   },
 });
 
-postSchema.pre('save', function (next) {
+postSchema.pre('save', function CreateSlugFromTitle(next) {
   if (this.title) {
-    this.titleSlug = slugify(this.title).toLowerCase();
+    this.titleSlug = slugify(this.title, {
+      replacement: '-',
+      remove: /[$*_+~.()'"!\-:@]/g,
+      lower: true,
+    });
   }
   next();
 });
