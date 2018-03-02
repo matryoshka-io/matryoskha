@@ -36,10 +36,12 @@ class Frontpage extends Component {
     // this.refreshPosts();
   }
 
-  castVote(id) {
-    utils.vote.castVote(id)
-      .then(result => console.log('voted'))
-      .catch(err => console.log('no vote'));
+  castVote(id, choice) {
+    if (utils.vote.isNewVote(this.state.votes, { _id: id, choice })) {
+      utils.vote.castVote(id, choice)
+        .then(result => console.log('voted'))
+        .catch(err => console.log('no vote'));
+    }
   }
 
   refreshPosts() {
