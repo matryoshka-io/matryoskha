@@ -19,9 +19,6 @@ class CommentForm extends React.Component {
     this.props.postComment(this.state.commentText)
   }
 
-
-
-
   render() {
     return (
       <div>
