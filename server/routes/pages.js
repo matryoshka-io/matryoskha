@@ -1,14 +1,36 @@
 const addPageRoutes = (server, app) => {
   // Public Views
-  server.get('/r/:sub/:post/:comment', (req, res) => {
+
+  // :comment is a unique ID, so /r/:comment is actually feasible.
+  // Only usernames (for users) and subreddit names are unique strings.
+  // This allows us to query users and subreddits by their names.
+  // Post titles are not unique, since there can be more than one post
+  // with the same title.
+  //
+  // Comments don't have titles.
+  //
+  // It is therefore feasible to have:
+  //  /r/:comment
+  //  /r/:post
+  //  /r/:sub
+  //
+  // Unfortunately, these are all the same pattern, so in reality.
+  // The intermediary query params would all be trashed.
+  // Or, we could restructure it.
+  server.get('/c/:comment', (req, res) => {
     app.render(req, res, '/comment', req.params);
   });
 
-  server.get('/r/:sub/:post', (req, res) => {
+  server.get('/p/:post', (req, res) => {
+    console.log('oh la')
     app.render(req, res, '/post', req.params);
   });
 
   server.get('/r/:sub', (req, res) => {
+    app.render(req, res, '/frontpage', req.params);
+  });
+
+  server.get('/', (req, res) => {
     app.render(req, res, '/frontpage', req.params);
   });
 
@@ -29,10 +51,6 @@ const addPageRoutes = (server, app) => {
 
   server.get('/u/signup', (req, res) => {
     app.render(req, res, '/signup', req.params);
-  });
-
-  server.get('/', (req, res) => {
-    app.render(req, res, '/frontpage', req.params);
   });
 };
 

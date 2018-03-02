@@ -22,7 +22,7 @@ const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date }) =
       </div>
       <div className="post__image" style={postImageStyle} />
       <div className="post__content">
-        <h3>{title}</h3>
+        <h3><Link href={`/r/${subreddit.titleSlug}/${_id}`}><a>{title}</a></Link></h3>
         <div className="post__meta">
           <ul>
             <li>submitted {moment(subreddit.date).fromNow()}</li>
