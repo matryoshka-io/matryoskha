@@ -9,7 +9,7 @@ import utils from '../utils';
 
 class Frontpage extends Component {
   static async getInitialProps(context) {
-    const initialProps = utils.data.prepPostListView(context);
+    const initialProps = await utils.data.prepPostListView(context);
     return initialProps;
   }
 
@@ -20,7 +20,7 @@ class Frontpage extends Component {
       title: this.props.title,
       user: this.props.user,
       token: this.props.token,
-      subscriptions: this.props.subscriptions,
+      subscribed: this.props.subscribed,
       posts: this.props.posts,
     };
     this.loginUser = this.loginUser.bind(this);
@@ -88,12 +88,16 @@ class Frontpage extends Component {
   }
 
   subscribe() {
-    console.log('hello');
     if (this.state.subreddit && this.state.user) {
-      console.log(`SUBCRIBE REQUEST: ${this.state.subreddit}`);
-      utils.data.subscribe({ user: this.state.user, token: this.state.token }, this.state.subreddit)
-        .then(result => console.log(result))
-        .catch(err => console.log(err));
+      if (!this.state.subscribed) {
+        utils.data.subscribe({ user: this.state.user, token: this.state.token }, this.state.subreddit)
+          .then(result => this.setState({ subscribed: true }))
+          .catch(err => console.log(err));
+      } else {
+        utils.data.unsubscribe({ user: this.state.user, token: this.state.token }, this.state.subreddit)
+          .then(result => this.setState({ subscribed: false }))
+          .catch(err => console.log(err));
+      }
     }
   }
 
@@ -114,7 +118,7 @@ class Frontpage extends Component {
               logout={this.logoutUser}
             />
             <SubredditPanelBody
-              subscriptions={this.state.subscriptions}
+              subscribed={this.state.subscribed}
               subreddit={this.state.subreddit}
               subscribe={this.subscribe}
             />

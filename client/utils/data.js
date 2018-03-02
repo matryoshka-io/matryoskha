@@ -12,10 +12,7 @@ const getPosts = (session, subreddit = null, offset = 0) => {
   return new Promise((resolve, reject) => {
     return axios.get(requestUrl, headers)
     .then(result => resolve(result.data))
-    .catch((err) => {
-      console.log(err);
-      return reject(err);
-    });
+    .catch(err => reject(err));
   });
 };
 
@@ -23,14 +20,28 @@ const subscribe = (session, subreddit) => {
   if (session.user && session.token && subreddit) {
     return new Promise((resolve, reject) => {
       const requestUrl = `${BASE_URL}/api/subscription/${subreddit}`;
-      return axios.post(requestUrl, auth.makeTokenHeader(session.token))
+      const headers = auth.makeTokenHeader(session.token);
+      return axios.post(requestUrl, {}, headers)
+        .then(result => resolve(true))
+        .catch(err => reject(err));
+    });
+  }
+  return false;
+};
+
+const unsubscribe = (session, subreddit) => {
+  if (session.user && session.token && subreddit) {
+    return new Promise((resolve, reject) => {
+      const requestUrl = `${BASE_URL}/api/subscription/${subreddit}`;
+      const headers = auth.makeTokenHeader(session.token);
+      return axios.delete(requestUrl, headers)
         .then((result) => {
-          console.log('subscription result \n', result);
+          console.log('Unsubscribed');
           return resolve(true);
         })
         .catch((err) => {
-          console.log('subscription error \n', err);
-          return reject(false);
+          console.log('Unsubscribe error: \n', err);
+          return reject(err);
         });
     });
   }
@@ -43,10 +54,7 @@ const getSubscriptions = (session) => {
       const requestUrl = `${BASE_URL}/api/user/${session.user.username}/subscriptions`;
       const headers = auth.makeTokenHeader(session.token);
       return axios.get(requestUrl, headers)
-        .then((subscriptions) => {
-          console.log('subscriptions ', subscriptions.data);
-          return resolve(subscriptions.data);
-        })
+        .then(subscriptions => resolve(subscriptions.data))
         .catch(err => reject(err));
     }
     return resolve([]);
@@ -61,6 +69,10 @@ const prepPostListView = (context) => {
     const response = {
       title,
       subreddit,
+      user: null,
+      token: null,
+      subscribed: false,
+      posts: [],
     };
     return auth.initializeSession(context)
       .then((session) => {
@@ -69,14 +81,14 @@ const prepPostListView = (context) => {
         return getSubscriptions(session);
       })
       .then((subscriptions) => {
-        response.subscriptions = subscriptions;
+        response.subscribed = subscriptions.some(subscription => subscription.subreddit.titleSlug === subreddit);
         return getPosts({ user: response.user, token: response.token }, subreddit);
       })
       .then((posts) => {
         response.posts = posts;
         return resolve(response);
       })
-      .catch(err => reject(err));
+      .catch(err => reject(response));
   });
 };
 
@@ -110,5 +122,6 @@ module.exports = {
   prepPostListView,
   prepPostDetailView,
   subscribe,
+  unsubscribe,
   getSubscriptions,
 };

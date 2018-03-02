@@ -52,19 +52,17 @@ module.exports = {
   },
   subscriptions: {
     GET(req, res) {
-      console.log('GET SUBSCRIPTIONS: ', req.params);
-      models.User.findOne({ username: req.params.username })
-        .exec()
-        .then((user) => {
-          console.log('user ', user);
-          const userQuery = models.Subscription.find({ user: user._id });
-          return userQuery.exec();
-        })
-        .then((subscriptions) => {
-          console.log('subscriptions, ', subscriptions);
-          res.status(200).json(subscriptions);
-        })
-        .catch(err => res.status(500).send(err));
+      if (req.session.user) {
+        models.Subscription.find({ user: req.session.user._id })
+          .populate('subreddit')
+          .exec()
+          .then((subscriptions) => {
+            res.status(200).send(subscriptions);
+          })
+          .catch(err => res.status(500).send(err));
+      } else {
+        res.status(401).send('Must be logged in to request user subscriptions');
+      }
     },
   },
 };

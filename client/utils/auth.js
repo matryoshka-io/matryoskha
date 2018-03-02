@@ -69,7 +69,7 @@ const initializeSession = context =>
         }
         return resolve(sessionData);
       })
-      .catch(err => reject(sessionData));
+      .catch(err => resolve(sessionData));
   });
 
 module.exports = {

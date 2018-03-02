@@ -8,7 +8,7 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dir: './client', dev });
 
 // Middleware
-const sessions = require('./middleware/index').validateSession;
+const tokenCheck = require('./middleware/index').validateSession;
 
 // Route handlers
 const authRoutes = require('./routes').auth;
@@ -27,7 +27,7 @@ app.prepare()
     server.use(bodyParser.json());
     server.use(bodyParser.urlencoded({ extended: true }));
     server.use(cookieParser());
-    server.use(sessions);
+    server.use(tokenCheck);
 
     // Testing
     // server.use(fakeSession);
