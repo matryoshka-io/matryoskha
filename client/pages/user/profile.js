@@ -31,17 +31,31 @@ class Profile extends Component {
       token: this.props.token,
       posts: this.props.posts,
     }
+    // this.filterPosts = this.filterPosts.bind(this)
   }
-
-
+ 
+  // filterPosts () {
+    
+  //  let myPosts = this.props.posts
+  //     .filter(post => {
+  //     return post.author.username === this.props.user.username
+  //     })
+  //     console.log(myPosts)
+  // }
 
 
   render () {
-    console.log(this.props.subreddit)
+    console.log(this.filterPosts)
     return(
       <Page>
         <div className="posts" >
-          {this.state.posts}
+
+        <Posts posts=
+          {   
+            this.props.posts.filter(post => {
+                return post.author.username === this.props.user.username
+                })
+          } />
         </div>
         <div className="accountInfo" >
           <div>
@@ -53,7 +67,7 @@ class Profile extends Component {
           <ul className="info">
             
             <div className="birthday">
-              <img src="https://vignette.wikia.nocookie.net/kpop/images/2/21/Birthday_Icon.png/revision/latest?cb=20161105130102" width={40} height={40}/>
+              <img src="https://vignette.wikia.nocookie.net/kpop/images/2/21/Birthday_Icon.png/revision/latest?cb=20161105130102" width={45} height={40}/>
               <span>
                 <div>mtryska birthday</div>
                 <div>February 20, 2018</div>

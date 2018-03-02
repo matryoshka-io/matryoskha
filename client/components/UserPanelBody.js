@@ -1,4 +1,5 @@
 import LoginForm from './LoginForm';
+import Link from 'react-router'
 
 // todo: separate into frontpage, subreddit varieties for logged-in
 const UserPanelBody = ({ user, login, logout, subscribe }) => {
