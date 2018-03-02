@@ -1,10 +1,10 @@
 import { Component } from 'react';
-// import Post from '../components/Post';
+import Post from '../components/Post';
 import Comment from './comment'; // wow, capitalization
 
 import 'isomorphic-fetch';
 
-class Post extends Component {
+class Postpage extends Component {
   static async getInitialProps({ query }) {
     const post = await fetch(`http://localhost:3000/api/post/${query.post}`);
     const json = await post.json();
@@ -25,16 +25,12 @@ class Post extends Component {
   render() {
     if (!this.state.post.comments.length) {
       return (
-        <div>
-          {this.state.post.title}        
-          {this.state.post.body}
-        </div>
+        <Post {...this.state.post} />
       );
     } else {
       return (
         <div>
-          {this.state.post.title}        
-          {this.state.post.body}
+          <Post {...this.state.post} />
           {this.state.post.comments.map((comment, index) => {
             return <Comment key={index} comment={comment} />;
           })}       
@@ -44,4 +40,4 @@ class Post extends Component {
   }
 }
 
-export default Post;
+export default Postpage;
