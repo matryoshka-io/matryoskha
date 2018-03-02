@@ -5,25 +5,22 @@ import Posts from '../components/Posts';
 import UserPanelBody from '../components/UserPanelBody';
 import SubredditPanelBody from '../components/SubredditPanelBody';
 
-import auth from '../utils/auth';
-import data from '../utils/data';
-import profile from '../utils/profile';
-import vote from '../utils/votes';
-import sessions from '../utils/sessions';
+import utils from '../utils';
 
 class Frontpage extends Component {
   static async getInitialProps(context) {
-    const initialProps = data.prepPostListView(context);
+    const initialProps = utils.data.prepPostListView(context);
     return initialProps;
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      subreddit: this.props.subreddit || null,
-      title: this.props.title || 'Hello',
-      user: this.props.user || null,
-      token: this.props.token || null,
+      subreddit: this.props.subreddit,
+      title: this.props.title,
+      user: this.props.user,
+      token: this.props.token,
+      subscriptions: this.props.subscriptions,
       posts: this.props.posts,
     };
     this.loginUser = this.loginUser.bind(this);
@@ -34,19 +31,19 @@ class Frontpage extends Component {
   componentDidMount() {
     // ensure session is cleared on client
     if (!this.state.user) {
-      sessions.deleteCookie('jwt');
+      utils.sessions.deleteCookie('jwt');
     }
     // this.refreshPosts();
   }
 
   castVote(id) {
-    vote.castVote(id)
+    utils.vote.castVote(id)
       .then(result => console.log('voted'))
       .catch(err => console.log('no vote'));
   }
 
   refreshPosts() {
-    data.getPosts({ user: this.state.user, token: this.state.token }, this.state.subreddit)
+    utils.data.getPosts({ user: this.state.user, token: this.state.token }, this.state.subreddit)
       .then((posts) => {
         this.setState({
           posts,
@@ -56,26 +53,24 @@ class Frontpage extends Component {
   }
 
   loginUser(username, password) {
-    auth.loginUser(username, password)
+    utils.auth.loginUser(username, password)
       .then((result) => {
         if (result.success) {
-          sessions.setCookie('jwt', result.token);
+          utils.sessions.setCookie('jwt', result.token);
           this.setState({
             user: result.user,
             token: result.token,
           }, () => {
-            console.log(this.state.user);
-            // this.refreshPosts();
+            this.refreshPosts();
           });
           return;
         }
-        sessions.deleteCookie('jwt');
+        utils.sessions.deleteCookie('jwt');
         this.setState({
           user: null,
           token: null,
         }, () => {
-          // this.refreshPosts();
-          console.log(this.state.user);
+          this.refreshPosts();
         });
       })
       .catch(err => console.log(err));
@@ -83,7 +78,7 @@ class Frontpage extends Component {
 
   logoutUser() {
     // todo: submit token value to backend for blacklist
-    sessions.deleteCookie('jwt');
+    utils.sessions.deleteCookie('jwt');
     this.setState({
       user: null,
       token: null,
@@ -94,7 +89,7 @@ class Frontpage extends Component {
     console.log('hello');
     if (this.state.subreddit && this.state.user) {
       console.log(`SUBCRIBE REQUEST: ${this.state.subreddit}`);
-      profile.subscribe({ user: this.state.user, token: this.state.token }, this.state.subreddit)
+      utils.data.subscribe({ user: this.state.user, token: this.state.token }, this.state.subreddit)
         .then(result => console.log(result))
         .catch(err => console.log(err));
     }
@@ -117,6 +112,7 @@ class Frontpage extends Component {
               logout={this.logoutUser}
             />
             <SubredditPanelBody
+              subscriptions={this.state.subscriptions}
               subreddit={this.state.subreddit}
               subscribe={this.subscribe}
             />

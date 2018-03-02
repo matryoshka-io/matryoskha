@@ -18,6 +18,20 @@ const subscribe = (session, subreddit) => {
   return false;
 };
 
+const getSubscriptions = (session) => {
+  return new Promise((resolve, reject) => {
+    if (session.user && session.token) {
+      const requestUrl = `${BASE_URL}/api/user/${session.user.username}/subscriptions`;
+      const headers = auth.makeTokenHeader(session.token);
+      return axios.get(requestUrl, headers)
+        .then(subscriptions => resolve(subscriptions.data))
+        .catch(err => reject(err));
+    }
+    return resolve([]);
+  });
+};
+
 module.exports = {
   subscribe,
+  getSubscriptions,
 };
