@@ -1,5 +1,6 @@
 import { Component } from 'react';
 
+import SomeCommercial from '../components/SomeCommercial'
 import Page from '../components/Page';
 import Posts from '../components/Posts';
 import UserPanelBody from '../components/UserPanelBody';
