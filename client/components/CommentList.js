@@ -27,7 +27,14 @@ class CommentList extends React.Component {
           <div className="list">
             {this.props.comments.map((comment, index) => {
               return (
-                <CommentListEntry key={comment._id} index={index} comment={comment} newCommentBody={this.props.newCommentBody}
+                <CommentListEntry
+                  key={comment._id}
+                  index={index}
+                  comment={comment}
+                  comments={this.props.comments}
+                  newCommentBody={this.props.newCommentBody}
+                  postId={this.props.postId}
+
                 />
               )
             })}

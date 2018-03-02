@@ -16,6 +16,7 @@ class CommentListEntry extends React.Component {
       commentBody: '',
       commentId: '',
       deleteIndex: '',
+      editIndex: '',
 
     }
 
@@ -68,8 +69,30 @@ class CommentListEntry extends React.Component {
       })
   }
 
-  onEditClickHandler() {
+  onEditClickHandler = () => {
+    this.setState({ editIndex: this.props.index },
+      this.editComment(this.state.editIndex)
+    )
 
+  }
+
+  editComment = (editIndex) => {
+    const token = sessions.getToken('jwt')
+    axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
+      .then(res => {
+        res.data.comments.forEach((comment, index) => {
+          if (index === this.state.editIndex) {
+            this.setState({ commentId: comment._id })
+          }
+        })
+        return this.state.commentId;
+      })
+      .then(res => {
+        return axios.put(`api/comment/${this.state.commentId}`, { body: 'i have been edited' })
+      })
+      .then(res => {
+        console.log('SUCCESSFUL EDIT')
+      })
   }
 
 
