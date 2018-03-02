@@ -2,6 +2,7 @@ const express = require('express');
 const next = require('next');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const path = require('path');
 
 // Next.js Environment
 const dev = process.env.NODE_ENV !== 'production';
@@ -16,8 +17,8 @@ const apiRoutes = require('./routes').api;
 const addPageRoutes = require('./routes').pages;
 
 // Testing
-const fakeSession = require('./middleware/fakeSession');
-const fakeLogin = require('./middleware/fakeLogin');
+// const fakeSession = require('./middleware/fakeSession');
+// const fakeLogin = require('./middleware/fakeLogin');
 
 app.prepare()
   .then(() => {
@@ -26,12 +27,32 @@ app.prepare()
     // Middleware & Auth
     server.use(bodyParser.json());
     server.use(bodyParser.urlencoded({ extended: true }));
-    // server.use(cookieParser());
-    // server.use(sessions);
+    server.use(cookieParser());
+    server.use(sessions);
 
     // Testing
-    server.use(fakeSession);
-    server.use(fakeLogin);
+    // server.use(fakeSession);
+    // server.use(fakeLogin);
+
+    // Static assets
+    // Might be able to do just express.static('static'),
+    // also, what about the auth for static assets.
+    // Can all unauthorized users get all images? Probably.
+    // I mean, they can see all posts and comments and subreddits,
+    // they just can't post anything themselves.
+    //
+    // There's also no need, necessarily, for /static, as long we
+    // put this middleware BEFORE the page routes. If we don't
+    // put this middleware before the page routes, then the page
+    // might look for /r/default.jpg, which Express will pick up as
+    // our GET to /r/:sub route.
+    //
+    // In the past, the /r/null issue wasn't replicable on the homepage,
+    // i.e. /, because there was no pattern that matched /null.
+    // So Next.js' fallback handler/route just trashed that request, I'm assuming.
+    //
+    // CSS relative paths for "background" and all that.
+    server.use('/static', express.static(path.join(__dirname, 'static')));
 
     // Routes
     server.use('/auth', authRoutes);
