@@ -122,6 +122,8 @@ class CommentListEntry extends React.Component {
             index={this.props.index}
             replyAndSetNewCommentId={this.replyAndSetNewCommentId}
             commentId={this.state.commentId}
+            comments={this.props.comments}
+            updateCommentList={this.props.updateCommentList}
           />}
 
           <CommentList comments={this.props.comment.comments} />

@@ -32,8 +32,6 @@ class ParentPost extends React.Component {
           postBodyText: res.data.body,
           postId: res.data._id,
           comments: res.data.comments,
-        }, () => {
-          console.log(this.state.comments, 'did it work')
         })
       })
   }

@@ -28,7 +28,6 @@ class ReplyCommentBox extends React.Component {
   replyToComment = (replyBoxText) => {
     console.log('reply', replyBoxText)
     const token = sessions.getToken('jwt')
-    console.log('token', token)
     axios.get(`api/post/${this.props.postId}`)
       .then(res => {
         res.data.comments.forEach((comment, index) => {
@@ -42,7 +41,16 @@ class ReplyCommentBox extends React.Component {
         return axios.post(`api/comment/${res}`, { body: replyBoxText }, auth.makeTokenHeader(token))
       })
       .then(res => {
-        //create a new collection
+        this.props.comments.forEach(comment => {//goes into secondd depth
+          console.log('comment', comment)
+          const newComCol1 = comment.comments.slice(0, comment.comments.length)
+          console.log('resdata', res.data)
+          newComCol1.push(res.data)//res.data doesn't have an id!!
+          //concat the comments on frist depth
+          // const newComCol = newComCol1.concat(newComCol2)
+          console.log('newComcol', newComCol1)
+          // this.props.updateCommentList(newComCol1)
+        })
         console.log('SUCCESSFUL REPLY')
       })
   }
