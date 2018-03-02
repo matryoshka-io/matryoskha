@@ -1,5 +1,5 @@
 const SubredditPanelBody = ({ user, subreddit, subscribe }) => {
-  if (subreddit && user) {
+  if (subreddit) {
     return (
       <div className="body__panel">
         <h3>{`/r/${subreddit}`}</h3>

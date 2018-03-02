@@ -3,16 +3,28 @@ import Footer from './Footer';
 
 export default ({ title, children }) => (
   <div className="main">
-    <h2>{ title }</h2>
-    <Nav />
+    <div>
+      <h2>{ title }</h2>
+      <Nav />
+    </div>
     <div className="page">
       { children }
     </div>
-    <Footer />
+    <div>
+      <Footer />
+    </div>
+    <style jsx global>
+      {`
+        body {
+          margin: 8px;
+          padding: 0px;
+        }
+      `}
+    </style>
     <style jsx>
       {`
         .main {
-          width: 85%;
+          width: 95%;
           margin: auto;
           padding: 10px 0 0 0;
         }
