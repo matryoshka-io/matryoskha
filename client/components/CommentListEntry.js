@@ -92,7 +92,28 @@ class CommentListEntry extends React.Component {
       })
   }
 
+  editComment = (editIndex) => {
+    const token = sessions.getToken('jwt')
+    axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
+      .then(res => {
+        res.data.comments.forEach((comment, index) => {
+          if (index === this.state.editIndex) {
+            this.setState({ commentId: comment._id })
+          }
+        })
+        return this.state.commentId;
+      })
+      .then(res => {
+        return axios.put(`api/comment/${this.state.commentId}`, { body: 'i have been edited' })
+      })
+      .then(res => {
+        console.log('SUCCESSFUL EDIT')
+      })
+  }
 
+  replyAndSetNewCommentId = (commentId) => {
+    this.setState({ commentId })
+  }
 
   render() {
     console.log('this.props.comment', this.props.comment)
@@ -111,7 +132,7 @@ class CommentListEntry extends React.Component {
           <div className="bar">
             <div id="replyComment">
               <a onClick={this.onReplyClickHandler}>reply</a>
-            </div>
+            </div>git
             <div id="deleteComment">
               <a onClick={this.onDeleteClickHandler}>delete</a>
 

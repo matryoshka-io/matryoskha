@@ -32,8 +32,40 @@ class ParentPost extends React.Component {
           postBodyText: res.data.body,
           postId: res.data._id,
           comments: res.data.comments,
+        }, () => {
+          console.log(this.state.comments, 'did it work')
         })
       })
+  }
+
+  postComment = (commentText) => {
+    const token = sessions.getToken('jwt');
+    axios.get('/api', auth.makeTokenHeader(token))
+      .then(res => {
+        res.data.forEach(data => {
+          if (this.state.postTitle === data.title) {
+            console.log('data', data)
+            return this.setState({ postId: data._id })
+          }
+        })
+        return this.state.postId
+      })
+      .then((res) => {
+        return axios.post(`/api/post/${this.state.postId}`, { body: commentText }, auth.makeTokenHeader(token))
+      })
+      .then((res) => {
+        console.log('SUCCESSFUL COMMENT POST')
+        return res;
+      })
+      .then(res => {
+        res.data.comments = [];
+        let newCommentArr = this.state.comments.push(res.data)
+        this.setState({ commentBody: newCommentArr })
+      })
+  }
+
+  updateCommentList = (comments) => {
+    this.setState({ comments });
   }
 
   postComment = (commentText) => {

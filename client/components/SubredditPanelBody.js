@@ -1,9 +1,10 @@
-const SubredditPanelBody = ({ user, subreddit, subscribe }) => {
-  if (subreddit && user) {
+const SubredditPanelBody = ({ subscriptions, subreddit, subscribe }) => {
+  if (subreddit) {
     return (
       <div className="body__panel">
         <h3>{`/r/${subreddit}`}</h3>
-        <button className="button primary" >Subscribe</button>
+        <ul>{subscriptions.map(subscription => <li>{subscription}</li>)}</ul>
+        <button className="button primary" onClick={subscribe}>Subscribe</button>
         <style jsx>
           {`
             h3 {
@@ -38,6 +39,7 @@ const SubredditPanelBody = ({ user, subreddit, subscribe }) => {
       </div>
     );
   }
+  return (<div />);
 };
 
 export default SubredditPanelBody;
