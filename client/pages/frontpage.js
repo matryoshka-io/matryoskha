@@ -5,7 +5,6 @@ import Posts from '../components/Posts';
 import UserPanelBody from '../components/UserPanelBody';
 import SubredditPanelBody from '../components/SubredditPanelBody';
 
-import Data from '../../server/database/dataFrontEnd.json';
 import auth from '../utils/auth';
 import data from '../utils/data';
 import profile from '../utils/profile';
@@ -29,6 +28,7 @@ class Frontpage extends Component {
     };
     this.loginUser = this.loginUser.bind(this);
     this.refreshPosts = this.refreshPosts.bind(this);
+    this.subscribe = this.subscribe.bind(this);
   }
 
   componentDidMount() {
@@ -91,7 +91,9 @@ class Frontpage extends Component {
   }
 
   subscribe() {
+    console.log('hello');
     if (this.state.subreddit && this.state.user) {
+      console.log(`SUBCRIBE REQUEST: ${this.state.subreddit}`);
       profile.subscribe({ user: this.state.user, token: this.state.token }, this.state.subreddit)
         .then(result => console.log(result))
         .catch(err => console.log(err));
