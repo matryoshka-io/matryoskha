@@ -50,4 +50,13 @@ module.exports = {
       });
     },
   },
+  subscriptions: {
+    GET(req, res) {
+      models.User.findOne({ username: req.params.username }).then((user) => {
+        models.Subscription.find({ user: user._id }).then((subscriptions) => {
+          res.status(200).json(subscriptions);
+        });
+      });
+    },
+  },
 };
