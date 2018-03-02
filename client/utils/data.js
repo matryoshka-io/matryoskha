@@ -19,7 +19,7 @@ const getPosts = (session, subreddit = null, offset = 0) => {
   });
 };
 
-const prepPostView = (context) => {
+const prepPostListView = (context) => {
   const title = !context.query.sub || context.query.sub === 'null' ? 'Matryoshka: Internet, Stacked' : context.asPath;
   const subreddit = !context.query.sub || context.query.sub === 'null' ? null : context.query.sub;
 
@@ -35,12 +35,6 @@ const prepPostView = (context) => {
         return getPosts(session, subreddit);
       })
       .then((posts) => {
-        posts = posts.map((post) => {
-          post.subreddit = post.subreddit.titleSlug;
-          post.author = post.author.username;
-          post.comments = post.comments.length;
-          return post;
-        });
         response.posts = posts;
         return resolve(response);
       })
@@ -54,7 +48,36 @@ const prepPostView = (context) => {
   });
 };
 
+const prepPostDetailView = (context) => {
+  const title = !context.query.sub || context.query.sub === 'null' ? 'Matryoshka: Internet, Stacked' : context.asPath;
+  const subreddit = !context.query.sub || context.query.sub === 'null' ? null : context.query.sub;
+
+  return new Promise((resolve, reject) => {
+    const response = {
+      title,
+      subreddit,
+      post: {},
+      comments: [],
+    };
+    return auth.initializeSession(context)
+      .then((session) => {
+        response.user = session.user;
+        response.token = session.token;
+        return resolve(response);
+      })
+      .catch(err => reject({
+        title,
+        subreddit,
+        user: null,
+        token: null,
+        post: {},
+        comments: [],
+      }));
+  });
+}
+
 module.exports = {
   getPosts,
-  prepPostView,
+  prepPostListView,
+  prepPostDetailView,
 };

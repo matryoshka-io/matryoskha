@@ -14,25 +14,12 @@ import sessions from '../utils/sessions';
 
 class Frontpage extends Component {
   static async getInitialProps(context) {
-    const title = context.query.sub !== undefined && context.query.sub !== null ? context.asPath : 'Matryoshka: The Internet, Stacked';
-    const subreddit = context.query.sub === null || context.query.sub === 'null' ? null : context.query.sub;
-
-    const session = await auth.initializeSession(context);
-    const posts = await data.getPosts(session, subreddit);
-
-    const initialProps = {
-      subreddit,
-      title,
-      user: session.user,
-      token: session.token,
-      posts,
-    };
+    const initialProps = data.prepPostListView(context);
     return initialProps;
   }
 
   constructor(props) {
     super(props);
-    // const posts = JSON.parse(this.props.posts);
     this.state = {
       subreddit: this.props.subreddit || null,
       title: this.props.title || 'Hello',
@@ -121,7 +108,7 @@ class Frontpage extends Component {
               vote={this.castVote}
             />
           </div>
-          <div className="login" >
+          <div className="sidebar" >
             <UserPanelBody
               user={this.state.user}
               login={this.loginUser}
@@ -151,10 +138,11 @@ class Frontpage extends Component {
               float: left;
               width: 75%;
             }
-            .login {
+            .sidebar {
               border: solid 2px;
               float: right;
               width: 22%;
+              min-width: 200px;
               height: 80%;
             } * {
               border:1

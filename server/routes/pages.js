@@ -1,15 +1,17 @@
 const addPageRoutes = (server, app) => {
   // Public Views
-  server.get('/r/:sub/posts/:post/comments/:comment', (req, res) => {
+  server.get('/r/:sub/:post/:comment', (req, res) => {
+    console.log(`[GET] Comment: ${req.url}`, req.params);
     app.render(req, res, '/comment', req.params);
   });
 
-  server.get('/r/:sub/posts/:post', (req, res) => {
+  server.get('/r/:sub/:post', (req, res) => {
+    console.log(`[GET] Post: ${req.url}`, req.params);
     app.render(req, res, '/post', req.params);
   });
 
   server.get('/r/:sub', (req, res) => {
-    console.log(`[GET]: ${req.url}`, req.params);
+    console.log(`[GET] Sub: ${req.url}`, req.params);
     app.render(req, res, '/frontpage', req.params);
   });
 
