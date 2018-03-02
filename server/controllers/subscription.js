@@ -5,6 +5,7 @@ const utils = require('./utils');
 
 module.exports = {
   POST(req, res) {
+    console.log(`POST: Subscribe to ${req.params.subName}`);
     models.Subreddit.findOne({ titleSlug: req.params.subName }).then((subreddit) => {
       models.Subscription.find({
         user: req.session.user._id,
@@ -31,6 +32,6 @@ module.exports = {
       }).then((response) => {
         res.status(200).end('Successfully deleted subscription (assuming it was there).');
       });
-    }); 
+    });
   },
 };

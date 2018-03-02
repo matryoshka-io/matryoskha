@@ -1,9 +1,9 @@
-const SubredditPanelBody = ({ user, subreddit, subscribe }) => {
+const SubredditPanelBody = ({ subreddit, subscribe }) => {
   if (subreddit) {
     return (
       <div className="body__panel">
         <h3>{`/r/${subreddit}`}</h3>
-        <button className="button primary" >Subscribe</button>
+        <button className="button primary" onClick={subscribe}>Subscribe</button>
         <style jsx>
           {`
             h3 {
