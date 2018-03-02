@@ -37,18 +37,21 @@ const matryoksha = (post, depth = 0) =>
     if (depth > 2) {
       resolve();
     } else {
-      models.Post.find({ type: 'Comment', parent: post._id }).lean().then((comments) => {
-        getKarmaAndSort(comments, (comments) => {
-          post.comments = comments;
-          const promises = [];
-          post.comments.forEach((comment) => {
-            promises.push(matryoksha(comment, depth + 1));
-          });
-          Promise.all(promises).then(() => {
-            resolve();
+      models.Post.find({ type: 'Comment', parent: post._id })
+        .populate('author')
+        .lean()
+        .then((comments) => {
+          getKarmaAndSort(comments, (comments) => {
+            post.comments = comments;
+            const promises = [];
+            post.comments.forEach((comment) => {
+              promises.push(matryoksha(comment, depth + 1));
+            });
+            Promise.all(promises).then(() => {
+              resolve();
+            });
           });
         });
-      });
     }
   });
 

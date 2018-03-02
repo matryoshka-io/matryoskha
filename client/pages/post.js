@@ -32,7 +32,7 @@ class Postpage extends Component {
         <div>
           <Post {...this.state.post} />
           {this.state.post.comments.map((comment, index) => {
-            return <Comment key={index} comment={comment} />;
+            return <Comment key={index} comment={comment} depth={0} />;
           })}       
         </div>
       );
