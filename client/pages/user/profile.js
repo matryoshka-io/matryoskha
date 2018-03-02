@@ -31,21 +31,11 @@ class Profile extends Component {
       token: this.props.token,
       posts: this.props.posts,
     }
-    // this.filterPosts = this.filterPosts.bind(this)
+
   }
  
-  // filterPosts () {
-    
-  //  let myPosts = this.props.posts
-  //     .filter(post => {
-  //     return post.author.username === this.props.user.username
-  //     })
-  //     console.log(myPosts)
-  // }
-
 
   render () {
-    console.log(this.filterPosts)
     return(
       <Page>
         <div className="posts" >
