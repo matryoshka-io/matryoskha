@@ -1,4 +1,6 @@
 import { Component } from 'react';
+// import Post from '../components/Post';
+import Comment from './comment'; // wow, capitalization
 
 import 'isomorphic-fetch';
 
@@ -6,6 +8,7 @@ class Post extends Component {
   static async getInitialProps({ query }) {
     const post = await fetch(`http://localhost:3000/api/post/${query.post}`);
     const json = await post.json();
+    console.log(json);
 
     return {
       post: json,
@@ -20,11 +23,21 @@ class Post extends Component {
   }
 
   render() {
-    return (
-      <div>
-        {this.state.post.body}
-      </div>
-    );
+    if (this.state.post.comments.length) {
+      return (
+        <div>
+          {this.state.post.title}        
+          {this.state.post.body}
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          {this.state.post.title}        
+          {this.state.post.body}       
+        </div>
+      );
+    }
   }
 }
 

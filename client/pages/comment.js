@@ -1,18 +1,31 @@
-const Comment = (props) => (
-  <div>
-    <h1>{props.url.asPath}</h1>
-  </div>
-);
+import { Component } from 'react';
 
-Comment.getInitialProps = async function () {
+import 'isomorphic-fetch';
 
-  return {
-    navigation: {},
-    user: {},
-    parent: {},       // parent post content
-    content: {},      // comment content
-    comments: {},     // children of comment
+class Comment extends Component {
+  static async getInitialProps({ query }) {
+    const comment = await fetch(`http://localhost:3000/api/comment/${query.comment}`);
+    const json = await comment.json();
+
+    return {
+      comment: json,
+    };
   }
-};
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      comment: this.props.comment, // wat, why the 'this', and can't I just do this.state = props; ?
+    };
+  }
+
+  render() {
+    return (
+      <div>
+        {this.state.comment.body}
+      </div>
+    );
+  }
+}
 
 export default Comment;
