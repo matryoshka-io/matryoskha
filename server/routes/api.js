@@ -49,6 +49,8 @@ router.get('/user/:username/posts', controllers.user.posts.GET);
 router.get('/user/:username/comments', controllers.user.comments.GET);
 // Get a user's subreddits (ones they have created).
 router.get('/user/:username/subreddits', controllers.user.subreddits.GET);
+// Get a user's subscriptions.
+router.get('/user/:username/subscriptions', controllers.user.subscriptions.GET);
 
 // Add and delete subscriptions.
 router.post('/subscription/:subName', controllers.subscription.POST);
