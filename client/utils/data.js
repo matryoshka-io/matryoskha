@@ -102,6 +102,34 @@ const prepPostDetailView = (context) => {
   });
 };
 
+const prepPostDetailView = (context) => {
+  const title = !context.query.sub || context.query.sub === 'null' ? 'Matryoshka: Internet, Stacked' : context.asPath;
+  const subreddit = !context.query.sub || context.query.sub === 'null' ? null : context.query.sub;
+
+  return new Promise((resolve, reject) => {
+    const response = {
+      title,
+      subreddit,
+      post: {},
+      comments: [],
+    };
+    return auth.initializeSession(context)
+      .then((session) => {
+        response.user = session.user;
+        response.token = session.token;
+        return resolve(response);
+      })
+      .catch(err => reject({
+        title,
+        subreddit,
+        user: null,
+        token: null,
+        post: {},
+        comments: [],
+      }));
+  });
+}
+
 module.exports = {
   getPosts,
   prepPostListView,
