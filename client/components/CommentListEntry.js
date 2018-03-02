@@ -67,7 +67,6 @@ class CommentListEntry extends React.Component {
     this.setState({ editIndex: this.props.index },
       this.editComment(this.state.editIndex)
     )
-
   }
 
   editComment = (editIndex) => {
@@ -89,7 +88,9 @@ class CommentListEntry extends React.Component {
       })
   }
 
-
+  replyAndSetNewCommentId = (commentId) => {
+    this.setState({ commentId })
+  }
 
   render() {
     return (
@@ -116,7 +117,12 @@ class CommentListEntry extends React.Component {
               <a onClick={this.onEditClickHandler}>edit</a>
             </div>
           </div>
-          {this.state.isReplyBoxHidden ? null : <CommentForm />}
+          {this.state.isReplyBoxHidden ? null : <ReplyCommentBox
+            postId={this.props.postId}
+            index={this.props.index}
+            replyAndSetNewCommentId={this.replyAndSetNewCommentId}
+            commentId={this.state.commentId}
+          />}
 
           <CommentList comments={this.props.comment.comments} />
 
