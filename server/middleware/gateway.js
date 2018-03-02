@@ -1,5 +1,4 @@
 module.exports = (req, res, next) => {
-  console.log('API GATEWAY: ', req.session);
   if (req.session.user) {
     next();
   } else {

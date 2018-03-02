@@ -52,17 +52,15 @@ module.exports = {
   },
   subscriptions: {
     GET(req, res) {
-      if (req.session.user) {
-        models.Subscription.find({ user: req.session.user._id })
-          .populate('subreddit')
-          .exec()
-          .then((subscriptions) => {
-            res.status(200).send(subscriptions);
-          })
-          .catch(err => res.status(500).send(err));
-      } else {
-        res.status(401).send('Must be logged in to request user subscriptions');
-      }
+      models.User.findOne({ username: req.params.username })
+        .exec()
+        .then((user) => {
+          return models.Subscription.find({ user: user._id })
+            .populate('subreddit')
+            .exec();
+        })
+        .then(subscriptions => res.status(200).send(subscriptions))
+        .catch(err => res.status(500).send(err));
     },
   },
 };
