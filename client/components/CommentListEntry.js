@@ -1,7 +1,12 @@
 import CommentList from './CommentList';
 import ReactMarkdown from 'react-markdown';
 import Paper from 'material-ui/Paper';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import axios from 'axios';
+import CommentForm from './CommentForm';
+import ReplyCommentBox from './ReplyCommentBox';
+import auth from '../utils/auth';
+import sessions from '../utils/sessions';
 
 class CommentListEntry extends React.Component {
   constructor(props) {
@@ -9,6 +14,9 @@ class CommentListEntry extends React.Component {
     this.state = {
       isReplyBoxHidden: true,
       commentBody: '',
+      commentId: '',
+      deleteIndex: '',
+
     }
 
     const style = {
@@ -23,21 +31,34 @@ class CommentListEntry extends React.Component {
 
 
   onReplyClickHandler = () => {
-    this.setState({ isReplyBoxHidden: false })
+    console.log('propsssss', this.props)
+    this.setState({ isReplyBoxHidden: !this.state.isReplyBoxHidden })
   }
 
-  onDeleteClickHandler() {
-    //find commentId
-    //if the comment id in response matches the comment id of the post where 'delete was clicked',
-    //take that comment id
-    //and replace it in the delete url
-    // axios.get('/api')
-    //   .then(res => {
-    //     res.data.forEach((comment) => {
+  onDeleteClickHandler = () => {
+    this.setState({ deleteIndex: this.props.index }, () => {
+      console.log('new delete index', this.state.deleteIndex)
+    })
+    this.onDeleteClickWithIndex(this.state.deleteIndex)
+  }
 
-    //     })
-    //   })
-    axios.delete(`comment/${commentId}`)
+  onDeleteClickWithIndex = () => {
+    const token = sessions.getToken('jwt')
+    axios.get(`api/post/5a8e0e2b7f911450d4600d99`, auth.makeTokenHeader(token))
+      .then(res => {
+        res.data.comments.forEach((comment, index) => {
+          if (this.state.deleteIndex === index) {
+            this.setState({ commentId: comment._id })
+          }
+        })
+        return this.state.commentId;
+      })
+      .then(res => {
+        return axios.delete(`api/comment/${this.state.commentId}`, auth.makeTokenHeader(token))
+      })
+      .then(res => {
+        console.log('SUCCESFUL COMMENT DELETE')
+      })
   }
 
   onEditClickHandler() {
@@ -47,7 +68,6 @@ class CommentListEntry extends React.Component {
 
 
   render() {
-    // console.log('commentbody', this.props.comment.body)
     return (
       <div>
         <MuiThemeProvider>
@@ -66,11 +86,14 @@ class CommentListEntry extends React.Component {
             </div>
             <div id="deleteComment">
               <a onClick={this.onDeleteClickHandler}>delete</a>
+              {this.props.index}
             </div>
             <div id="editComment">
               <a onClick={this.onEditClickHandler}>edit</a>
             </div>
           </div>
+          {this.state.isReplyBoxHidden ? null : <CommentForm />}
+
           <CommentList comments={this.props.comment.comments} />
 
           <style> {`
