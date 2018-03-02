@@ -34,6 +34,7 @@ class CommentList extends React.Component {
                   comments={this.props.comments}
                   newCommentBody={this.props.newCommentBody}
                   postId={this.props.postId}
+                  updateCommentList={this.props.updateCommentList}
 
                 />
               )
