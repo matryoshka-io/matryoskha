@@ -23,7 +23,7 @@ class Post extends Component {
   }
 
   render() {
-    if (this.state.post.comments.length) {
+    if (!this.state.post.comments.length) {
       return (
         <div>
           {this.state.post.title}        
@@ -34,7 +34,10 @@ class Post extends Component {
       return (
         <div>
           {this.state.post.title}        
-          {this.state.post.body}       
+          {this.state.post.body}
+          {this.state.post.comments.map((comment, index) => {
+            return <Comment key={index} comment={comment} />;
+          })}       
         </div>
       );
     }
