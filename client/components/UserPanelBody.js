@@ -1,11 +1,12 @@
 import LoginForm from './LoginForm';
+import Link from 'react-router'
 
 // todo: separate into frontpage, subreddit varieties for logged-in
 const UserPanelBody = ({ user, login, logout, subscribe }) => {
   if (user && user.username) {
     return (
       <div className="user__panel">
-        <h3>{user.username}</h3>
+        <h3><a href="/user/profile">{user.username}</a></h3>
         <button className="button primary" >Create Post</button>
         <button className="button primary" >Submit Article</button>
         <button className="button primary" >Submit Image</button>
