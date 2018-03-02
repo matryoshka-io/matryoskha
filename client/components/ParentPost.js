@@ -24,7 +24,7 @@ class ParentPost extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     axios.get('/api/post/5a8e0e2b7f911450d4600d99')
       .then(res => {
         this.setState({
@@ -32,6 +32,8 @@ class ParentPost extends React.Component {
           postBodyText: res.data.body,
           postId: res.data._id,
           comments: res.data.comments,
+        }, () => {
+          console.log(this.state.comments, 'did it work')
         })
       })
   }
@@ -79,7 +81,11 @@ class ParentPost extends React.Component {
           Add a new comment
         <CommentForm title={this.state.title} subredditId={this.state.subredditId} postComment={this.postComment} />
 
-          <CommentList comments={this.state.comments} newCommentBody={this.state.commentBody} />
+          <CommentList
+            comments={this.state.comments}
+            newCommentBody={this.state.commentBody}
+            postId={this.state.postId}
+          />
 
           <style>{`
           .postBody {
