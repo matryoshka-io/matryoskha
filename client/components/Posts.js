@@ -1,10 +1,10 @@
 import Post from './Post';
 
-export default ({ posts }) => {
+export default ({ posts, vote }) => {
   if (posts.length) {
     return (
       <div >
-        { posts.map((post, i) => <Post key={i} {...post} />) }
+        { posts.map((post, i) => <Post key={i} {...post} castVote={vote} />) }
         <style jsx>
           {`
             .item {

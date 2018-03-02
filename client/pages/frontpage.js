@@ -3,51 +3,47 @@ import { Component } from 'react';
 import Page from '../components/Page';
 import Posts from '../components/Posts';
 import UserPanelBody from '../components/UserPanelBody';
+import SubredditPanelBody from '../components/SubredditPanelBody';
 
-import Data from '../../server/database/dataFrontEnd.json';
-import auth from '../utils/auth';
-import data from '../utils/data';
-import sessions from '../utils/sessions';
-
+import utils from '../utils';
 
 class Frontpage extends Component {
   static async getInitialProps(context) {
-    const title = context.query.sub !== undefined && context.query.sub !== null ? context.asPath : 'Matryoshka: The Internet, Stacked';
-    console.log('PAGE QUERY PARAMS: ', context.query);
-    console.log('asPath', context.asPath);
-
-    const session = await auth.initializeSession(context);
-    const posts = await data.getPosts(session, context.query.sub);
-
-    return {
-      title,
-      user: session.user,
-      token: session.token,
-      posts,
-    };
+    const initialProps = utils.data.prepPostListView(context);
+    return initialProps;
   }
 
   constructor(props) {
     super(props);
     this.state = {
+      subreddit: this.props.subreddit,
       title: this.props.title,
       user: this.props.user,
       token: this.props.token,
+      subscriptions: this.props.subscriptions,
       posts: this.props.posts,
     };
     this.loginUser = this.loginUser.bind(this);
     this.refreshPosts = this.refreshPosts.bind(this);
+    this.subscribe = this.subscribe.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // ensure session is cleared on client
     if (!this.state.user) {
-      sessions.deleteCookie('jwt');
+      utils.sessions.deleteCookie('jwt');
     }
+    // this.refreshPosts();
+  }
+
+  castVote(id) {
+    utils.vote.castVote(id)
+      .then(result => console.log('voted'))
+      .catch(err => console.log('no vote'));
   }
 
   refreshPosts() {
-    data.getPosts({ user: this.state.user, token: this.state.token })
+    utils.data.getPosts({ user: this.state.user, token: this.state.token }, this.state.subreddit)
       .then((posts) => {
         this.setState({
           posts,
@@ -57,29 +53,46 @@ class Frontpage extends Component {
   }
 
   loginUser(username, password) {
-    auth.loginUser(username, password)
+    utils.auth.loginUser(username, password)
       .then((result) => {
         if (result.success) {
-          sessions.setCookie('jwt', result.token);
+          utils.sessions.setCookie('jwt', result.token);
           this.setState({
             user: result.user,
             token: result.token,
           }, () => {
-            console.log(this.state.user);
-            // this.refreshPosts();
+            this.refreshPosts();
           });
           return;
         }
-        sessions.deleteCookie('jwt');
+        utils.sessions.deleteCookie('jwt');
         this.setState({
           user: null,
           token: null,
         }, () => {
-          // this.refreshPosts();
-          console.log(this.state.user);
+          this.refreshPosts();
         });
       })
       .catch(err => console.log(err));
+  }
+
+  logoutUser() {
+    // todo: submit token value to backend for blacklist
+    utils.sessions.deleteCookie('jwt');
+    this.setState({
+      user: null,
+      token: null,
+    }, () => this.refreshPosts());
+  }
+
+  subscribe() {
+    console.log('hello');
+    if (this.state.subreddit && this.state.user) {
+      console.log(`SUBCRIBE REQUEST: ${this.state.subreddit}`);
+      utils.data.subscribe({ user: this.state.user, token: this.state.token }, this.state.subreddit)
+        .then(result => console.log(result))
+        .catch(err => console.log(err));
+    }
   }
 
   render() {
@@ -87,10 +100,22 @@ class Frontpage extends Component {
       <Page title={this.state.title}>
         <div className="pageContent">
           <div className="posts" >
-            <Posts posts={this.state.posts} />
+            <Posts
+              posts={this.state.posts}
+              vote={this.castVote}
+            />
           </div>
-          <div className="login" >
-            <UserPanelBody user={this.state.user} login={this.loginUser} />
+          <div className="sidebar" >
+            <UserPanelBody
+              user={this.state.user}
+              login={this.loginUser}
+              logout={this.logoutUser}
+            />
+            <SubredditPanelBody
+              subscriptions={this.state.subscriptions}
+              subreddit={this.state.subreddit}
+              subscribe={this.subscribe}
+            />
           </div>
         </div>
         <style jsx>
@@ -111,10 +136,11 @@ class Frontpage extends Component {
               float: left;
               width: 75%;
             }
-            .login {
+            .sidebar {
               border: solid 2px;
               float: right;
               width: 22%;
+              min-width: 200px;
               height: 80%;
             } * {
               border:1

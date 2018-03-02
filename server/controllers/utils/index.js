@@ -32,23 +32,45 @@ const getKarmaAndSort = (posts, callback) => {
   });
 };
 
+const getKarmaAndSortWithPromise = posts =>
+  new Promise((resolve, reject) => {
+    const promises = [];
+    posts.forEach((post) => {
+      promises.push(models.Vote.find({ post: post._id }));
+    });
+    return Promise.all(promises)
+      .then((votes) => {
+        Object.entries(posts).forEach(([index, post]) => {
+          post.karma = votes[index].reduce((totalKarma, vote) => totalKarma + vote.value, 0);
+        });
+        posts.sort(karmaSort);
+        return resolve(posts);
+      })
+      .catch(err => reject(err));
+  });
+
 const matryoksha = (post, depth = 0) =>
   new Promise((resolve, reject) => {
     if (depth > 2) {
       resolve();
     } else {
-      models.Post.find({ type: 'Comment', parent: post._id }).lean().then((comments) => {
-        getKarmaAndSort(comments, (comments) => {
-          post.comments = comments;
-          const promises = [];
-          post.comments.forEach((comment) => {
-            promises.push(matryoksha(comment, depth + 1));
+      models.Post.find({ type: 'Comment', parent: post._id })
+        .lean()
+        .then((comments) => {
+          getKarmaAndSort(comments, (comments) => {
+            post.comments = comments;
+            const promises = [];
+            post.comments.forEach((comment) => {
+              promises.push(matryoksha(comment, depth + 1));
+            });
+            Promise.all(promises)
+              .then(() => {
+                resolve();
+              })
+              .catch(err => reject());
           });
-          Promise.all(promises).then(() => {
-            resolve();
-          });
-        });
-      });
+        })
+        .catch(err => reject());
     }
   });
 
@@ -71,5 +93,6 @@ module.exports = {
   matryoksha,
   evilMatryoksha,
   getKarmaAndSort,
+  getKarmaAndSortWithPromise,
   getKarma,
 };
