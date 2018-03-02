@@ -31,24 +31,30 @@ class CommentListEntry extends React.Component {
 
 
   onReplyClickHandler = () => {
-    console.log('propsssss', this.props)
     this.setState({ isReplyBoxHidden: !this.state.isReplyBoxHidden })
   }
 
   onDeleteClickHandler = () => {
-    this.setState({ deleteIndex: this.props.index }, () => {
-      console.log('new delete index', this.state.deleteIndex)
-    })
-    this.onDeleteClickWithIndex(this.state.deleteIndex)
+    this.setState({ deleteIndex: this.props.index },
+      this.onDeleteClickWithIndex(this.state.deleteIndex)
+    )
   }
 
-  onDeleteClickWithIndex = () => {
+  onDeleteClickWithIndex = (deleteIndex) => {
     const token = sessions.getToken('jwt')
-    axios.get(`api/post/5a8e0e2b7f911450d4600d99`, auth.makeTokenHeader(token))
+    axios.get(`api/post/${this.props.postId}`, auth.makeTokenHeader(token))
       .then(res => {
         res.data.comments.forEach((comment, index) => {
           if (this.state.deleteIndex === index) {
-            this.setState({ commentId: comment._id })
+            let collection1 = this.props.comments.slice(0, index);
+            let collection2 = this.props.comments.slice(index + 1)
+            let newCommentCollection = collection1.concat(collection2) //show comments after deletion
+            this.setState({
+              commentId: comment._id,
+              comments: newCommentCollection
+            }, () => {
+              console.log('comments state', this.state.comments)
+            })
           }
         })
         return this.state.commentId;
@@ -58,6 +64,7 @@ class CommentListEntry extends React.Component {
       })
       .then(res => {
         console.log('SUCCESFUL COMMENT DELETE')
+        return res;
       })
   }
 
@@ -86,7 +93,7 @@ class CommentListEntry extends React.Component {
             </div>
             <div id="deleteComment">
               <a onClick={this.onDeleteClickHandler}>delete</a>
-              {this.props.index}
+
             </div>
             <div id="editComment">
               <a onClick={this.onEditClickHandler}>edit</a>
