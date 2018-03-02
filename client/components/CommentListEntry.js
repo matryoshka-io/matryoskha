@@ -33,6 +33,10 @@ class CommentListEntry extends React.Component {
     this.setState({ isReplyBoxHidden: !this.state.isReplyBoxHidden })
   }
 
+  replyAndSetNewCommentId = (commentId) => {
+    this.setState({ commentId })
+  }
+
   onDeleteClickHandler = () => {
     this.setState({ deleteIndex: this.props.index },
       this.onDeleteClickWithIndex(this.state.deleteIndex)
@@ -88,11 +92,10 @@ class CommentListEntry extends React.Component {
       })
   }
 
-  replyAndSetNewCommentId = (commentId) => {
-    this.setState({ commentId })
-  }
+
 
   render() {
+    console.log('this.props.comment', this.props.comment)
     return (
       <div>
         <MuiThemeProvider>
@@ -118,15 +121,20 @@ class CommentListEntry extends React.Component {
             </div>
           </div>
           {this.state.isReplyBoxHidden ? null : <ReplyCommentBox
+            comments={this.props.comments}
             postId={this.props.postId}
             index={this.props.index}
             replyAndSetNewCommentId={this.replyAndSetNewCommentId}
             commentId={this.state.commentId}
-            comments={this.props.comments}
+            nestedComments={this.props.comment.comments}
             updateCommentList={this.props.updateCommentList}
           />}
+          <CommentList
+            comments={this.props.comment.comments}
+            postId={this.props.postId}
+            updateCommentList={this.props.updateCommentList}
+          />
 
-          <CommentList comments={this.props.comment.comments} />
 
           <style> {`
           .bar {

@@ -14,8 +14,6 @@ class ReplyCommentBox extends React.Component {
   onReplyBoxChangeHandler = (e) => {
     this.setState({
       replyBoxText: e.target.value
-    }, () => {
-      console.log('commentbox', this.state.replyBoxText)
     })
   }
 
@@ -26,31 +24,30 @@ class ReplyCommentBox extends React.Component {
   }
 
   replyToComment = (replyBoxText) => {
-    console.log('reply', replyBoxText)
+    // console.log('reply', replyBoxText)
     const token = sessions.getToken('jwt')
+    // console.log('token', token)
     axios.get(`api/post/${this.props.postId}`)
       .then(res => {
         res.data.comments.forEach((comment, index) => {
+          // console.log('comment', comment)
           if (index === this.state.replyIndex) {
+            console.log('commentId', comment._id)
             this.props.replyAndSetNewCommentId(comment._id)
           }
         })
         return this.props.commentId
       })
       .then(res => {
+        console.log('res', res)
         return axios.post(`api/comment/${res}`, { body: replyBoxText }, auth.makeTokenHeader(token))
       })
       .then(res => {
-        this.props.comments.forEach(comment => {//goes into secondd depth
-          console.log('comment', comment)
-          const newComCol1 = comment.comments.slice(0, comment.comments.length)
-          console.log('resdata', res.data)
-          newComCol1.push(res.data)//res.data doesn't have an id!!
-          //concat the comments on frist depth
-          // const newComCol = newComCol1.concat(newComCol2)
-          console.log('newComcol', newComCol1)
-          // this.props.updateCommentList(newComCol1)
-        })
+        this.props.nestedComments.push(res.data)
+        console.log('comment here', this.props.comments)
+        // console.log('nested comments', this.props.nestedComments)
+        this.props.updateCommentList(this.props.comments)
+
         console.log('SUCCESSFUL REPLY')
       })
   }
