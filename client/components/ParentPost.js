@@ -64,6 +64,10 @@ class ParentPost extends React.Component {
       })
   }
 
+  updateCommentList = (comments) => {
+    this.setState({ comments });
+  }
+
   render() {
     return (
       <div>
@@ -85,6 +89,7 @@ class ParentPost extends React.Component {
             comments={this.state.comments}
             newCommentBody={this.state.commentBody}
             postId={this.state.postId}
+            updateCommentList={this.updateCommentList}
           />
 
           <style>{`
