@@ -29,8 +29,6 @@ class CommentListEntry extends React.Component {
     };
   }
 
-
-
   onReplyClickHandler = () => {
     this.setState({ isReplyBoxHidden: !this.state.isReplyBoxHidden })
   }
@@ -45,20 +43,19 @@ class CommentListEntry extends React.Component {
     const token = sessions.getToken('jwt')
     axios.get(`api/post/${this.props.postId}`, auth.makeTokenHeader(token))
       .then(res => {
-        let deletedId;
         res.data.comments.forEach((comment, index) => {
           if (this.state.deleteIndex === index) {
             let collection1 = this.props.comments.slice(0, index);
             let collection2 = this.props.comments.slice(index + 1)
             let newCommentCollection = collection1.concat(collection2) //show comments after deletion
-            deletedId = comment._id;
+            this.setState({ commentId: comment._id })
             this.props.updateCommentList(newCommentCollection)
           }
         })
         return this.state.commentId;
       })
       .then(res => {
-        return axios.delete(`api/comment/${res}`, auth.makeTokenHeader(token))
+        return axios.delete(`api/comment/${this.state.commentId}`, auth.makeTokenHeader(token))
       })
       .then(res => {
         console.log('SUCCESFUL COMMENT DELETE')
