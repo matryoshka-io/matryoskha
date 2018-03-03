@@ -72,13 +72,12 @@ class ParentPost extends React.Component {
         <div className="postTitle">
           {this.state.postTitle}
         </div>
-        <MuiThemeProvider>
-          <div>
-            <Paper style={this.style} zDepth={2} className="postBody">
-              <ReactMarkdown source={this.state.postBodyText} />
-            </Paper> <br />
+        <div>
+          <div className="postBody">
+            <ReactMarkdown source={this.state.postBodyText} />
           </div>
-        </MuiThemeProvider>
+        </div>
+
 
 
         Add a new comment
@@ -95,6 +94,8 @@ class ParentPost extends React.Component {
         <style>{`
           .postBody {
             padding: 4px 0 20px 0;
+            border-style: solid;
+            border-width: 1px;
           }
         `}</style>
 
