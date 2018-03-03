@@ -21,24 +21,25 @@ class CommentList extends React.Component {
   }
 
   render() {
+    // console.log('this.props.comments', this.props.comments)
     return (
       <div>
         <MuiThemeProvider>
           <div className="list">
-            {this.props.comments.map((comment, index) => {
-              return (
-                <CommentListEntry
-                  key={comment._id}
-                  index={index}
-                  comment={comment}
-                  comments={this.props.comments}
-                  newCommentBody={this.props.newCommentBody}
-                  postId={this.props.postId}
-                  updateCommentList={this.props.updateCommentList}
-
-                />
-              )
-            })}
+            {!!(this.props.comments) ?
+              this.props.comments.map((comment, index) => {
+                return (
+                  <CommentListEntry
+                    key={comment._id}
+                    index={index}
+                    comment={comment}
+                    comments={this.props.comments}
+                    newCommentBody={this.props.newCommentBody}
+                    postId={this.props.postId}
+                    updateCommentList={this.props.updateCommentList}
+                  />
+                )
+              }) : null}
           </div>
 
           <style>{`
