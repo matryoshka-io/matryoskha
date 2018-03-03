@@ -1,12 +1,16 @@
+<<<<<<< HEAD
 import axios from 'axios';
 import auth from '../utils/auth';
 import sessions from '../utils/sessions';
 
+=======
+>>>>>>> [front-end] created separate box for replies
 class ReplyCommentBox extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       replyBoxText: '',
+<<<<<<< HEAD
       replyIndex: '',
     }
   }
@@ -85,12 +89,31 @@ class ReplyCommentBox extends React.Component {
 >>>>>>> master
       })
   }
+=======
+    }
+  }
+
+  onCommentBoxChangeHandler = (e) => {
+    this.setState({ replyBoxText: e.target.value }, () => {
+      console.log('commentbox', this.state.replyBoxText)
+    })
+  }
+
+  // postCommentWithText = () => {
+  //   this.props.postComment(this.state.commentText)
+  // }
+>>>>>>> [front-end] created separate box for replies
 
   render() {
     return (
       <div>
+<<<<<<< HEAD
         <textarea value={this.state.replyBoxText} onChange={this.onReplyBoxChangeHandler} />
         <button onClick={this.postReplyWithText} > reply </button>
+=======
+        <textarea value={this.state.replyBoxText} onChange={this.onCommentBoxChangeHandler} />
+        <button onClick={this.postCommentWithText} > reply </button>
+>>>>>>> [front-end] created separate box for replies
         <style jsx>{`
           textarea {
             width: 400px;
