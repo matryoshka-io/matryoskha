@@ -18,21 +18,22 @@ class ReplyCommentBox extends React.Component {
   }
 
   postReplyWithText = () => {
-    this.setState({ replyIndex: this.props.index },
-      this.replyToComment(this.state.replyBoxText)
-    )
+    console.log('allCOmments', this.props.allComments)
+    console.log('this.props.comments', this.props.comments)
+    console.log('this.props.commentId', this.props.commentId)
+    const parent =
+      this.setState({ replyIndex: this.props.index },
+        this.replyToComment(this.state.replyBoxText, this.props.commentId)
+      )
   }
 
-  replyToComment = (replyBoxText) => {
-    // console.log('reply', replyBoxText)
+  replyToComment = (replyBoxText, parentId) => {
     const token = sessions.getToken('jwt')
-    // console.log('token', token)
     axios.get(`api/post/${this.props.postId}`)
       .then(res => {
         res.data.comments.forEach((comment, index) => {
-          // console.log('comment', comment)
-          if (index === this.state.replyIndex) {
-            console.log('commentId', comment._id)
+          console.log('comment', comment)
+          if (comment._id === parentId) {
             this.props.replyAndSetNewCommentId(comment._id)
           }
         })
@@ -40,15 +41,19 @@ class ReplyCommentBox extends React.Component {
       })
       .then(res => {
         console.log('res', res)
-        return axios.post(`api/comment/${res}`, { body: replyBoxText }, auth.makeTokenHeader(token))
+        return axios.post(`api/comment/${this.props.commentId}`, { body: replyBoxText }, auth.makeTokenHeader(token))
       })
       .then(res => {
-        this.props.nestedComments.push(res.data)
-        console.log('comment here', this.props.comments)
-        // console.log('nested comments', this.props.nestedComments)
-        this.props.updateCommentList(this.props.comments)
+        const newComment = { ...res.data, comments: [] }
+        return axios.get(`api/post/${this.props.postId}`)
+        // console.log('this.props.comment', this.props.comment)
 
-        console.log('SUCCESSFUL REPLY')
+        // this.props.updateCommentList(this.props.allComments)
+        // console.log('SUCCESSFUL REPLY')
+      })
+      .then(res => {
+        console.log('res', res)
+        this.props.updateCommentList(res.data.comments)
       })
   }
 
