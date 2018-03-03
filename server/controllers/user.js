@@ -6,23 +6,29 @@ const utils = require('./utils');
 module.exports = {
   profile: {
     GET(req, res) {
-      models.User.findOne({ username: req.params.username }).then((user) => {
-        res.status(200).json(user);
-      });
+      models.User.findOne({ username: req.params.username })
+        .select('_id username date karma')
+        .exec()
+        .then((user) => {
+          res.status(200).json(user);
+        });
     },
   },
   posts: {
     GET(req, res) {
       models.User.findOne({ username: req.params.username }).then((user) => {
-        models.Post.find({ author: user._id, type: { $not: /Comment/ } }).then((posts) => {
-          const promises = [];
-          posts.forEach((post) => {
-            promises.push(utils.matryoksha(req, post));
+        models.Post.find({ author: user._id, type: { $not: /Comment/ } })
+          .populate('subreddit')
+          .populate('author')
+          .then((posts) => {
+            const promises = [];
+            posts.forEach((post) => {
+              promises.push(utils.matryoksha(req, post));
+            });
+            Promise.all(promises).then(() => {
+              res.status(200).json(posts);
+            });
           });
-          Promise.all(promises).then(() => {
-            res.status(200).json(posts);
-          });
-        });
       });
     },
   },

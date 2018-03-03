@@ -19,11 +19,11 @@ const addPageRoutes = (server, app) => {
   // getInitialProps will submit the appropriate query based on the content type requested
   // content :: posts, comments, subscriptions, subreddits
   // default :: posts
-  server.get('/u/:name/:content', (req, res) => {
+  server.get('/u/:user/:content', (req, res) => {
     app.render(req, res, '/user/profile', req.params);
   });
 
-  server.get('/u/:name', (req, res) => app.render(req, res, '/user/profile', req.params));
+  server.get('/u/:user', (req, res) => app.render(req, res, '/user/profile', req.params));
 
   // Auth
   server.get('/u/login', (req, res) => {
