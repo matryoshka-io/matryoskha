@@ -19,33 +19,36 @@ class EditBox extends React.Component {
   }
 
   postEditWithText = () => {
-    console.log('propsindex', this.props.index)
+    console.log('this.props.commentId', this.props.commentId)
     this.setState({ editIndex: this.props.index },
-      this.editComment(this.state.editIndex, this.state.editBoxText)
+      this.editComment(this.props.commentId, this.state.editBoxText) //should be editID not editIndex
     )
   }
 
-  editComment = (editIndex, editedBody) => {
+  editComment = (editId, editBoxText) => {
     const token = sessions.getToken('jwt')
     axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
       .then(res => {
-        console.log('res.data', res.data)
+        console.log('res', res.data)
         res.data.comments.forEach((comment, index) => {
-          console.log('after foreach')
-          console.log('index', index)
-          console.log('editindex', editIndex)
-          if (index === editIndex) {
+          console.log('comment', comment)
+          console.log('editId', editId)
+          if (comment._id === editId) {
             console.log('after if')
             this.setState({ commentId: comment._id }, () => {
+              //getting 401 because i'm trying to edit the first comment
               console.log('commentid', this.state.commentId)
             })
           }
         })
-        return this.state.commentId;
       })
       .then(res => {
-        return axios.put(`api/comment/${this.state.commentId}`, { body: 'i have been edited' })
+        return axios.put(`api/comment/${this.state.commentId}`, { body: editBoxText }, auth.makeTokenHeader(token))
       })
+      .then(res => {
+        return axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
+      })
+
       .then(res => {
         console.log('SUCCESSFUL EDIT')
       })
