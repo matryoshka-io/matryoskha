@@ -70,7 +70,6 @@ const matryoksha = (req, post, depth = 0) =>
             Promise.all(promises).then(() => {
               resolve();
             });
-
           });
         });
     }
@@ -95,5 +94,6 @@ module.exports = {
   matryoksha,
   evilMatryoksha,
   getKarmaAndSort,
+  getKarmaAndSortWithPromise,
   getKarma,
 };

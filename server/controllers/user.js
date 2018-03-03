@@ -52,11 +52,15 @@ module.exports = {
   },
   subscriptions: {
     GET(req, res) {
-      models.User.findOne({ username: req.params.username }).then((user) => {
-        models.Subscription.find({ user: user._id }).then((subscriptions) => {
-          res.status(200).json(subscriptions);
-        });
-      });
+      models.User.findOne({ username: req.params.username })
+        .exec()
+        .then((user) => {
+          return models.Subscription.find({ user: user._id })
+            .populate('subreddit')
+            .exec();
+        })
+        .then(subscriptions => res.status(200).json(subscriptions))
+        .catch(err => res.status(500).send(err));
     },
   },
 };

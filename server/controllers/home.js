@@ -5,7 +5,7 @@ const utils = require('./utils');
 
 module.exports = {
   GET(req, res) {
-    if (!req.session) {
+    if (!req.session.user) {
       models.Post.find({ type: { $not: /Comment/ } })
         .populate('subreddit')
         .populate('author')

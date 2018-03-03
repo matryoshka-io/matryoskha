@@ -5,15 +5,21 @@ const validateSession = (req, res, next) => {
   if (token) {
     auth.verifyToken(token)
       .then((decoded) => {
-        req.session = decoded;
+        req.session = {
+          user: decoded.user,
+        };
         next();
       })
       .catch((err) => {
-        req.session = null;
+        req.session = {
+          user: null,
+        };
         next();
       });
   } else {
-    req.session = null;
+    req.session = {
+      user: null,
+    };
     next();
   }
 };

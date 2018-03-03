@@ -1,14 +1,25 @@
 import CommentList from './CommentList';
 import ReactMarkdown from 'react-markdown';
 import Paper from 'material-ui/Paper';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import axios from 'axios';
+import CommentForm from './CommentForm';
+import ReplyCommentBox from './ReplyCommentBox';
+import auth from '../utils/auth';
+import sessions from '../utils/sessions';
 
 class CommentListEntry extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isReplyBoxHidden: true
+      isReplyBoxHidden: true,
+      commentBody: '',
+      commentId: '',
+      deleteIndex: '',
+      editIndex: '',
+
     }
+
     const style = {
       height: 100,
       width: 100,
@@ -19,28 +30,67 @@ class CommentListEntry extends React.Component {
   }
 
   onReplyClickHandler = () => {
-    this.setState({ isReplyBoxHidden: false })
+    this.setState({ isReplyBoxHidden: !this.state.isReplyBoxHidden })
   }
 
-  onDeleteClickHandler() {
-    //find commentId
-    //if the comment id in response matches the comment id of the post where 'delete was clicked',
-    //take that comment id
-    //and replace it in the delete url
-    // axios.get('/api')
-    //   .then(res => {
-    //     res.data.forEach((comment) => {
-
-    //     })
-    //   })
-    axios.delete(`comment/${commentId}`)
+  onDeleteClickHandler = () => {
+    this.setState({ deleteIndex: this.props.index },
+      this.onDeleteClickWithIndex(this.state.deleteIndex)
+    )
   }
 
-  onEditClickHandler() {
-
+  onDeleteClickWithIndex = (deleteIndex) => {
+    const token = sessions.getToken('jwt')
+    axios.get(`api/post/${this.props.postId}`, auth.makeTokenHeader(token))
+      .then(res => {
+        res.data.comments.forEach((comment, index) => {
+          if (this.state.deleteIndex === index) {
+            let collection1 = this.props.comments.slice(0, index);
+            let collection2 = this.props.comments.slice(index + 1)
+            let newCommentCollection = collection1.concat(collection2) //show comments after deletion
+            this.setState({ commentId: comment._id })
+            this.props.updateCommentList(newCommentCollection)
+          }
+        })
+        return this.state.commentId;
+      })
+      .then(res => {
+        return axios.delete(`api/comment/${this.state.commentId}`, auth.makeTokenHeader(token))
+      })
+      .then(res => {
+        console.log('SUCCESFUL COMMENT DELETE')
+        return res;
+      })
   }
 
+  onEditClickHandler = () => {
+    this.setState({ editIndex: this.props.index },
+      this.editComment(this.state.editIndex)
+    )
+  }
 
+  editComment = (editIndex) => {
+    const token = sessions.getToken('jwt')
+    axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
+      .then(res => {
+        res.data.comments.forEach((comment, index) => {
+          if (index === this.state.editIndex) {
+            this.setState({ commentId: comment._id })
+          }
+        })
+        return this.state.commentId;
+      })
+      .then(res => {
+        return axios.put(`api/comment/${this.state.commentId}`, { body: 'i have been edited' })
+      })
+      .then(res => {
+        console.log('SUCCESSFUL EDIT')
+      })
+  }
+
+  replyAndSetNewCommentId = (commentId) => {
+    this.setState({ commentId })
+  }
 
   render() {
     return (
@@ -49,6 +99,7 @@ class CommentListEntry extends React.Component {
           <Paper style={this.style} zDepth={2} className="commentEntry">
 
             <ReactMarkdown source={this.props.comment.body} />
+
             <div id="date">
               {this.props.comment.date}
             </div>
@@ -60,12 +111,21 @@ class CommentListEntry extends React.Component {
             </div>
             <div id="deleteComment">
               <a onClick={this.onDeleteClickHandler}>delete</a>
+
             </div>
             <div id="editComment">
               <a onClick={this.onEditClickHandler}>edit</a>
             </div>
           </div>
+          {this.state.isReplyBoxHidden ? null : <ReplyCommentBox
+            postId={this.props.postId}
+            index={this.props.index}
+            replyAndSetNewCommentId={this.replyAndSetNewCommentId}
+            commentId={this.state.commentId}
+          />}
+
           <CommentList comments={this.props.comment.comments} />
+
           <style> {`
           .bar {
             display: flex;
