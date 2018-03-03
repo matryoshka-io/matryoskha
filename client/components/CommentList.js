@@ -21,11 +21,13 @@ class CommentList extends React.Component {
   }
 
   render() {
+    // console.log('this.props.comments', this.props.comments)
     return (
       <div>
         <MuiThemeProvider>
           <div className="list">
-            {!!this.props.comments ?
+            {!!(this.props.comments.length > 0) ?
+              //figure out 
               this.props.comments.map((comment, index) => {
                 return (
                   <CommentListEntry

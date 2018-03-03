@@ -49,14 +49,19 @@ class CommentListEntry extends React.Component {
       .then(res => {
         res.data.comments.forEach((comment, index) => {
           if (this.state.deleteIndex === index) {
+            console.log('index', index)
+            console.log('delete index', this.state.deleteIndex)
             let collection1 = this.props.comments.slice(0, index);
             let collection2 = this.props.comments.slice(index + 1)
             let newCommentCollection = collection1.concat(collection2) //show comments after deletion
-            this.setState({ commentId: comment._id })
+            this.setState({ commentId: comment._id }, () => {
+              console.log('comment id', this.state.commentId)
+            })
             this.props.updateCommentList(newCommentCollection)
           }
         })
-        return this.state.commentId;
+        console.log('this.state.commentId', this.state.commentId)
+        // return this.state.commentId;
       })
       .then(res => {
         return axios.delete(`api/comment/${this.state.commentId}`, auth.makeTokenHeader(token))
@@ -92,31 +97,12 @@ class CommentListEntry extends React.Component {
       })
   }
 
-  editComment = (editIndex) => {
-    const token = sessions.getToken('jwt')
-    axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
-      .then(res => {
-        res.data.comments.forEach((comment, index) => {
-          if (index === this.state.editIndex) {
-            this.setState({ commentId: comment._id })
-          }
-        })
-        return this.state.commentId;
-      })
-      .then(res => {
-        return axios.put(`api/comment/${this.state.commentId}`, { body: 'i have been edited' })
-      })
-      .then(res => {
-        console.log('SUCCESSFUL EDIT')
-      })
-  }
-
   replyAndSetNewCommentId = (commentId) => {
     this.setState({ commentId })
   }
 
   render() {
-    console.log('this.props.comment', this.props.comment)
+    console.log('this.props.comment', this.props.comment.comments)
     return (
       <div>
         <MuiThemeProvider>
@@ -132,7 +118,7 @@ class CommentListEntry extends React.Component {
           <div className="bar">
             <div id="replyComment">
               <a onClick={this.onReplyClickHandler}>reply</a>
-            </div>git
+            </div>
             <div id="deleteComment">
               <a onClick={this.onDeleteClickHandler}>delete</a>
 
