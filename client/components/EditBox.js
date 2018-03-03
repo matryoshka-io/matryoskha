@@ -50,6 +50,7 @@ class EditBox extends React.Component {
       })
 
       .then(res => {
+        this.props.updateCommentList(res.data.comments)
         console.log('SUCCESSFUL EDIT')
       })
   }
