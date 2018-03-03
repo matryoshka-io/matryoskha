@@ -1,10 +1,13 @@
 import PostForm from '../components/PostForm';
 import ParentPost from '../components/ParentPost';
+import Page from '../components/Page'
 
 const Post = props => (
   <div>
-    <h1>{props.url.asPath}</h1>
-    <PostForm />
+    <Page>
+      <PostForm />
+    </Page>
+
   </div>
 );
 
