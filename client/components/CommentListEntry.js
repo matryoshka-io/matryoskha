@@ -17,6 +17,7 @@ class CommentListEntry extends React.Component {
       commentId: '',
       deleteIndex: '',
       editIndex: '',
+      parentId: '',
 
     }
 
@@ -95,7 +96,6 @@ class CommentListEntry extends React.Component {
 
 
   render() {
-    console.log('this.props.comment', this.props.comment)
     return (
       <div>
         <MuiThemeProvider>
@@ -108,35 +108,38 @@ class CommentListEntry extends React.Component {
             </div>
 
           </Paper>
-          <div className="bar">
-            <div id="replyComment">
-              <a onClick={this.onReplyClickHandler}>reply</a>
-            </div>
-            <div id="deleteComment">
-              <a onClick={this.onDeleteClickHandler}>delete</a>
-
-            </div>
-            <div id="editComment">
-              <a onClick={this.onEditClickHandler}>edit</a>
-            </div>
+        </MuiThemeProvider>
+        <div className="bar">
+          <div id="replyComment">
+            <a onClick={this.onReplyClickHandler}>reply</a>
           </div>
-          {this.state.isReplyBoxHidden ? null : <ReplyCommentBox
-            comments={this.props.comments}
-            postId={this.props.postId}
-            index={this.props.index}
-            replyAndSetNewCommentId={this.replyAndSetNewCommentId}
-            commentId={this.state.commentId}
-            nestedComments={this.props.comment.comments}
-            updateCommentList={this.props.updateCommentList}
-          />}
-          <CommentList
-            comments={this.props.comment.comments}
-            postId={this.props.postId}
-            updateCommentList={this.props.updateCommentList}
-          />
+          <div id="deleteComment">
+            <a onClick={this.onDeleteClickHandler}>delete</a>
+
+          </div>
+          <div id="editComment">
+            <a onClick={this.onEditClickHandler}>edit</a>
+          </div>
+        </div>
+        {this.state.isReplyBoxHidden ? null : <ReplyCommentBox
+          allComments={this.props.allComments}
+          postId={this.props.postId}
+          index={this.props.index}
+          replyAndSetNewCommentId={this.replyAndSetNewCommentId}
+          commentId={this.props.comment._id}
+          nestedComments={this.props.comment.comments}
+          updateCommentList={this.props.updateCommentList}
+
+        />}
+        {this.props.comment.comments && <CommentList
+          allComments={this.props.allComments}
+          comments={this.props.comment.comments}
+          postId={this.props.postId}
+          updateCommentList={this.props.updateCommentList}
+        />}
 
 
-          <style> {`
+        <style> {`
           .bar {
             display: flex;
             justify-content: space-between;
@@ -163,8 +166,7 @@ class CommentListEntry extends React.Component {
             color: #A9A9A9;
           }
         `}
-          </style>
-        </MuiThemeProvider >
+        </style>
       </div >
 
 
