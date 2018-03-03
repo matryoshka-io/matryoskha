@@ -28,7 +28,6 @@ class ParentPost extends React.Component {
     const token = sessions.getToken('jwt')
     axios.get('/api/post/5a8e0e2b7f911450d4600d99', auth.makeTokenHeader(token))
       .then(res => {
-        console.log('res.data', res.data)
         this.setState({
           postTitle: res.data.title,
           postBodyText: res.data.body,
@@ -69,7 +68,6 @@ class ParentPost extends React.Component {
   }
 
   render() {
-    console.log('props in parnetPost', this.state)
     return (
       <div>
         <div className="postTitle">
