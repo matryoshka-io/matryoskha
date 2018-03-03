@@ -1,11 +1,12 @@
 import PostForm from '../components/PostForm';
 import ParentPost from '../components/ParentPost';
+import Page from '../components/Page'
 
 const Post = props => (
-  <div>
+  <Page>
     <h1>{props.url.asPath}</h1>
     <PostForm />
-  </div>
+  </Page>
 );
 
 Post.getInitialProps = async function GetInitialPostData() {

@@ -128,6 +128,13 @@ class PostForm extends React.Component {
         </div>
 
         <button onClick={this.onCreateNewTextPostWithUserText}>Post!</button>
+        <style jsx>
+        {`
+          .postSubmission {
+            text-align: center;
+          }
+        `}
+        </style>
       </div>
     );
   }

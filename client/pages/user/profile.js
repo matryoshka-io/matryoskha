@@ -48,20 +48,18 @@ class Profile extends Component {
           } />
         </div>
         <div className="accountInfo" >
-          <div>
+          <div className="logo__info">
             <Logo />
             <h2>{this.props.user.username}</h2>
-            <button className="newPost">Create New Post</button>
           </div>
-          <p>Your Info</p>
           <ul className="info">
             
             <div className="birthday">
               <img src="https://vignette.wikia.nocookie.net/kpop/images/2/21/Birthday_Icon.png/revision/latest?cb=20161105130102" width={45} height={40}/>
-              <span>
+              <div>
                 <div>mtryska birthday</div>
                 <div>February 20, 2018</div>
-              </span>
+              </div>
             </div>
             <div className="Trophy">
               <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Circle-icons-trophy.svg" width={40} height={40}/>
@@ -74,31 +72,34 @@ class Profile extends Component {
          
         <style jsx>
         {`
+
+         .logo__info {
+           padding-right: 70px;
+           padding-top: 20px;
+         }
          .newPost  {
            align: center;
          }
          .Trophy {
-          display:inline-flex;
+          display:flex;
           padding-top: 30px;
          }
       
          .birthday {
-          display:inline-flex;
+          display:flex;
          }
          h3 {
            text-align: center;
          }
          .posts {
-          border: solid 2px;
           float: left;
           width: 78%;
-          height: 600px;
         }
         .accountInfo {
-          border: solid 2px;
+          text-align: center;
+          background: #696775;
           float: right;
-          width: 20%;
-          height: 600px;
+          width: 20%
         } * {
           border:1
         }
