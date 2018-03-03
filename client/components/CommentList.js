@@ -23,33 +23,32 @@ class CommentList extends React.Component {
   render() {
     return (
       <div>
-        <MuiThemeProvider>
-          <div className="list">
-            {this.props.comments.map((comment, index) => {
+        <div className="list">
+          {(this.props.comments && this.props.comments.map) &&
+            this.props.comments.map((comment, index) => {
               return (
                 <CommentListEntry
                   key={comment._id}
                   index={index}
                   comment={comment}
                   comments={this.props.comments}
+                  allComments={this.props.allComments}
                   newCommentBody={this.props.newCommentBody}
                   postId={this.props.postId}
                   updateCommentList={this.props.updateCommentList}
-
                 />
               )
             })}
-          </div>
+        </div>
 
-          <style>{`
+        <style>{`
           .list {
             // border-style: solid;
             border-width: 1px 1px 0px 1px;
             border-color: gray;
           }
           `}
-          </style>
-        </MuiThemeProvider>
+        </style>
       </div >
     )
   }

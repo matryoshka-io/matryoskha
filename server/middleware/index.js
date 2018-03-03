@@ -5,7 +5,6 @@ const validateSession = (req, res, next) => {
   if (token) {
     auth.verifyToken(token)
       .then((decoded) => {
-        console.log('Session from header: ', decoded.user);
         req.session = {
           user: decoded.user,
         };

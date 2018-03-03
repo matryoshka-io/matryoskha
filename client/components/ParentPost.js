@@ -25,15 +25,14 @@ class ParentPost extends React.Component {
   }
 
   componentDidMount = () => {
-    axios.get('/api/post/5a8e0e2b7f911450d4600d99')
+    const token = sessions.getToken('jwt')
+    axios.get('/api/post/5a8e0e2b7f911450d4600d99', auth.makeTokenHeader(token))
       .then(res => {
         this.setState({
           postTitle: res.data.title,
           postBodyText: res.data.body,
           postId: res.data._id,
           comments: res.data.comments,
-        }, () => {
-          console.log(this.state.comments, 'did it work')
         })
       })
   }
@@ -80,24 +79,26 @@ class ParentPost extends React.Component {
               <ReactMarkdown source={this.state.postBodyText} />
             </Paper> <br />
           </div>
+        </MuiThemeProvider>
 
 
-          Add a new comment
+        Add a new comment
         <CommentForm title={this.state.title} subredditId={this.state.subredditId} postComment={this.postComment} />
 
-          <CommentList
-            comments={this.state.comments}
-            newCommentBody={this.state.commentBody}
-            postId={this.state.postId}
-            updateCommentList={this.updateCommentList}
-          />
+        <CommentList
+          comments={this.state.comments}
+          allComments={this.state.comments}
+          newCommentBody={this.state.commentBody}
+          postId={this.state.postId}
+          updateCommentList={this.updateCommentList}
+        />
 
-          <style>{`
+        <style>{`
           .postBody {
             padding: 4px 0 20px 0;
           }
         `}</style>
-        </MuiThemeProvider>
+
       </div>
 
 

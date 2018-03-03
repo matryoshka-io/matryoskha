@@ -9,7 +9,7 @@ import utils from '../utils';
 
 class Frontpage extends Component {
   static async getInitialProps(context) {
-    const initialProps = utils.data.prepPostListView(context);
+    const initialProps = await utils.data.prepPostListView(context);
     return initialProps;
   }
 
@@ -20,12 +20,13 @@ class Frontpage extends Component {
       title: this.props.title,
       user: this.props.user,
       token: this.props.token,
-      subscriptions: this.props.subscriptions,
+      subscribed: this.props.subscribed,
       posts: this.props.posts,
     };
     this.loginUser = this.loginUser.bind(this);
     this.refreshPosts = this.refreshPosts.bind(this);
     this.subscribe = this.subscribe.bind(this);
+    this.castVote = this.castVote.bind(this);
   }
 
   componentDidMount() {
@@ -36,11 +37,17 @@ class Frontpage extends Component {
     // this.refreshPosts();
   }
 
-  castVote(id, choice) {
-    if (utils.vote.isNewVote(this.state.votes, { _id: id, choice })) {
-      utils.vote.castVote(id, choice)
-        .then(result => console.log('voted'))
-        .catch(err => console.log('no vote'));
+  castVote(voted, id, choice) {
+    if (voted !== choice && this.state.user) {
+      utils.votes.castVote({ user: this.state.user, token: this.state.token }, id, choice)
+        .then((result) => {
+          let postUpdate = [...this.state.posts];
+          postUpdate = utils.votes.setVoteInPosts(postUpdate, { _id: id, choice }, voted);
+          this.setState({
+            posts: postUpdate,
+          });
+        })
+        .catch(err => console.log('Vote Failed'));
     }
   }
 
@@ -88,12 +95,16 @@ class Frontpage extends Component {
   }
 
   subscribe() {
-    console.log('hello');
     if (this.state.subreddit && this.state.user) {
-      console.log(`SUBCRIBE REQUEST: ${this.state.subreddit}`);
-      utils.data.subscribe({ user: this.state.user, token: this.state.token }, this.state.subreddit)
-        .then(result => console.log(result))
-        .catch(err => console.log(err));
+      if (!this.state.subscribed) {
+        utils.data.subscribe({ user: this.state.user, token: this.state.token }, this.state.subreddit)
+          .then(result => this.setState({ subscribed: true }))
+          .catch(err => console.log(err));
+      } else {
+        utils.data.unsubscribe({ user: this.state.user, token: this.state.token }, this.state.subreddit)
+          .then(result => this.setState({ subscribed: false }))
+          .catch(err => console.log(err));
+      }
     }
   }
 
@@ -114,7 +125,7 @@ class Frontpage extends Component {
               logout={this.logoutUser}
             />
             <SubredditPanelBody
-              subscriptions={this.state.subscriptions}
+              subscribed={this.state.subscribed}
               subreddit={this.state.subreddit}
               subscribe={this.subscribe}
             />

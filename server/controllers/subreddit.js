@@ -53,24 +53,26 @@ module.exports = {
     },
   },
   GET(req, res) {
-    models.Subreddit.findOne({ titleSlug: req.params.subName })
-      .then(subreddit =>
-        models.Post.find({ subreddit: subreddit._id, type: { $not: /Comment/ } })
-          .populate('subreddit')
-          .populate('author')
-          .lean())
-      .then(posts => utils.getKarmaAndSortWithPromise(posts))
-      .then((sorted) => {
-        const promises = [];
-        sorted.forEach((post) => {
-          promises.push(utils.matryoksha(post));
-        });
-        return Promise.all(promises)
-          .then(() => sorted)
-          .catch(err => []);
-      })
-      .then(postResponse => res.status(200).send(postResponse))
-      .catch(err => res.status(200).send([]));
+    models.Subreddit.findOne({ titleSlug: req.params.subName }).then((subreddit) => {
+      models.Post.find({ subreddit: subreddit._id })
+        .populate('subreddit')
+        .populate('author')
+        .lean()
+        .then((posts) => {
+          utils.getKarmaAndSort(req, posts, (posts) => {
+            const promises = [];
+            posts.forEach((post) => {
+              promises.push(utils.matryoksha(req, post));
+            });
+            Promise.all(promises)
+              .then(() => {
+                res.status(200).json(posts);
+              })
+              .catch(err => res.status(200).send([]));
+          });
+        })
+        .catch(err => res.status(200).send([]));
+    });
   },
   PUT(req, res) {
     models.Subreddit.findOne({ titleSlug: req.params.subName })

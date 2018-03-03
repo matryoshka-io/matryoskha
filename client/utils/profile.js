@@ -1,37 +1,55 @@
 const axios = require('axios');
-const auth = require('./auth');
 
 const BASE_URL = 'http://localhost:3000';
 
-const subscribe = (session, subreddit) => {
-  if (session.user && session.token && subreddit) {
+
+const getUserProfile = (username) => {
+  return new Promise((resolve, reject) => {
+    return axios.get(`${BASE_URL}/api/user/${username}`)
+      .then(profile => resolve(profile.data))
+      .catch(err => reject(err));
+  });
+};
+
+const getUserContent = (username, content) => {
+  return new Promise((resolve, reject) => {
+    const requestUrl = `${BASE_URL}/api/user/${username}/${content}`;
+    console.log(`PROFILE CONTENT: ${requestUrl}`);
+    return axios.get(`${BASE_URL}/api/user/${username}/${content}`)
+      .then((content) => {
+        console.log(content.data);
+        return resolve(content.data);
+      })
+      .catch(err => reject(err));
+  });
+};
+
+const initializeProfilePage = (context) => {
+  const user = context.query.user || null;
+  const contentType = context.query.content || 'posts';
+  const response = {
+    user,
+    profile: {},
+    content: [],
+    type: contentType,
+  };
+  if (user) {
     return new Promise((resolve, reject) => {
-      const requestUrl = `${BASE_URL}/api/subscription/${subreddit}`;
-      return axios.post(requestUrl, auth.makeTokenHeader(session.token))
-        .then((result) => {
-          console.log('subscription result \n', result);
-          return resolve(result.data);
+      return getUserProfile(user)
+        .then((profile) => {
+          response.profile = profile;
+          return getUserContent(user, contentType);
+        })
+        .then((content) => {
+          response.content = content;
+          return resolve(response);
         })
         .catch(err => reject(err));
     });
   }
-  return false;
-};
-
-const getSubscriptions = (session) => {
-  return new Promise((resolve, reject) => {
-    if (session.user && session.token) {
-      const requestUrl = `${BASE_URL}/api/user/${session.user.username}/subscriptions`;
-      const headers = auth.makeTokenHeader(session.token);
-      return axios.get(requestUrl, headers)
-        .then(subscriptions => resolve(subscriptions.data))
-        .catch(err => reject(err));
-    }
-    return resolve([]);
-  });
+  return response;
 };
 
 module.exports = {
-  subscribe,
-  getSubscriptions,
+  initializeProfilePage,
 };
