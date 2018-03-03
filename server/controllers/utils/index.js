@@ -94,6 +94,5 @@ module.exports = {
   matryoksha,
   evilMatryoksha,
   getKarmaAndSort,
-  getKarmaAndSortWithPromise,
   getKarma,
 };
