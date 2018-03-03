@@ -43,7 +43,6 @@ class ParentPost extends React.Component {
       .then(res => {
         res.data.forEach(data => {
           if (this.state.postTitle === data.title) {
-            console.log('data', data)
             return this.setState({ postId: data._id })
           }
         })
