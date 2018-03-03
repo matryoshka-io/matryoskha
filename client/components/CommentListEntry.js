@@ -17,7 +17,10 @@ class CommentListEntry extends React.Component {
       commentId: '',
       deleteIndex: '',
       editIndex: '',
+<<<<<<< HEAD
       parentId: '',
+=======
+>>>>>>> master
 
     }
 
@@ -34,6 +37,7 @@ class CommentListEntry extends React.Component {
     this.setState({ isReplyBoxHidden: !this.state.isReplyBoxHidden })
   }
 
+<<<<<<< HEAD
   replyAndSetNewCommentId = (commentId) => {
     this.setState({ commentId })
   }
@@ -68,10 +72,64 @@ class CommentListEntry extends React.Component {
       })
   }
 
+=======
+  onDeleteClickHandler = () => {
+    this.setState({ deleteIndex: this.props.index },
+      this.onDeleteClickWithIndex(this.state.deleteIndex)
+    )
+  }
+
+  onDeleteClickWithIndex = (deleteIndex) => {
+    const token = sessions.getToken('jwt')
+    axios.get(`api/post/${this.props.postId}`, auth.makeTokenHeader(token))
+      .then(res => {
+        res.data.comments.forEach((comment, index) => {
+          if (this.state.deleteIndex === index) {
+            let collection1 = this.props.comments.slice(0, index);
+            let collection2 = this.props.comments.slice(index + 1)
+            let newCommentCollection = collection1.concat(collection2) //show comments after deletion
+            this.setState({ commentId: comment._id })
+            this.props.updateCommentList(newCommentCollection)
+          }
+        })
+        return this.state.commentId;
+      })
+      .then(res => {
+        return axios.delete(`api/comment/${this.state.commentId}`, auth.makeTokenHeader(token))
+      })
+      .then(res => {
+        console.log('SUCCESFUL COMMENT DELETE')
+        return res;
+      })
+  }
+
+>>>>>>> master
   onEditClickHandler = () => {
     this.setState({ editIndex: this.props.index },
       this.editComment(this.state.editIndex)
     )
+<<<<<<< HEAD
+  }
+
+  editComment = (editIndex) => {
+    const token = sessions.getToken('jwt')
+    axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
+      .then(res => {
+        res.data.comments.forEach((comment, index) => {
+          if (index === this.state.editIndex) {
+            this.setState({ commentId: comment._id })
+          }
+        })
+        return this.state.commentId;
+      })
+      .then(res => {
+        return axios.put(`api/comment/${this.state.commentId}`, { body: 'i have been edited' })
+      })
+      .then(res => {
+        console.log('SUCCESSFUL EDIT')
+      })
+=======
+>>>>>>> master
   }
 
   editComment = (editIndex) => {
@@ -93,7 +151,9 @@ class CommentListEntry extends React.Component {
       })
   }
 
-
+  replyAndSetNewCommentId = (commentId) => {
+    this.setState({ commentId })
+  }
 
   render() {
     return (
@@ -108,6 +168,7 @@ class CommentListEntry extends React.Component {
             </div>
 
           </Paper>
+<<<<<<< HEAD
         </MuiThemeProvider>
         <div className="bar">
           <div id="replyComment">
@@ -140,6 +201,30 @@ class CommentListEntry extends React.Component {
 
 
         <style> {`
+=======
+          <div className="bar">
+            <div id="replyComment">
+              <a onClick={this.onReplyClickHandler}>reply</a>
+            </div>
+            <div id="deleteComment">
+              <a onClick={this.onDeleteClickHandler}>delete</a>
+
+            </div>
+            <div id="editComment">
+              <a onClick={this.onEditClickHandler}>edit</a>
+            </div>
+          </div>
+          {this.state.isReplyBoxHidden ? null : <ReplyCommentBox
+            postId={this.props.postId}
+            index={this.props.index}
+            replyAndSetNewCommentId={this.replyAndSetNewCommentId}
+            commentId={this.state.commentId}
+          />}
+
+          <CommentList comments={this.props.comment.comments} />
+
+          <style> {`
+>>>>>>> master
           .bar {
             display: flex;
             justify-content: space-between;

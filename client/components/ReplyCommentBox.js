@@ -14,10 +14,16 @@ class ReplyCommentBox extends React.Component {
   onReplyBoxChangeHandler = (e) => {
     this.setState({
       replyBoxText: e.target.value
+<<<<<<< HEAD
+=======
+    }, () => {
+      console.log('commentbox', this.state.replyBoxText)
+>>>>>>> master
     })
   }
 
   postReplyWithText = () => {
+<<<<<<< HEAD
     console.log('allCOmments', this.props.allComments)
     console.log('this.props.comments', this.props.comments)
     console.log('this.props.commentId', this.props.commentId)
@@ -34,12 +40,28 @@ class ReplyCommentBox extends React.Component {
         res.data.comments.forEach((comment, index) => {
           console.log('comment', comment)
           if (comment._id === parentId) {
+=======
+    this.setState({ replyIndex: this.props.index },
+      this.replyToComment(this.state.replyBoxText)
+    )
+  }
+
+  replyToComment = (replyBoxText) => {
+    console.log('reply', replyBoxText)
+    const token = sessions.getToken('jwt')
+    console.log('token', token)
+    axios.get(`api/post/${this.props.postId}`)
+      .then(res => {
+        res.data.comments.forEach((comment, index) => {
+          if (index === this.state.replyIndex) {
+>>>>>>> master
             this.props.replyAndSetNewCommentId(comment._id)
           }
         })
         return this.props.commentId
       })
       .then(res => {
+<<<<<<< HEAD
         console.log('res', res)
         return axios.post(`api/comment/${this.props.commentId}`, { body: replyBoxText }, auth.makeTokenHeader(token))
       })
@@ -54,6 +76,13 @@ class ReplyCommentBox extends React.Component {
       .then(res => {
         console.log('res', res)
         this.props.updateCommentList(res.data.comments)
+=======
+        return axios.post(`api/comment/${res}`, { body: replyBoxText }, auth.makeTokenHeader(token))
+      })
+      .then(res => {
+        //create a new collection
+        console.log('SUCCESSFUL REPLY')
+>>>>>>> master
       })
   }
 

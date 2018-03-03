@@ -4,7 +4,7 @@ export default () => (
   <div className="footerDiv">
     <Link href="/about"><p>About</p></Link>
       <p>Please dont contact us</p>
-    <Link href="/"><p>Matryoshka-Io copyright</p></Link>
+      <img src="https://preview.ibb.co/m6wuXc/mat.jpg" alt="mat" border="0" width={100}/>
     <style jsx>
       {`
         .footerDiv {

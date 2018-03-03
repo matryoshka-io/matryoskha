@@ -17,7 +17,7 @@ module.exports = {
         models.Post.find({ author: user._id, type: { $not: /Comment/ } }).then((posts) => {
           const promises = [];
           posts.forEach((post) => {
-            promises.push(utils.matryoksha(post));
+            promises.push(utils.matryoksha(req, post));
           });
           Promise.all(promises).then(() => {
             res.status(200).json(posts);
@@ -32,7 +32,7 @@ module.exports = {
         models.Post.find({ author: user._id, type: 'Comment' }).then((comments) => {
           const promises = [];
           comments.forEach((comment) => {
-            promises.push(utils.matryoksha(comment));
+            promises.push(utils.matryoksha(req, comment));
           });
           Promise.all(promises).then(() => {
             res.status(200).json(comments);
@@ -52,11 +52,15 @@ module.exports = {
   },
   subscriptions: {
     GET(req, res) {
-      models.User.findOne({ username: req.params.username }).then((user) => {
-        models.Subscription.find({ user: user._id }).then((subscriptions) => {
-          res.status(200).json(subscriptions);
-        });
-      });
+      models.User.findOne({ username: req.params.username })
+        .exec()
+        .then((user) => {
+          return models.Subscription.find({ user: user._id })
+            .populate('subreddit')
+            .exec();
+        })
+        .then(subscriptions => res.status(200).json(subscriptions))
+        .catch(err => res.status(500).send(err));
     },
   },
 };

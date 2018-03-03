@@ -1,11 +1,12 @@
+import Link from 'next/link';
 import LoginForm from './LoginForm';
 
 // todo: separate into frontpage, subreddit varieties for logged-in
-const UserPanelBody = ({ user, login, logout, subscribe }) => {
+const UserPanelBody = ({ user, login, logout }) => {
   if (user && user.username) {
     return (
       <div className="user__panel">
-        <h3>{user.username}</h3>
+        <h3><Link href="/user/profile"><a>{user.username}</a></Link></h3>
         <button className="button primary" >Create Post</button>
         <button className="button primary" >Submit Article</button>
         <button className="button primary" >Submit Image</button>

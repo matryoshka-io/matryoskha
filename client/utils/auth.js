@@ -1,6 +1,7 @@
 const axios = require('axios');
 const nextRouter = require('next/router');
 const sessions = require('./sessions');
+const profile = require('./profile');
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -68,7 +69,7 @@ const initializeSession = context =>
         }
         return resolve(sessionData);
       })
-      .catch(err => reject(sessionData));
+      .catch(err => resolve(sessionData));
   });
 
 module.exports = {

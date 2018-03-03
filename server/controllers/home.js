@@ -5,19 +5,19 @@ const utils = require('./utils');
 
 module.exports = {
   GET(req, res) {
-    if (!req.session) {
+    if (!req.session.user) {
       models.Post.find({ type: { $not: /Comment/ } })
         .populate('subreddit')
         .populate('author')
         .lean()
         .then((posts) => {
-          utils.getKarmaAndSort(posts, (posts) => {
+          utils.getKarmaAndSort(req, posts, (posts) => {
             const promises = [];
             posts.forEach((post) => {
-              promises.push(utils.matryoksha(post));
+              promises.push(utils.matryoksha(req, post));
             });
             Promise.all(promises).then(() => {
-              res.status(200).end(JSON.stringify(posts));
+              res.status(200).json(posts);
             });
           });
         });
@@ -39,13 +39,13 @@ module.exports = {
                 return keep;
               });
             }
-            utils.getKarmaAndSort(posts, (posts) => {
+            utils.getKarmaAndSort(req, posts, (posts) => {
               const promises = [];
               posts.forEach((post) => {
-                promises.push(utils.matryoksha(post));
+                promises.push(utils.matryoksha(req, post));
               });
               Promise.all(promises).then(() => {
-                res.status(200).end(JSON.stringify(posts));
+                res.status(200).json(posts);
               });
             });
           });
