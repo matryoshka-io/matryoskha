@@ -10,6 +10,7 @@ import utils from '../utils';
 class Frontpage extends Component {
   static async getInitialProps(context) {
     const initialProps = await utils.data.prepPostListView(context);
+    console.log(initialProps.posts);
     return initialProps;
   }
 
@@ -26,6 +27,7 @@ class Frontpage extends Component {
     this.loginUser = this.loginUser.bind(this);
     this.refreshPosts = this.refreshPosts.bind(this);
     this.subscribe = this.subscribe.bind(this);
+    this.castVote = this.castVote.bind(this);
   }
 
   componentDidMount() {
@@ -36,10 +38,17 @@ class Frontpage extends Component {
     // this.refreshPosts();
   }
 
-  castVote(id, choice) {
-    if (utils.vote.isNewVote(this.state.votes, { _id: id, choice })) {
-      utils.vote.castVote(id, choice)
-        .then(result => console.log('voted'))
+  castVote(voted, id, choice) {
+    if (voted !== choice && this.state.user) {
+      console.log('casting new vote! \n', `${id} : ${choice > 0 ? 'upvote' : 'downvote'}`);
+      utils.votes.castVote({ user: this.state.user, token: this.state.token }, id, choice)
+        .then((result) => {
+          let postUpdate = [...this.state.posts];
+          postUpdate = utils.votes.setVoteInPosts(postUpdate, { _id: id, choice }, voted);
+          this.setState({
+            posts: postUpdate,
+          }, () => console.log(this.state.posts));
+        })
         .catch(err => console.log('no vote'));
     }
   }

@@ -3,15 +3,18 @@ const models = require('../../models');
 
 const tackVote = (req, post) =>
   new Promise((resolve, reject) => {
-    models.Vote.find({
-      post: post._id,
-      user: req.session.user._id,
-    }).then((votes) => {
-      if (votes.length > 0) {
-        post.voted = votes[0].value; // lulz
-      }
-      resolve();
-    });
+    if (req.session.user) {
+      models.Vote.find({
+        post: post._id,
+        user: req.session.user._id,
+      }).then((votes) => {
+        if (votes.length > 0) {
+          post.voted = votes[0].value; // lulz
+        }
+        return resolve();
+      });
+    }
+    return resolve();
   });
 
 const karmaSort = (firstPost, secondPost) => {
@@ -49,6 +52,31 @@ const getKarmaAndSort = (req, posts, callback) => {
     });
     posts.sort(karmaSort);
     callback(posts);
+  });
+};
+
+const getKarmaAndSortPromise = (req, posts) => {
+  return new Promise((resolve, reject) => {
+    let promises = [];
+    posts.forEach((post) => {
+      promises.push(tackVote(req, post));
+    });
+    return Promise.all(promises)
+      .then(() => {
+        promises = [];
+        posts.forEach((post) => {
+          promises.push(models.Vote.find({ post: post._id }));
+        });
+        return Promise.all(promises);
+      })
+      .then((votes) => {
+        Object.entries(posts).forEach(([index, post]) => {
+          post.karma = votes[index].reduce((totalKarma, vote) => totalKarma + vote.value, 0);
+        });
+        posts.sort(karmaSort);
+        return resolve(posts);
+      })
+      .catch(err => reject(err));
   });
 };
 
@@ -94,5 +122,6 @@ module.exports = {
   matryoksha,
   evilMatryoksha,
   getKarmaAndSort,
+  getKarmaAndSortPromise,
   getKarma,
 };
