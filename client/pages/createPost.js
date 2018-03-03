@@ -3,10 +3,12 @@ import ParentPost from '../components/ParentPost';
 import Page from '../components/Page'
 
 const Post = props => (
-  <Page>
-    <h1>{props.url.asPath}</h1>
-    <PostForm />
-  </Page>
+  <div>
+    <Page>
+      <PostForm />
+    </Page>
+
+  </div>
 );
 
 Post.getInitialProps = async function GetInitialPostData() {
