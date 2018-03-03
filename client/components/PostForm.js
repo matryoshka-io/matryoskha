@@ -40,19 +40,19 @@ class PostForm extends React.Component {
       this.setState({
         type: 'text',
         isTextBoxHidden: false,
-        isLinkBarHidden: true
+        isLinkBarHidden: true,
       });
     } else if (e.target.value === 'image') {
       this.setState({
         isLinkBarHidden: false,
         isTextBoxHidden: true,
-        type: 'image'
+        type: 'image',
       });
     } else if (e.target.value === 'video') {
       this.setState({
         isLinkBarHidden: false,
         isTextBoxHidden: true,
-        type: 'video'
+        type: 'video',
       });
     }
   }
