@@ -35,21 +35,22 @@ class EditBox extends React.Component {
           console.log('editId', editId)
           if (comment._id === editId) {
             console.log('after if')
-            this.setState({ commentId: comment._id }, () => {
-              //getting 401 because i'm trying to edit the first comment
-              console.log('commentid', this.state.commentId)
-            })
+            // this.setState({ commentId: comment._id }, () => {
+            //   console.log('commentid', this.state.commentId)
+            // })
+            this.props.replyAndSetNewCommentId(comment._id)
           }
         })
       })
       .then(res => {
-        return axios.put(`api/comment/${this.state.commentId}`, { body: editBoxText }, auth.makeTokenHeader(token))
+        return axios.put(`api/comment/${this.props.commentId}`, { body: editBoxText }, auth.makeTokenHeader(token))
       })
       .then(res => {
         return axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
       })
 
       .then(res => {
+        console.log('res after', res)
         this.props.updateCommentList(res.data.comments)
         console.log('SUCCESSFUL EDIT')
       })
