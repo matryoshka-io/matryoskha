@@ -18,22 +18,18 @@ class ReplyCommentBox extends React.Component {
   }
 
   postReplyWithText = () => {
-    console.log('allCOmments', this.props.allComments)
-    console.log('this.props.comments', this.props.comments)
-    console.log('this.props.commentId', this.props.commentId)
-    const parent =
-      this.setState({ replyIndex: this.props.index },
-        this.replyToComment(this.state.replyBoxText, this.props.commentId)
-      )
+    this.setState({ replyIndex: this.props.index },
+      this.replyToComment(this.state.replyBoxText, this.props.commentId)
+    )
   }
 
-  replyToComment = (replyBoxText, parentId) => {
+  replyToComment = (replyBoxText, commentId) => {
     const token = sessions.getToken('jwt')
     axios.get(`api/post/${this.props.postId}`)
       .then(res => {
         res.data.comments.forEach((comment, index) => {
           console.log('comment', comment)
-          if (comment._id === parentId) {
+          if (comment._id === commentId) {
             this.props.replyAndSetNewCommentId(comment._id)
           }
         })
