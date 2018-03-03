@@ -10,46 +10,27 @@ module.exports = {
         .populate('subreddit')
         .populate('author')
         .lean()
-        .then((posts) => {
-          utils.getKarmaAndSort(req, posts, (posts) => {
-            const promises = [];
-            posts.forEach((post) => {
-              promises.push(utils.matryoksha(req, post));
-            });
-            Promise.all(promises).then(() => {
-              res.status(200).json(posts);
-            });
-          });
-        });
+        .then(posts => utils.getKarmaAndSortPromise(req, posts))
+        .then(posts => res.status(200).send(posts))
+        .catch(err => res.status(500).send(err));
     } else {
-      models.Subscription.find({ user: req.session.user._id }).populate('subreddit').then((subscriptions) => {
-        models.Post.find({ type: { $not: /Comment/ } })
-          .populate('subreddit')
-          .populate('author')
-          .lean()
-          .then((posts) => {
-            if (subscriptions.length) {
-              posts = posts.filter((post) => {
-                let keep = false;
-                subscriptions.forEach((subscription) => {
-                  if (post.subreddit._id.toString() === subscription.subreddit._id.toString()) {
-                    keep = true;
-                  }
-                });
-                return keep;
-              });
-            }
-            utils.getKarmaAndSort(req, posts, (posts) => {
-              const promises = [];
-              posts.forEach((post) => {
-                promises.push(utils.matryoksha(req, post));
-              });
-              Promise.all(promises).then(() => {
-                res.status(200).json(posts);
-              });
-            });
-          });
-      });
+      models.Subscription.find({ user: req.session.user._id })
+        .select('subreddit')
+        .exec()
+        .then((subscriptions) => {
+          const subscriptionIds = subscriptions.reduce((list, sub) => { list.push(sub.subreddit); return list; }, []);
+          const query = { type: { $not: /Comment/ } };
+          if (subscriptions.length > 0) {
+            query.subreddit = { $in: subscriptionIds };
+          }
+          return models.Post.find(query)
+            .populate('subreddit')
+            .populate('author')
+            .lean();
+        })
+        .then(posts => utils.getKarmaAndSortPromise(req, posts))
+        .then(posts => res.status(200).send(posts))
+        .catch(err => res.status(500).send(err));
     }
   },
 };

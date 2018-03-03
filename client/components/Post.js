@@ -5,18 +5,30 @@ import PostDetails from './PostDetails';
 import Rating from './Rating';
 import SubredditBar from './SubredditBar';
 
-const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, castVote }) => {
+const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, voted, castVote }) => {
   const postImageStyle = {
     backgroundSize: 'cover',
     backgroundColor: '#333',
   };
+  const karmaClasses = ['post__vote'];
+  const upvoteClasses = ['post__vote'];
+  const downvoteClasses = ['post__vote'];
+
+  if (voted && voted > 0) {
+    karmaClasses.push('happy');
+    upvoteClasses.push('happy');
+  }
+  if (voted && voted < 0) {
+    karmaClasses.push('sad');
+    downvoteClasses.push('sad');
+  }
 
   return (
     <div className="post__tile">
       <div className="post__karma">
-        <div className="post__vote" onClick={() => castVote(_id, 1)}>&#x25B2;</div>
-        <div>{karma}</div>
-        <div className="post__vote" onClick={() => castVote(_id, -1)}>&#x25BC;</div>
+        <div className={upvoteClasses.join(' ')} onClick={() => castVote(voted, _id, 1)}>&#x25B2;</div>
+        <div className={karmaClasses.join(' ')}>{karma}</div>
+        <div className={downvoteClasses.join(' ')} onClick={() => castVote(voted, _id, -1)}>&#x25BC;</div>
       </div>
       <div className="post__image" style={postImageStyle} />
       <div className="post__content">
@@ -52,12 +64,29 @@ const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, cas
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: space-between;
           }
           .post__karma > * {
             flex: 1;
           }
           .post__vote {
+            cursor: pointer;
             text-decoration: none;
+          }
+          .post__vote:hover {
+            color: #ffcc00;
+          }
+          .happy {
+            color: #ffcc00;
+          }
+          .happy:hover {
+            color: #ffcc00;
+          }
+          .sad {
+            color: #ff0000;
+          }
+          .sad:hover {
+            color: #ff0000;
           }
           .post__image {
             width: 80px;
