@@ -9,6 +9,16 @@ import EditBox from './EditBox'
 import auth from '../utils/auth';
 import sessions from '../utils/sessions';
 
+
+const style = {
+  height: 100,
+  width: 100,
+  margin: 20,
+  textAlign: 'center',
+  display: 'inline-block',
+};
+
+
 class CommentListEntry extends React.Component {
   constructor(props) {
     super(props)
@@ -18,16 +28,7 @@ class CommentListEntry extends React.Component {
       commenetBody: '',
       commentId: '',
       deleteIndex: '',
-
     }
-
-    const style = {
-      height: 100,
-      width: 100,
-      margin: 20,
-      textAlign: 'center',
-      display: 'inline-block',
-    };
   }
 
   onReplyClickHandler = () => {
@@ -72,6 +73,7 @@ class CommentListEntry extends React.Component {
 
 
   render() {
+
     return (
       <div>
         <MuiThemeProvider>
@@ -103,7 +105,6 @@ class CommentListEntry extends React.Component {
           index={this.props.index}
           replyAndSetNewCommentId={this.replyAndSetNewCommentId}
           commentId={this.props.comment._id}
-          nestedComments={this.props.comment.comments}
           updateCommentList={this.props.updateCommentList}
 
         />}
