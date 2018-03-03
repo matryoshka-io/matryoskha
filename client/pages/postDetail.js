@@ -1,6 +1,7 @@
 import ParentPost from '../components/ParentPost'
 import CommentForm from '../components/CommentForm'
 import axios from 'axios'
+import Page from '../components/Page'
 
 class PostPage extends React.Component {
   constructor(props) {
@@ -24,8 +25,10 @@ class PostPage extends React.Component {
   render() {
     return (
       <div>
-        <h1>{this.props.url.asPath}</h1>
-        <ParentPost />
+        <Page>
+          <ParentPost />
+        </Page>
+
       </div>
     );
   }
