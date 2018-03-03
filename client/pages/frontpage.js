@@ -145,12 +145,12 @@ class Frontpage extends Component {
               margin-left: 16px;
             }
             .posts {
-              border: solid 2px;
-              float: left;
+              padding-top: 30px;
+              float: left;  
               width: 75%;
             }
             .sidebar {
-              border: solid 2px;
+              padding-top: 30px;
               float: right;
               width: 22%;
               min-width: 200px;

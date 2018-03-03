@@ -6,7 +6,7 @@ const UserPanelBody = ({ user, login, logout }) => {
   if (user && user.username) {
     return (
       <div className="user__panel">
-        <h3><Link href="/user/profile"><a>{user.username}</a></Link></h3>
+        <h2><Link href="/user/profile"><a>{user.username}</a></Link></h2>
         <button className="button primary" >Create Post</button>
         <button className="button primary" >Submit Article</button>
         <button className="button primary" >Submit Image</button>
@@ -17,6 +17,7 @@ const UserPanelBody = ({ user, login, logout }) => {
             }
             .user__panel {
               height: 200px;
+              background: #696775;
               display: flex;
               flex-direction: column;
               align-items: center;

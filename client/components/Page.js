@@ -1,12 +1,12 @@
 import Nav from './Nav';
 import Footer from './Footer';
 
-
-
 export default ({ title, children }) => (
   <div className="main">
     <div>
-      <h2>{ title }</h2>
+      <div className="mat">
+        <img src="/static/mat.png" height={80} />
+      </div>
       <Nav />
     </div>
     <div className="page">
@@ -17,22 +17,30 @@ export default ({ title, children }) => (
     </div>
     <style jsx global>
       {`
+
         body {
-          margin: 8px;
-          padding: 0px;
+          margin: 0px;
+          background: url('/static/background.png') top center no-repeat;
+          background-size: cover;
+          min-height: 100vh;
+        }
+        .page {
+          padding: 6px;
         }
       `}
     </style>
     <style jsx>
       {`
+
+        .mat {
+          text-align: center;
+        }
         .main {
           width: 95%;
           margin: auto;
           padding: 10px 0 0 0;
         }
         .page {
-          color: #828282;
-          background: #fff;
           padding: 3px 10px;
         }
         @media (max-width: 750px) {
