@@ -23,13 +23,14 @@ class ReplyCommentBox extends React.Component {
     )
   }
 
-  replyToComment = (replyBoxText, commentId) => {
+  replyToComment = (replyBoxText, parentId) => {
+    console.log('click')
     const token = sessions.getToken('jwt')
-    axios.get(`api/post/${this.props.postId}`)
+    axios.get(`api/post/${this.props.postId}`, auth.makeTokenHeader(token))
       .then(res => {
         res.data.comments.forEach((comment, index) => {
           console.log('comment', comment)
-          if (comment._id === commentId) {
+          if (comment._id === parentId) {
             this.props.replyAndSetNewCommentId(comment._id)
           }
         })
@@ -41,7 +42,7 @@ class ReplyCommentBox extends React.Component {
       })
       .then(res => {
         const newComment = { ...res.data, comments: [] }
-        return axios.get(`api/post/${this.props.postId}`)
+        return axios.get(`api/post/${this.props.postId}`, auth.makeTokenHeader(token))
         // console.log('this.props.comment', this.props.comment)
 
         // this.props.updateCommentList(this.props.allComments)
