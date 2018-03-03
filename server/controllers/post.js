@@ -14,8 +14,8 @@ module.exports = {
       .populate('author')
       .lean()
       .then((post) => {
-        utils.getKarma(post, (post) => {
-          utils.matryoksha(post).then(() => {
+        utils.getKarma(req, post, (post) => {
+          utils.matryoksha(req, post).then(() => {
             res.status(200).end(JSON.stringify(post));
           });
         });

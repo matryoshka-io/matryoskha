@@ -17,7 +17,7 @@ module.exports = {
         models.Post.find({ author: user._id, type: { $not: /Comment/ } }).then((posts) => {
           const promises = [];
           posts.forEach((post) => {
-            promises.push(utils.matryoksha(post));
+            promises.push(utils.matryoksha(req, post));
           });
           Promise.all(promises).then(() => {
             res.status(200).json(posts);
@@ -32,7 +32,7 @@ module.exports = {
         models.Post.find({ author: user._id, type: 'Comment' }).then((comments) => {
           const promises = [];
           comments.forEach((comment) => {
-            promises.push(utils.matryoksha(comment));
+            promises.push(utils.matryoksha(req, comment));
           });
           Promise.all(promises).then(() => {
             res.status(200).json(comments);
