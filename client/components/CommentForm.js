@@ -1,5 +1,5 @@
 import axios from 'axios';
-import homepage from '../pages/homepage';
+import homepage from '../pages/frontpage';
 
 class CommentForm extends React.Component {
   constructor(props) {
