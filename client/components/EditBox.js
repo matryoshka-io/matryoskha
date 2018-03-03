@@ -29,15 +29,8 @@ class EditBox extends React.Component {
     const token = sessions.getToken('jwt')
     axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
       .then(res => {
-        console.log('res', res.data)
         res.data.comments.forEach((comment, index) => {
-          console.log('comment', comment)
-          console.log('editId', editId)
           if (comment._id === editId) {
-            console.log('after if')
-            // this.setState({ commentId: comment._id }, () => {
-            //   console.log('commentid', this.state.commentId)
-            // })
             this.props.replyAndSetNewCommentId(comment._id)
           }
         })

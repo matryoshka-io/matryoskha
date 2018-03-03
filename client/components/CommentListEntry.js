@@ -40,38 +40,26 @@ class CommentListEntry extends React.Component {
 
   onDeleteClickHandler = () => {
     this.setState({ deleteIndex: this.props.index },
-      this.onDeleteClickWithIndex(this.state.deleteIndex)
+      this.onDeleteClickWithIndex(this.props.comment._id)
     )
   }
 
-  onDeleteClickWithIndex = (deleteIndex) => {
+  onDeleteClickWithIndex = (deleteId) => {
     const token = sessions.getToken('jwt')
     axios.get(`api/post/${this.props.postId}`, auth.makeTokenHeader(token))
       .then(res => {
-        console.log('res.data', res.data)
-        res.data.comments.forEach((comment, index) => {
-          console.log('this.state.deleteIndex', this.state.deleteIndex)
-          console.log('index', index)
-          if (this.state.deleteIndex === index) {
-            this.setState({ commentId: comment._id }, () => {
-              console.log('this.state.commentId', this.state.commentId)
-            })
-
-          }
+        res.data.comments.forEach(comment => {
+          this.setState({ commentId: deleteId })
         })
-        // return this.state.commentId;
       })
       .then(res => {
-        console.log('resssssss', res)
         return axios.delete(`api/comment/${this.state.commentId}`, auth.makeTokenHeader(token))
       })
       .then(res => {
-        let collection1 = this.props.comments.slice(0, index);
-        let collection2 = this.props.comments.slice(index + 1)
-        let newCommentCollection = collection1.concat(collection2)
-        this.props.updateCommentList(newCommentCollection)
+        return axios.get(`api/post/${this.props.postId}`, auth.makeTokenHeader(token))
       })
       .then(res => {
+        this.props.updateCommentList(res.data.comments)
         console.log('SUCCESSFUL DELETE')
       })
   }
