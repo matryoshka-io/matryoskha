@@ -5,7 +5,7 @@ const utils = require('./utils');
 
 module.exports = {
   POST(req, res) {
-    console.log(`POST: Subscribe to ${req.params.subName}`);
+    console.log(`SUBSCRIBE: ${req.session.user.username} to ${req.params.subName}`);
     models.Subreddit.findOne({ titleSlug: req.params.subName }).then((subreddit) => {
       models.Subscription.find({
         user: req.session.user._id,
@@ -25,6 +25,7 @@ module.exports = {
     });
   },
   DELETE(req, res) {
+    console.log(`UNSUBSCRIBE: ${req.session.user.username} from ${req.params.subName}`);
     models.Subreddit.findOne({ titleSlug: req.params.subName }).then((subreddit) => {
       models.Subscription.remove({
         user: req.session.user._id,

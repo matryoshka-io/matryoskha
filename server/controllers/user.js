@@ -52,18 +52,14 @@ module.exports = {
   },
   subscriptions: {
     GET(req, res) {
-      console.log('GET SUBSCRIPTIONS: ', req.params);
       models.User.findOne({ username: req.params.username })
         .exec()
         .then((user) => {
-          console.log('user ', user);
-          const userQuery = models.Subscription.find({ user: user._id });
-          return userQuery.exec();
+          return models.Subscription.find({ user: user._id })
+            .populate('subreddit')
+            .exec();
         })
-        .then((subscriptions) => {
-          console.log('subscriptions, ', subscriptions);
-          res.status(200).json(subscriptions);
-        })
+        .then(subscriptions => res.status(200).json(subscriptions))
         .catch(err => res.status(500).send(err));
     },
   },

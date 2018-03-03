@@ -19,7 +19,7 @@ const castVote = (session, postId) => {
       })
       .catch((err) => {
         console.log(err.status);
-        return reject(false);
+        return reject(err);
       });
   });
 };

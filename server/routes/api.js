@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const controllers = require('../controllers');
+
+const tokenCheck = require('../middleware/index').validateSession;
 const gateway = require('../middleware/gateway');
 
 // Get the home page.
@@ -13,6 +15,7 @@ router.get('/post/:postId', controllers.post.GET);
 router.get('/comment/:commentId', controllers.comment.GET);
 
 // You must be authed to use the below API routes.
+router.use(tokenCheck);
 router.use(gateway);
 
 // Create a subreddit.
