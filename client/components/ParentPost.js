@@ -25,7 +25,8 @@ class ParentPost extends React.Component {
   }
 
   componentDidMount = () => {
-    axios.get('/api/post/5a8e0e2b7f911450d4600d99')
+    const token = sessions.getToken('jwt')
+    axios.get('/api/post/5a8e0e2b7f911450d4600d99', auth.makeTokenHeader(token))
       .then(res => {
         console.log('res.data', res.data)
         this.setState({
