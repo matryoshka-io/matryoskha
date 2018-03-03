@@ -56,20 +56,6 @@ class ReplyCommentBox extends React.Component {
         this.props.updateCommentList(res.data.comments)
       })
   }
-=======
-    }
-  }
-
-  onCommentBoxChangeHandler = (e) => {
-    this.setState({ replyBoxText: e.target.value }, () => {
-      console.log('commentbox', this.state.replyBoxText)
-    })
-  }
-
-  // postCommentWithText = () => {
-  //   this.props.postComment(this.state.commentText)
-  // }
->>>>>>> [front-end] created separate box for replies
 
   render() {
     return (
