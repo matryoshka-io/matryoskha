@@ -11,13 +11,13 @@ module.exports = {
         .populate('author')
         .lean()
         .then((posts) => {
-          utils.getKarmaAndSort(posts, (posts) => {
+          utils.getKarmaAndSort(req, posts, (posts) => {
             const promises = [];
             posts.forEach((post) => {
-              promises.push(utils.matryoksha(post));
+              promises.push(utils.matryoksha(req, post));
             });
             Promise.all(promises).then(() => {
-              res.status(200).end(JSON.stringify(posts));
+              res.status(200).json(posts);
             });
           });
         });
@@ -39,13 +39,13 @@ module.exports = {
                 return keep;
               });
             }
-            utils.getKarmaAndSort(posts, (posts) => {
+            utils.getKarmaAndSort(req, posts, (posts) => {
               const promises = [];
               posts.forEach((post) => {
-                promises.push(utils.matryoksha(post));
+                promises.push(utils.matryoksha(req, post));
               });
               Promise.all(promises).then(() => {
-                res.status(200).end(JSON.stringify(posts));
+                res.status(200).json(posts);
               });
             });
           });

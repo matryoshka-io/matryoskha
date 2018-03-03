@@ -8,8 +8,8 @@ module.exports = {
     models.Post.findOne({ type: 'Comment', _id: req.params.commentId })
       .lean()
       .then((comment) => {
-        utils.getKarma(comment, (comment) => {
-          utils.matryoksha(comment).then(() => {
+        utils.getKarma(req, comment, (comment) => {
+          utils.matryoksha(req, comment).then(() => {
             res.status(200).json(comment);
           });
         });
