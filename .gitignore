@@ -61,3 +61,6 @@ package-lock.json
 
 # npm
 package-lock.json
+
+# docker
+data
