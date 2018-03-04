@@ -74,29 +74,30 @@ class CommentListEntry extends React.Component {
     })
   }
 
-  castVote(voted, id, choice) {
+  castVote(commentId, vote) {
+    console.log('am i here')
     const token = sessions.getToken('jwt')
-    console.log('this.props', this.props)
-    if (voted !== choice && this.state.user) {//change this.state.user to username of the current user
-      utils.votes.castVote({ user: this.state.user, token: token }, id, choice)
-        .then((result) => {
-          let postUpdate = [...this.state.posts];
-          postUpdate = utils.votes.setVoteInPosts(postUpdate, { _id: id, choice }, voted);
-          this.setState({
-            posts: postUpdate,
-          });
+    axios.get(`api/post/${this.props.postId}`, auth.makeTokenHeader(token))
+      .then(res => {
+        res.data.comments.forEach(comment => {
+          this.setState({ commentId: commentId })
         })
-        .catch(err => console.log('Vote Failed'));
-    }
+      })
+      .then(res => {
+        return axios.post(`api/post/${commentId}`, { body: vote }, auth.makeTokenHeader(token))
+      })
+      .then(res => {
+        console.log('SUCCESSFUL VOTE')
+      })
   }
 
   castUpVote = () => {
-    //if user has already
-    this.castVote(voted, this.props.commentId, 1)
+    console.log('upvote')
+    this.castVote(this.props.commentId, 1)
   }
 
   castDownVote = () => {
-    this.castVote(voted, this.props.commentId, -1)
+    this.castVote(this.props.commentId, -1)
   }
 
 
