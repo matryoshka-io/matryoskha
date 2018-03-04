@@ -37,6 +37,11 @@ const addPageRoutes = (server, app) => {
   server.get('/', (req, res) => {
     app.render(req, res, '/frontpage', req.params);
   });
+
+  // Creation / Edits
+  server.get('/create/:sub/', (req, res) => {
+    app.render(req, res, '/createPost', req.params);
+  });
 };
 
 module.exports = addPageRoutes;
