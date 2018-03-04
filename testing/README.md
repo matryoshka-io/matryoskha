@@ -11,4 +11,10 @@ Then run:
 
 Before running any of the tests. Note that running `npm run seed` will destroy any data in the `matryoksha` database in your `MongoDB` instance.
 
+To run the tests:
+
+`npm run test`
+
 To switch back to production simply do the reverse of what you did above.
+
+The tests are highly dependent on the seed data.
