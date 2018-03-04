@@ -1,7 +1,8 @@
 version: "2"
 services:
   stacking:
-    image: pazano/stacking:v1
+    container_name: stacking_web
+    image: pazano/stacking:v0
     restart: on-failure
     working_dir: /usr/src/app
     ports:
