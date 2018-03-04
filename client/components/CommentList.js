@@ -1,8 +1,6 @@
 import React from 'react';
 import CommentListEntry from './CommentListEntry';
 import ReactMarkdown from 'react-markdown';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import Paper from 'material-ui/Paper';
 
 const CommentList = (props) => {
   return (

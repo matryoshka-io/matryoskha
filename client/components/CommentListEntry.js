@@ -1,15 +1,17 @@
-import CommentList from './CommentList';
 import ReactMarkdown from 'react-markdown';
 import Paper from 'material-ui/Paper';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import axios from 'axios';
+import Link from 'next/link'
+
 import CommentForm from './CommentForm';
+import CommentList from './CommentList';
 import ReplyCommentBox from './ReplyCommentBox';
 import EditBox from './EditBox'
 import auth from '../utils/auth';
 import sessions from '../utils/sessions';
-import Post from './Post';
-
+import utils from '../utils'
+import Rating from './Rating'
 
 const style = {
   height: 100,
@@ -48,17 +50,17 @@ class CommentListEntry extends React.Component {
 
   onDeleteClickWithIndex = (deleteId) => {
     const token = sessions.getToken('jwt')
-    axios.get(`api/post/${this.props.postId}`, auth.makeTokenHeader(token))
+    axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
       .then(res => {
         res.data.comments.forEach(comment => {
           this.setState({ commentId: deleteId })
         })
       })
       .then(res => {
-        return axios.delete(`api/comment/${this.state.commentId}`, auth.makeTokenHeader(token))
+        return axios.delete(`/api/comment/${this.state.commentId}`, auth.makeTokenHeader(token))
       })
       .then(res => {
-        return axios.get(`api/post/${this.props.postId}`, auth.makeTokenHeader(token))
+        return axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
       })
       .then(res => {
         this.props.updateCommentList(res.data.comments)
@@ -72,63 +74,82 @@ class CommentListEntry extends React.Component {
     })
   }
 
+  castVote(commentId, vote) {
+    const token = sessions.getToken('jwt')
+    return axios.post(`/api/vote/${commentId}`, { vote: vote }, auth.makeTokenHeader(token))
+      .then(res => {
+        console.log('SUCCESSFUL VOTE', res)
+      })
+  }
+
+  castUpVote = () => {
+    console.log('props', this.props)
+    console.log('upvote', this.props.comment._id)
+    this.castVote(this.props.comment._id, 1)
+  }
+
+  castDownVote = () => {
+    this.castVote(this.props.comment._id, -1)
+  }
+
+
+
 
   render() {
-    console.log('thispropscomment', this.props.comment.author.username)
     return (
-      <div>
+      <div className="entries">
         <MuiThemeProvider>
 
           <Paper style={this.style} zDepth={2} className="commentEntry">
-            <div id="upvote">&#x25B2; </div>
-            <div id="downvote">&#x25BC;</div>
-            <div id="username"> {this.props.comment.author.username} </div>
-            <ReactMarkdown source={this.props.comment.body} />
 
-            <div id="date">
-              {this.props.comment.date}
-            </div>
+            <div id="username"> <Link href={`/u/${this.props.comment.author.username}`}><a>{this.props.comment.author.username}</a></Link> </div>
+            <div id="upvote" onClick={this.castUpVote}>&#x25B2; </div>
+            <div id="downvote" onClick={this.castDownVote}>&#x25BC;</div>
+            {/* <Rating /> */}
+            <div id="commentBody"><ReactMarkdown source={this.props.comment.body} /></div>
+            <div id="date">{this.props.comment.date}</div>
 
           </Paper>
         </MuiThemeProvider>
+
         <div className="bar">
-          <div id="replyComment">
-            <a onClick={this.onReplyClickHandler}>reply</a>
-          </div>
-          <div id="deleteComment">
-            <a onClick={this.onDeleteClickHandler}>delete</a>
-
-          </div>
-          <div id="editComment">
-            <a onClick={this.onEditClickHandler}>edit</a>
-          </div>
+          <div id="replyComment"> <a onClick={this.onReplyClickHandler}>reply</a></div>
+          <div id="deleteComment"><a onClick={this.onDeleteClickHandler}>delete</a></div>
+          <div id="editComment"><a onClick={this.onEditClickHandler}>edit</a></div>
         </div>
-        {this.state.isReplyBoxHidden ? null : <ReplyCommentBox
-          allComments={this.props.allComments}
-          postId={this.props.postId}
-          index={this.props.index}
-          replyAndSetNewCommentId={this.replyAndSetNewCommentId}
-          commentId={this.props.comment._id}
-          updateCommentList={this.props.updateCommentList}
 
-        />}
+        {
+          this.state.isReplyBoxHidden ? null : <ReplyCommentBox
+            allComments={this.props.allComments}
+            postId={this.props.postId}
+            index={this.props.index}
+            replyAndSetNewCommentId={this.replyAndSetNewCommentId}
+            commentId={this.props.comment._id}
+            updateCommentList={this.props.updateCommentList}
 
-        {this.state.isEditBoxHidden ? null : <EditBox
-          commentBody={this.state.commentBody}
-          postId={this.props.postId}
-          index={this.props.index}
-          commentId={this.props.comment._id}
-          updateCommentList={this.props.updateCommentList}
-          replyAndSetNewCommentId={this.replyAndSetNewCommentId}
-        />}
+          />
+        }
+
+        {
+          this.state.isEditBoxHidden ? null : <EditBox
+            commentBody={this.state.commentBody}
+            postId={this.props.postId}
+            index={this.props.index}
+            commentId={this.props.comment._id}
+            updateCommentList={this.props.updateCommentList}
+            replyAndSetNewCommentId={this.replyAndSetNewCommentId}
+          />
+        }
 
 
-        {this.props.comment.comments && <CommentList
-          allComments={this.props.allComments}
-          comments={this.props.comment.comments}
-          postId={this.props.postId}
-          updateCommentList={this.props.updateCommentList}
-        />}
+        {
+          this.props.comment.comments && <CommentList
+            allComments={this.props.allComments}
+            comments={this.props.comment.comments}
+            postId={this.props.postId}
+            updateCommentList={this.props.updateCommentList}
+          />
+        }
 
 
         <style> {`
@@ -147,7 +168,7 @@ class CommentListEntry extends React.Component {
           .commentEntry {
             width: 98%;
             margin: auto;
-            padding: 10px 5px 5px 10px;
+            padding-left: 10px;
           }
           #replyComment a, #deleteComment a, #editComment a {
             display: flex;
@@ -158,6 +179,12 @@ class CommentListEntry extends React.Component {
           }
           a:hover {
             color: #A9A9A9;
+          }
+          #commentBody {
+            font-size: 14px;
+          }
+          .entries {
+            padding-left: 20px
           }
         `}
         </style>

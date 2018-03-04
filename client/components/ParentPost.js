@@ -3,36 +3,22 @@ import ReactMarkdown from 'react-markdown';
 import Postdetail from '../pages/postDetail';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
+import Link from 'next/link';
 import auth from '../utils/auth';
 import sessions from '../utils/sessions';
-import Link from 'next/link';
-import SubRedditBar from './SubredditBar';
-import Rating from './Rating';
+import frontpage from '../pages/frontpage'
 
 class ParentPost extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      subredditId: '',
-      postId: '',
+      subredditId: props.subreddit,
+      postId: props._id,
       commentBody: '',
-      postTitle: '',
-      postBodyText: '',
-      comments: [],
+      postTitle: props.title,
+      postBodyText: props.body,
+      comments: props.comments,
     }
-  }
-
-  componentDidMount = () => {
-    const token = sessions.getToken('jwt')
-    axios.get('/api/post/5a8e0e2b7f911450d4600d99', auth.makeTokenHeader(token))
-      .then(res => {
-        this.setState({
-          postTitle: res.data.title,
-          postBodyText: res.data.body,
-          postId: res.data._id,
-          comments: res.data.comments,
-        })
-      })
   }
 
   postComment = (commentText) => {
@@ -47,6 +33,7 @@ class ParentPost extends React.Component {
         return this.state.postId
       })
       .then((res) => {
+        console.log('res', res)
         return axios.post(`/api/post/${this.state.postId}`, { body: commentText }, auth.makeTokenHeader(token))
       })
       .then((res) => {
@@ -67,19 +54,16 @@ class ParentPost extends React.Component {
   render() {
     return (
       <div>
-        <div className="postTitle">
-          {this.state.postTitle}
-        </div>
-        <div>
-          <div className="postBody">
-            <ReactMarkdown source={this.state.postBodyText} />
-          </div>
+        <div className="postTitle"> {this.state.postTitle}
+          <div id="textBy">by <Link href={`/u/${this.state.username}`}><a>{this.state.username}</a></Link></div>
         </div>
 
-
+        <div className="postBody">
+          <ReactMarkdown source={this.state.postBodyText} />
+        </div>
 
         Add a new comment
-        <CommentForm title={this.state.title} subredditId={this.state.subredditId} postComment={this.postComment} />
+      < CommentForm title={this.state.title} subredditId={this.state.subredditId} postComment={this.postComment} />
 
         <CommentList
           comments={this.state.comments}
@@ -94,10 +78,13 @@ class ParentPost extends React.Component {
             padding: 4px 0 20px 0;
             border-style: solid;
             border-width: 1px;
+          } 
+          #textBy {
+            font-size: 12px;
           }
         `}</style>
 
-      </div>
+      </div >
 
 
     );
