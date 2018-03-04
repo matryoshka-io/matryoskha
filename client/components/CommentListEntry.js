@@ -8,7 +8,8 @@ import ReplyCommentBox from './ReplyCommentBox';
 import EditBox from './EditBox'
 import auth from '../utils/auth';
 import sessions from '../utils/sessions';
-import Post from './Post';
+import frontpage from '../pages/frontpage';
+import Link from 'next/link'
 
 
 const style = {
@@ -72,6 +73,16 @@ class CommentListEntry extends React.Component {
     })
   }
 
+  castUpVote = () => {
+    console.log('click')
+    frontpage.castVote(voted, _id, 1)
+  }
+
+  castDownVote = () => {
+    console.log('click down')
+    frontpage.castVote(voted, _id, -1)
+  }
+
 
   render() {
     console.log('thispropscomment', this.props.comment.author.username)
@@ -80,29 +91,22 @@ class CommentListEntry extends React.Component {
         <MuiThemeProvider>
 
           <Paper style={this.style} zDepth={2} className="commentEntry">
-            <div id="upvote">&#x25B2; </div>
-            <div id="downvote">&#x25BC;</div>
-            <div id="username"> {this.props.comment.author.username} </div>
-            <ReactMarkdown source={this.props.comment.body} />
 
-            <div id="date">
-              {this.props.comment.date}
-            </div>
+            <div id="username"> <Link href={`/u/${this.props.comment.author.username}`}><a>{this.props.comment.author.username}</a></Link> </div>
+            <div id="upvote" onClick={this.castUpVote}>&#x25B2; </div>
+            <div id="downvote" onClick={this.castDownVote}>&#x25BC;</div>
+            <div id="commentBody"><ReactMarkdown source={this.props.comment.body} /></div>
+            <div id="date">{this.props.comment.date}</div>
 
           </Paper>
         </MuiThemeProvider>
-        <div className="bar">
-          <div id="replyComment">
-            <a onClick={this.onReplyClickHandler}>reply</a>
-          </div>
-          <div id="deleteComment">
-            <a onClick={this.onDeleteClickHandler}>delete</a>
 
-          </div>
-          <div id="editComment">
-            <a onClick={this.onEditClickHandler}>edit</a>
-          </div>
+        <div className="bar">
+          <div id="replyComment"> <a onClick={this.onReplyClickHandler}>reply</a></div>
+          <div id="deleteComment"><a onClick={this.onDeleteClickHandler}>delete</a></div>
+          <div id="editComment"><a onClick={this.onEditClickHandler}>edit</a></div>
         </div>
+
         {this.state.isReplyBoxHidden ? null : <ReplyCommentBox
           allComments={this.props.allComments}
           postId={this.props.postId}
