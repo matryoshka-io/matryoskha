@@ -39,7 +39,8 @@
     "seed": "node server/database/insertDummyData.js",
     "build": "next build client",
     "start": "next start client",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
