@@ -16,7 +16,7 @@ module.exports = {
       .then((post) => {
         utils.getKarma(req, post, (post) => {
           utils.matryoksha(req, post).then(() => {
-            res.status(200).end(JSON.stringify(post));
+            res.status(200).json(post);
           });
         });
       });
