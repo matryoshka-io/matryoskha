@@ -26,12 +26,12 @@ class ParentPost extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      subredditId: '',
-      postId: '',
+      subredditId: props.subreddit,
+      postId: props._id,
       commentBody: '',
-      postTitle: '',
-      postBodyText: '',
-      comments: [],
+      postTitle: props.title,
+      postBodyText: props.body,
+      comments: props.comments,
     }
 
     /* this.state = {
@@ -40,7 +40,7 @@ class ParentPost extends React.Component {
   }
 
   componentDidMount = () => {
-    const token = sessions.getToken('jwt')
+    /* const token = sessions.getToken('jwt')
     axios.get('/api/post/5a8e0e2b7f911450d4600d99', auth.makeTokenHeader(token))
       .then(res => {
         this.setState({
@@ -49,7 +49,7 @@ class ParentPost extends React.Component {
           postId: res.data._id,
           comments: res.data.comments,
         })
-      })
+      }) */
   }
 
   postComment = (commentText) => {

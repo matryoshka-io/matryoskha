@@ -5,6 +5,8 @@ import Post from '../components/Post';
 import UserPanelBody from '../components/UserPanelBody';
 import SubredditPanelBody from '../components/SubredditPanelBody';
 
+import ParentPost from '../components/ParentPost';
+
 import auth from '../utils/auth';
 import data from '../utils/data';
 import profile from '../utils/profile';
@@ -22,11 +24,9 @@ class PostDetailPage extends Component {
   static async getInitialProps({ query }) {
     const post = await fetch(`http://localhost:3000/api/post/${query.post}`);
     const json = await post.json();
-  
-    return {
-      title: json.title,
-      body: json.body, 
-    };
+    console.log(json);
+
+    return json;
   }
 
   constructor(props) {
@@ -38,17 +38,12 @@ class PostDetailPage extends Component {
       post: {},
       comments: [],
     } */
-    this.state = {
-      title: props.title,
-      body: props.body,
-    };
+    this.state = props;
   }
 
   render() {
     return (
-      <Page title={this.state.title}>
-        {this.state.body}
-      </Page>
+      <ParentPost {...this.state} />
     );
   }
 }
