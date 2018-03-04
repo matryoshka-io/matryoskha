@@ -11,71 +11,43 @@ import profile from '../utils/profile';
 import vote from '../utils/votes';
 import sessions from '../utils/sessions';
 
+import 'isomorphic-fetch';
+
 class PostDetailPage extends Component {
-  static async getInitialProps(context) {
+  /* static async getInitialProps(context) {
     const initialProps = await data.prepPostDetailView(context);
     return initialProps;
+  } */
+
+  static async getInitialProps({ query }) {
+    const post = await fetch(`http://localhost:3000/api/post/${query.post}`);
+    const json = await post.json();
+  
+    return {
+      title: json.title,
+      body: json.body, 
+    };
   }
 
   constructor(props) {
     super(props);
-    this.state = {
+    /* this.state = {
       title: this.props.title,
       subreddit: this.props.subreddit,
       user: this.props.user,
       post: {},
       comments: [],
-    }
+    } */
+    this.state = {
+      title: props.title,
+      body: props.body,
+    };
   }
 
   render() {
     return (
       <Page title={this.state.title}>
-        <div className="pageContent">
-          <div className="posts" >
-            There be dragons here
-          </div>
-          <div className="sidebar" >
-            <UserPanelBody
-              user={this.state.user}
-              login={this.loginUser}
-              logout={this.logoutUser}
-            />
-            <SubredditPanelBody
-              subreddit={this.state.subreddit}
-              subscribe={this.subscribe}
-            />
-          </div>
-        </div>
-        <style jsx>
-          {`
-            .pageContent {
-              width: 100%;
-            }
-            h1 {
-              font-size: 36px;
-              color: #333;
-              align-text: center;
-            }
-            h2 {
-              margin-left: 16px;
-            }
-            .posts {
-              border: solid 2px;
-              float: left;
-              width: 75%;
-            }
-            .sidebar {
-              border: solid 2px;
-              float: right;
-              width: 22%;
-              min-width: 200px;
-              height: 80%;
-            } * {
-              border:1
-            }
-          `}
-        </style>
+        {this.state.body}
       </Page>
     );
   }

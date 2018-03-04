@@ -12,6 +12,17 @@ import SubRedditBar from './SubredditBar';
 import Rating from './Rating';
 
 class ParentPost extends React.Component {
+  /* static async getInitialProps({ query }) {
+    const post = await fetch(`http://localhost:3000/api/post/${query.post}`);
+    const json = await post.json();
+    console.log(json);
+
+    return {
+      postTitle: json.title,
+      postBodyText: json.body,
+    };
+  } */
+
   constructor(props) {
     super(props);
     this.state = {
@@ -22,6 +33,10 @@ class ParentPost extends React.Component {
       postBodyText: '',
       comments: [],
     }
+
+    /* this.state = {
+
+    } */
   }
 
   componentDidMount = () => {

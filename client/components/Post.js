@@ -43,7 +43,7 @@ const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, vot
         <div className="post__actions">
           <ul>
             <li>
-              <Link href={`/r/${subreddit.titleSlug}/${titleSlug}`}><a>Comments</a></Link>
+              <Link href={`/r/${subreddit.titleSlug}/${_id}`}><a>Comments</a></Link>
             </li>
           </ul>
         </div>
