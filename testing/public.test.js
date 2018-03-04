@@ -31,3 +31,16 @@ test('get comment by id', (done) => {
       done();
     });
 });
+
+test('get jack\'s profile', (done) => {
+  request
+    .get('http://localhost:3000/api/user/jack')
+    .end((err, res) => {
+      const dateJoined = new Date(res.body.date);
+      expect(dateJoined.getMonth()).toBe(1); // February
+      expect(dateJoined.getDate()).toBe(21); // 21st of February
+      expect(res.body).toBeTruthy();
+      expect(res.body.karma).toBe(2);
+      done();
+    });
+});

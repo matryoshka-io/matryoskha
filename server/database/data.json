@@ -2,14 +2,14 @@
   "User": [
     {
       "_id": "5a8e0e077f911450d4600d96",
-      "username": "admin",
-      "password": "admin",
+      "username": "ken",
+      "password": "ken",
       "date": "2018-02-21T23:49:20.395Z",
       "karma": 0
     },
     {
       "_id": "5a8e0e0b7f911450d4600d97",
-      "username": "test",
+      "username": "jack",
       "password": "alligator1515",
       "date": "2018-02-21T23:57:10.585Z",
       "karma": 2

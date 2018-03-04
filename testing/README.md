@@ -4,6 +4,9 @@ In `server/index.js`:
 * Uncomment the lines that are preceded by `// Testing`
 * Comment lines: `server.use(cookieParser());`, and `server.use(tokenCheck);`
 
+In `server/api.js`:
+* Comment line: `router.use(tokenCheck);`
+
 Then run:
 
 `npm run seed`\
