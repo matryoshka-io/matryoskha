@@ -20,6 +20,7 @@ module.exports = {
         models.Post.find({ author: user._id, type: { $not: /Comment/ } })
           .populate('subreddit')
           .populate('author')
+          .lean()
           .then((posts) => {
             utils.getKarmaAndSort(req, posts, (posts) => {
               const promises = [];

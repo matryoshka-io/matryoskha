@@ -22,6 +22,8 @@ router.get('/user/:username/posts', controllers.user.posts.GET);
 router.get('/user/:username/comments', controllers.user.comments.GET);
 // Get a user's subreddits (ones they have created).
 router.get('/user/:username/subreddits', controllers.user.subreddits.GET);
+// Get a user's subscriptions.
+router.get('/user/:username/subscriptions', controllers.user.subscriptions.GET);
 
 // You must be authed to use the below API routes.
 router.use(tokenCheck);
@@ -52,9 +54,6 @@ router.post('/comment/:commentId', controllers.comment.POST);
 router.post('/vote/:postId', controllers.vote.POST);
 // Remove a vote.
 router.delete('/vote/:postId', controllers.vote.DELETE);
-
-// Get a user's subscriptions.
-router.get('/user/:username/subscriptions', controllers.user.subscriptions.GET);
 
 // Add and delete subscriptions.
 router.post('/subscription/:subName', controllers.subscription.POST);

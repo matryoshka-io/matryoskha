@@ -29,15 +29,18 @@
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
+    "jest": "^22.4.2",
     "morgan": "^1.9.0",
-    "nodemon": "^1.15.1"
+    "nodemon": "^1.15.1",
+    "superagent": "^3.8.2"
   },
   "scripts": {
     "dev": "node server",
     "seed": "node server/database/insertDummyData.js",
     "build": "next build client",
     "start": "NODE_ENV=production node server",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "jest testing/home.test.js && jest testing/public.test.js && jest testing/useractions.test.js"
   },
   "repository": {
     "type": "git",
