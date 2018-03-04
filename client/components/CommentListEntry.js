@@ -8,6 +8,17 @@ import ReplyCommentBox from './ReplyCommentBox';
 import EditBox from './EditBox'
 import auth from '../utils/auth';
 import sessions from '../utils/sessions';
+import Post from './Post';
+
+
+const style = {
+  height: 100,
+  width: 100,
+  margin: 20,
+  textAlign: 'center',
+  display: 'inline-block',
+};
+
 
 class CommentListEntry extends React.Component {
   constructor(props) {
@@ -18,16 +29,7 @@ class CommentListEntry extends React.Component {
       commenetBody: '',
       commentId: '',
       deleteIndex: '',
-
     }
-
-    const style = {
-      height: 100,
-      width: 100,
-      margin: 20,
-      textAlign: 'center',
-      display: 'inline-block',
-    };
   }
 
   onReplyClickHandler = () => {
@@ -72,11 +74,15 @@ class CommentListEntry extends React.Component {
 
 
   render() {
+    console.log('thispropscomment', this.props.comment.author.username)
     return (
       <div>
         <MuiThemeProvider>
-          <Paper style={this.style} zDepth={2} className="commentEntry">
 
+          <Paper style={this.style} zDepth={2} className="commentEntry">
+            <div id="upvote">&#x25B2; </div>
+            <div id="downvote">&#x25BC;</div>
+            <div id="username"> {this.props.comment.author.username} </div>
             <ReactMarkdown source={this.props.comment.body} />
 
             <div id="date">
@@ -103,7 +109,6 @@ class CommentListEntry extends React.Component {
           index={this.props.index}
           replyAndSetNewCommentId={this.replyAndSetNewCommentId}
           commentId={this.props.comment._id}
-          nestedComments={this.props.comment.comments}
           updateCommentList={this.props.updateCommentList}
 
         />}
@@ -132,6 +137,9 @@ class CommentListEntry extends React.Component {
             justify-content: space-between;
             max-width: 125px;
             margin: 5px 0px 12px 15px;
+          }
+          #username {
+            font-size: 12px;
           }
           #date {
             font-size: 10px;

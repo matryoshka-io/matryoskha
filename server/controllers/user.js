@@ -21,12 +21,14 @@ module.exports = {
           .populate('subreddit')
           .populate('author')
           .then((posts) => {
-            const promises = [];
-            posts.forEach((post) => {
-              promises.push(utils.matryoksha(req, post));
-            });
-            Promise.all(promises).then(() => {
-              res.status(200).json(posts);
+            utils.getKarmaAndSort(req, posts, (posts) => {
+              const promises = [];
+              posts.forEach((post) => {
+                promises.push(utils.matryoksha(req, post));
+              });
+              Promise.all(promises).then(() => {
+                res.status(200).json(posts);
+              });
             });
           });
       });

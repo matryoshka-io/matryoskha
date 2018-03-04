@@ -130,6 +130,9 @@ const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, vot
             float: left;
             margin-right: 4px;
           }
+          .post__actions {
+            border-bottom: solid 5px #696775;
+          }
         `}
       </style>
     </div>
