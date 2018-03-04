@@ -1,7 +1,7 @@
 version: "2"
 services:
   stacking:
-    container_name: stacking_web
+    container_name: stacking
     image: pvalenzano/stacking:v0
     restart: on-failure
     working_dir: /usr/src/app
