@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const { BASE_URL } = require('./config');
+const { BASE_URL } = require('../../app.config');
 
 
 const getUserProfile = (username) => {

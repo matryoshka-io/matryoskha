@@ -3,7 +3,7 @@ const cookie = require('js-cookie');
 
 const auth = require('./auth');
 
-const { BASE_URL } = require('./config');
+const { BASE_URL } = require('../../app.config');
 
 const setCookie = (key, value) => {
   if (process.browser) {

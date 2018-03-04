@@ -3,14 +3,16 @@ const nextRouter = require('next/router');
 const sessions = require('./sessions');
 const profile = require('./profile');
 
-const { BASE_URL } = require('./config');
+const { BASE_URL } = require('../../app.config');
 
 const registerUser = (username, password) =>
   new Promise((resolve, reject) => {
     axios.post(`${BASE_URL}/auth/signup`, { username, password })
       .then((result) => {
         if (result.data.success) {
+          console.log(`REGISTERED USER: ${result.data.user.username}`);
           sessions.setCookie('jwt', result.data.token);
+          console.log(`TOKEN SET: ${sessions.getToken('jwt') !== undefined}`);
         }
         return resolve(result.data);
       })
@@ -22,7 +24,9 @@ const loginUser = (username, password) =>
     return axios.post(`${BASE_URL}/auth/login`, { username, password })
       .then((result) => {
         if (result.success) {
+          console.log(`LOGGED IN USER: ${result.user.username}`);
           sessions.setCookie('jwt', result.token);
+          console.log(`TOKEN SET: ${sessions.getToken('jwt') !== undefined}`);
         }
         return resolve(result.data);
       })
