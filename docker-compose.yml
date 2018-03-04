@@ -1,13 +1,16 @@
 version: "2"
 services:
-  app:
-    container_name: app
-    restart: always
-    build: .
+  stacking:
+    image: pazano/stacking:v0
+    restart: on-failure
+    working_dir: /usr/src/app
     ports:
       - "3000:3000"
-    links:
+    depends_on:
       - mongo
+    environment:
+      - NODE_ENV=production
+    command: "npm run start"
   mongo:
     container_name: mongo
     image: mongo

@@ -3,7 +3,7 @@ const cookie = require('js-cookie');
 
 const auth = require('./auth');
 
-const BASE_URL = 'http://localhost:3000';
+const { BASE_URL } = require('./config');
 
 const setCookie = (key, value) => {
   if (process.browser) {

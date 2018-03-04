@@ -2,7 +2,7 @@ const axios = require('axios');
 
 const auth = require('./auth');
 
-const BASE_URL = 'http://localhost:3000';
+const { BASE_URL } = require('./config');
 
 const getPosts = (session, subreddit = null, offset = 0) => {
   const headers = session.user ? auth.makeTokenHeader(session.token) : {};

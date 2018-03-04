@@ -2,7 +2,7 @@ const axios = require('axios');
 
 const auth = require('./auth');
 
-const BASE_URL = 'http://localhost:3000';
+const { BASE_URL } = require('./config');
 
 const isNewVote = (voteArray, currentVote) => {
   return voteArray.filter(vote => vote._id === currentVote._id && vote.karma === currentVote.choice).length === 0;

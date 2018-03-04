@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/matryoksha');
+mongoose.connect('mongodb://mongo/matryoksha');
 const db = mongoose.connection;
 db.dropDatabase();
 

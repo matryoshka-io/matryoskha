@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/matryoksha');
+mongoose.connect('mongodb://mongo/matryoksha');
 const db = mongoose.connection;
 
 db.on('error', (err) => {
-  console.log(`Error connecting to database: ${err}`);
+  console.log('Error connecting to database.  Retrying in 3 seconds');
+  setTimeout(() => mongoose.connect('mongodb://mongo/matryoksha'), 3000);
 });
 
 db.once('open', () => {
