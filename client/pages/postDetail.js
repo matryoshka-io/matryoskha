@@ -25,9 +25,9 @@ class PostPage extends React.Component {
   render() {
     return (
       <div>
-        <Page>
+        {/* <Page>
           <ParentPost />
-        </Page>
+        </Page> */}
 
       </div>
     );
