@@ -40,7 +40,7 @@
     "build": "next build client",
     "start": "next start client",
     "lint": "eslint",
-    "test": "jest"
+    "test": "jest -i"
   },
   "repository": {
     "type": "git",

@@ -44,3 +44,14 @@ test('get jack\'s profile', (done) => {
       done();
     });
 });
+
+test('get jack\'s posts', (done) => {
+  request
+    .get('http://localhost:3000/api/user/jack/posts')
+    .end((err, res) => {
+      expect(res.body).toBeTruthy();
+      expect(res.body[0].karma).toBe(1);
+      expect(res.body[0].voted).toBe(1);
+      done();
+    });
+});
