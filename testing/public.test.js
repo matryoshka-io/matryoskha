@@ -5,7 +5,7 @@ test('get /r/cats', (done) => {
     .get('http://localhost:3000/api/sub/cats') // slugified and lowercased title
     .end((err, res) => {
       expect(res.body.length).toBeGreaterThan(0);
-      expect(res.body.length).toBe(4);
+      expect(res.body.length).toBe(2);
       done();
     });
 });

@@ -9,11 +9,11 @@ test('seed data: ken\'s homepage should be populated (despite having no subscrip
     });
 });
 
-test('seed data: ken\'s homepage should contain 6 posts', (done) => {
+test('seed data: ken\'s homepage should contain 2 posts', (done) => {
   request
     .get('http://localhost:3000/api/')
     .end((err, res) => {
-      expect(res.body.length).toBe(6);
+      expect(res.body.length).toBe(2);
       done();
     });
 });
