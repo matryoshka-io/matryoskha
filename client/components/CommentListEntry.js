@@ -76,27 +76,20 @@ class CommentListEntry extends React.Component {
 
   castVote(commentId, vote) {
     const token = sessions.getToken('jwt')
-    axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
+    return axios.post(`/api/vote/${commentId}`, { vote: vote }, auth.makeTokenHeader(token))
       .then(res => {
-        res.data.comments.forEach(comment => {
-          this.setState({ commentId: commentId })
-        })
-      })
-      .then(res => {
-        return axios.post(`/api/vote/${commentId}`, { body: vote }, auth.makeTokenHeader(token))
-      })
-      .then(res => {
-        console.log('SUCCESSFUL VOTE')
+        console.log('SUCCESSFUL VOTE', res)
       })
   }
 
   castUpVote = () => {
-    console.log('upvote')
-    this.castVote(this.props.commentId, 1)
+    console.log('props', this.props)
+    console.log('upvote', this.props.comment._id)
+    this.castVote(this.props.comment._id, 1)
   }
 
   castDownVote = () => {
-    this.castVote(this.props.commentId, -1)
+    this.castVote(this.props.comment._id, -1)
   }
 
 
