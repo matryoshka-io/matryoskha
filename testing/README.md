@@ -6,7 +6,7 @@ In `server/index.js`:
 
 Then run:
 
-`npm run seed`
+`npm run seed`\
 `node server`
 
 Before running any of the tests. Note that running `npm run seed` will destroy any data in the `matryoksha` database in your `MongoDB` instance.
