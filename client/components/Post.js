@@ -6,6 +6,7 @@ import Rating from './Rating';
 import SubredditBar from './SubredditBar';
 
 const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, voted, castVote }) => {
+  console.log('subreddit', titleSlug)
   const postImageStyle = {
     backgroundSize: 'cover',
     backgroundColor: '#333',
@@ -43,7 +44,7 @@ const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, vot
         <div className="post__actions">
           <ul>
             <li>
-              <Link href={`/r/${subreddit.titleSlug}/${titleSlug}`}><a>Comments</a></Link>
+              <Link href={`/r/${subreddit.titleSlug}/${_id}`} as={`/r/${subreddit.titleSlug}/${titleSlug}`}><a>Comments</a></Link>
             </li>
           </ul>
         </div>
