@@ -1,16 +1,17 @@
-import CommentList from './CommentList';
 import ReactMarkdown from 'react-markdown';
 import Paper from 'material-ui/Paper';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import axios from 'axios';
+import Link from 'next/link'
+
 import CommentForm from './CommentForm';
+import CommentList from './CommentList';
 import ReplyCommentBox from './ReplyCommentBox';
 import EditBox from './EditBox'
 import auth from '../utils/auth';
 import sessions from '../utils/sessions';
-import frontpage from '../pages/frontpage';
-import Link from 'next/link'
-
+import utils from '../utils'
+import Rating from './Rating'
 
 const style = {
   height: 100,
@@ -73,21 +74,37 @@ class CommentListEntry extends React.Component {
     })
   }
 
+  castVote(voted, id, choice) {
+    const token = sessions.getToken('jwt')
+    console.log('this.props', this.props)
+    if (voted !== choice && this.state.user) {//change this.state.user to username of the current user
+      utils.votes.castVote({ user: this.state.user, token: token }, id, choice)
+        .then((result) => {
+          let postUpdate = [...this.state.posts];
+          postUpdate = utils.votes.setVoteInPosts(postUpdate, { _id: id, choice }, voted);
+          this.setState({
+            posts: postUpdate,
+          });
+        })
+        .catch(err => console.log('Vote Failed'));
+    }
+  }
+
   castUpVote = () => {
-    console.log('click')
-    frontpage.castVote(voted, _id, 1)
+    //if user has already
+    this.castVote(voted, this.props.commentId, 1)
   }
 
   castDownVote = () => {
-    console.log('click down')
-    frontpage.castVote(voted, _id, -1)
+    this.castVote(voted, this.props.commentId, -1)
   }
 
 
+
+
   render() {
-    console.log('thispropscomment', this.props.comment.author.username)
     return (
-      <div>
+      <div className="entries">
         <MuiThemeProvider>
 
           <Paper style={this.style} zDepth={2} className="commentEntry">
@@ -95,6 +112,7 @@ class CommentListEntry extends React.Component {
             <div id="username"> <Link href={`/u/${this.props.comment.author.username}`}><a>{this.props.comment.author.username}</a></Link> </div>
             <div id="upvote" onClick={this.castUpVote}>&#x25B2; </div>
             <div id="downvote" onClick={this.castDownVote}>&#x25BC;</div>
+            {/* <Rating /> */}
             <div id="commentBody"><ReactMarkdown source={this.props.comment.body} /></div>
             <div id="date">{this.props.comment.date}</div>
 
@@ -107,32 +125,38 @@ class CommentListEntry extends React.Component {
           <div id="editComment"><a onClick={this.onEditClickHandler}>edit</a></div>
         </div>
 
-        {this.state.isReplyBoxHidden ? null : <ReplyCommentBox
-          allComments={this.props.allComments}
-          postId={this.props.postId}
-          index={this.props.index}
-          replyAndSetNewCommentId={this.replyAndSetNewCommentId}
-          commentId={this.props.comment._id}
-          updateCommentList={this.props.updateCommentList}
+        {
+          this.state.isReplyBoxHidden ? null : <ReplyCommentBox
+            allComments={this.props.allComments}
+            postId={this.props.postId}
+            index={this.props.index}
+            replyAndSetNewCommentId={this.replyAndSetNewCommentId}
+            commentId={this.props.comment._id}
+            updateCommentList={this.props.updateCommentList}
 
-        />}
+          />
+        }
 
-        {this.state.isEditBoxHidden ? null : <EditBox
-          commentBody={this.state.commentBody}
-          postId={this.props.postId}
-          index={this.props.index}
-          commentId={this.props.comment._id}
-          updateCommentList={this.props.updateCommentList}
-          replyAndSetNewCommentId={this.replyAndSetNewCommentId}
-        />}
+        {
+          this.state.isEditBoxHidden ? null : <EditBox
+            commentBody={this.state.commentBody}
+            postId={this.props.postId}
+            index={this.props.index}
+            commentId={this.props.comment._id}
+            updateCommentList={this.props.updateCommentList}
+            replyAndSetNewCommentId={this.replyAndSetNewCommentId}
+          />
+        }
 
 
-        {this.props.comment.comments && <CommentList
-          allComments={this.props.allComments}
-          comments={this.props.comment.comments}
-          postId={this.props.postId}
-          updateCommentList={this.props.updateCommentList}
-        />}
+        {
+          this.props.comment.comments && <CommentList
+            allComments={this.props.allComments}
+            comments={this.props.comment.comments}
+            postId={this.props.postId}
+            updateCommentList={this.props.updateCommentList}
+          />
+        }
 
 
         <style> {`
@@ -151,7 +175,7 @@ class CommentListEntry extends React.Component {
           .commentEntry {
             width: 98%;
             margin: auto;
-            padding: 10px 5px 5px 10px;
+            padding-left: 10px;
           }
           #replyComment a, #deleteComment a, #editComment a {
             display: flex;
@@ -162,6 +186,12 @@ class CommentListEntry extends React.Component {
           }
           a:hover {
             color: #A9A9A9;
+          }
+          #commentBody {
+            font-size: 14px;
+          }
+          .entries {
+            padding-left: 20px
           }
         `}
         </style>
