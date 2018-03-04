@@ -10,6 +10,7 @@ import data from '../utils/data';
 import profile from '../utils/profile';
 import vote from '../utils/votes';
 import sessions from '../utils/sessions';
+import ParentPost from '../components/ParentPost'
 
 class PostDetailPage extends Component {
   static async getInitialProps(context) {
@@ -31,8 +32,10 @@ class PostDetailPage extends Component {
   render() {
     return (
       <Page title={this.state.title}>
+
         <div className="pageContent">
           <div className="posts" >
+            <ParentPost />
             There be dragons here
           </div>
           <div className="sidebar" >
