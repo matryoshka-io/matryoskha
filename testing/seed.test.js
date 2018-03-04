@@ -1,6 +1,6 @@
 const request = require('superagent');
 
-test('seed data: "admin"\'s homepage should be populated (despite having no subscriptions)', (done) => {
+test('seed data: admin\'s homepage should be populated (despite having no subscriptions)', (done) => {
   request
     .get('http://localhost:3000/api/')
     .end((err, res) => {
@@ -9,7 +9,7 @@ test('seed data: "admin"\'s homepage should be populated (despite having no subs
     });
 });
 
-test('seed data: "admin"\'s homepage should contain 6 posts', (done) => {
+test('seed data: admin\'s homepage should contain 6 posts', (done) => {
   request
     .get('http://localhost:3000/api/')
     .end((err, res) => {
@@ -18,7 +18,7 @@ test('seed data: "admin"\'s homepage should contain 6 posts', (done) => {
     });
 });
 
-test('seed data: "admin" should have voted on the top post', (done) => {
+test('seed data: admin should have voted on the top post', (done) => {
   request
     .get('http://localhost:3000/api/')
     .end((err, res) => {
