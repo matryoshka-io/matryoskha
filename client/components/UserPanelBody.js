@@ -7,9 +7,7 @@ const UserPanelBody = ({ user, login, logout }) => {
     return (
       <div className="user__panel">
         <h2><Link href="/user/profile"><a>{user.username}</a></Link></h2>
-        <button className="button primary" >Create Post</button>
-        <button className="button primary" >Submit Article</button>
-        <button className="button primary" >Submit Image</button>
+        <button className="button primary" onClick={logout} >Logout</button>
         <style jsx>
           {`
             h3 {
