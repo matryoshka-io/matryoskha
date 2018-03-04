@@ -1,10 +1,9 @@
-const supertest = require('supertest');
-const request = supertest('http://localhost:3000');
+const request = require('superagent');
 
 test('get homepage as "admin"', () => {
   request
-    .get('/api/')
+    .get('http://localhost:3000/api/')
     .end((err, res) => {
-      console.log(res);
+      console.log(res.body);
     });
 });
