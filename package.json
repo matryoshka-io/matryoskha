@@ -36,7 +36,7 @@
     "dev": "node server",
     "seed": "node server/database/insertDummyData.js",
     "build": "next build client",
-    "start": "next start client",
+    "start": "NODE_ENV=production node server",
     "lint": "eslint"
   },
   "repository": {

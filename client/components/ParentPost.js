@@ -1,7 +1,5 @@
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
-import Paper from 'material-ui/Paper';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Postdetail from '../pages/postDetail';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
