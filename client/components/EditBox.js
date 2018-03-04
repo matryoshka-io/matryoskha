@@ -19,7 +19,6 @@ class EditBox extends React.Component {
   }
 
   postEditWithText = () => {
-    console.log('this.props.commentId', this.props.commentId)
     this.setState({ editIndex: this.props.index },
       this.editComment(this.props.commentId, this.state.editBoxText) //should be editID not editIndex
     )
@@ -36,14 +35,13 @@ class EditBox extends React.Component {
         })
       })
       .then(res => {
-        return axios.put(`api/comment/${this.props.commentId}`, { body: editBoxText }, auth.makeTokenHeader(token))
+        return axios.put(`/api/comment/${this.props.commentId}`, { body: editBoxText }, auth.makeTokenHeader(token))
       })
       .then(res => {
         return axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
       })
 
       .then(res => {
-        console.log('res after', res)
         this.props.updateCommentList(res.data.comments)
         console.log('SUCCESSFUL EDIT')
       })

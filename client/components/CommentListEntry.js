@@ -50,17 +50,17 @@ class CommentListEntry extends React.Component {
 
   onDeleteClickWithIndex = (deleteId) => {
     const token = sessions.getToken('jwt')
-    axios.get(`api/post/${this.props.postId}`, auth.makeTokenHeader(token))
+    axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
       .then(res => {
         res.data.comments.forEach(comment => {
           this.setState({ commentId: deleteId })
         })
       })
       .then(res => {
-        return axios.delete(`api/comment/${this.state.commentId}`, auth.makeTokenHeader(token))
+        return axios.delete(`/api/comment/${this.state.commentId}`, auth.makeTokenHeader(token))
       })
       .then(res => {
-        return axios.get(`api/post/${this.props.postId}`, auth.makeTokenHeader(token))
+        return axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
       })
       .then(res => {
         this.props.updateCommentList(res.data.comments)
@@ -75,16 +75,15 @@ class CommentListEntry extends React.Component {
   }
 
   castVote(commentId, vote) {
-    console.log('am i here')
     const token = sessions.getToken('jwt')
-    axios.get(`api/post/${this.props.postId}`, auth.makeTokenHeader(token))
+    axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
       .then(res => {
         res.data.comments.forEach(comment => {
           this.setState({ commentId: commentId })
         })
       })
       .then(res => {
-        return axios.post(`api/post/${commentId}`, { body: vote }, auth.makeTokenHeader(token))
+        return axios.post(`/api/vote/${commentId}`, { body: vote }, auth.makeTokenHeader(token))
       })
       .then(res => {
         console.log('SUCCESSFUL VOTE')
