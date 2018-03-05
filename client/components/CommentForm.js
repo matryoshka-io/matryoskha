@@ -6,16 +6,16 @@ class CommentForm extends React.Component {
     super(props);
     this.state = {
       commentText: '',
-      subredditName: '',
-      postId: '',
     };
+    this.onCommentBoxChangeHandler = this.onCommentBoxChangeHandler.bind(this);
+    this.postCommentWithText = this.postCommentWithText.bind(this);
   }
 
-  onCommentBoxChangeHandler = (e) => {
+  onCommentBoxChangeHandler(e) {
     this.setState({ commentText: e.target.value })
   }
 
-  postCommentWithText = () => {
+  postCommentWithText() {
     this.props.postComment(this.state.commentText)
   }
 

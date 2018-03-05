@@ -1,6 +1,7 @@
-import React from 'react';
-import CommentListEntry from './CommentListEntry';
 import ReactMarkdown from 'react-markdown';
+
+import CommentListEntry from './CommentListEntry';
+
 
 const CommentList = (props) => {
   return (

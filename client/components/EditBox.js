@@ -4,27 +4,28 @@ import sessions from '../utils/sessions';
 
 class EditBox extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      editIndex: '',
-      editPrefilledBody: '',
-      editBoxText: ''
-    }
+      editBoxText: '',
+    };
+    this.onEditBoxChangeHandler = this.onEditBoxChangeHandler.bind(this);
+    this.postEditWithText = this.postEditWithText.bind(this);
+    this.editComment = this.editComment.bind(this);
   }
 
-  onEditBoxChangeHandler = (e) => {
+  onEditBoxChangeHandler(e) {
     this.setState({
-      editBoxText: e.target.value
+      editBoxText: e.target.value,
     })
   }
 
-  postEditWithText = () => {
+  postEditWithText() {
     this.setState({ editIndex: this.props.index },
       this.editComment(this.props.commentId, this.state.editBoxText) //should be editID not editIndex
     )
   }
 
-  editComment = (editId, editBoxText) => {
+  editComment(editId, editBoxText) {
     const token = sessions.getToken('jwt')
     axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
       .then(res => {

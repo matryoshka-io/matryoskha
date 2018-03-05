@@ -18,9 +18,11 @@ class ParentPost extends React.Component {
       postBodyText: props.body,
       comments: props.comments,
     }
+    this.postComment = this.postComment.bind(this);
+    this.updateCommentList = this.updateCommentList.bind(this)
   }
 
-  postComment = (commentText) => {
+  postComment(commentText) {
     const token = sessions.getToken('jwt');
     axios.get('/api', auth.makeTokenHeader(token))
       .then(res => {
@@ -45,7 +47,7 @@ class ParentPost extends React.Component {
       })
   }
 
-  updateCommentList = (comments) => {
+  updateCommentList(comments) {
     this.setState({ comments });
   }
 
