@@ -21,9 +21,7 @@ module.exports = {
       });
     },
     post(req, res) {
-      console.log('params', req.params)
       models.Subreddit.findOne({ titleSlug: req.params.subName }).then((subreddit) => {
-        console.log('subreddit', subreddit)
         if (req.body.type === 'Text') {
           (new models.Post({
             title: req.body.title,
@@ -45,7 +43,23 @@ module.exports = {
             res.status(201).json(post);
           });
         } else if (req.body.type === 'Article') {
-          // Pass...
+          // Note that the title is omitted, since we will use the article's title.
+          utils.getMetadata(req.body.url)
+            .then(({ thumbnail, title }) => {
+              // console.log(snippet);
+              (new models.Post({
+                type: 'Article',
+                url: req.body.url,
+                subreddit: subreddit._id,
+                author: req.session.user._id,
+                metadata: {
+                  title,
+                  thumbnail,
+                },
+              })).save().then((post) => {
+                res.status(201).json(post);
+              });
+            });
         } else {
           res.status(400).end('Unknown post type.');
         }
