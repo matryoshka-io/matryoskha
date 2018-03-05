@@ -3,7 +3,7 @@ import UserPanelHeader from './UserPanelHeader';
 import Nav from './Nav';
 import Footer from './Footer';
 
-export default ({ user, subreddit, karma, subscriptions, title, children }) => (
+export default ({ user, subreddit, karma, subscriptions, title, children, logout }) => (
   <div className="main">
     <div className="header">
       <div className="header__logo">
@@ -19,6 +19,7 @@ export default ({ user, subreddit, karma, subscriptions, title, children }) => (
           user={user}
           karma={karma}
           subscriptions={subscriptions}
+          logout={logout}
         />
       </div>
     </div>

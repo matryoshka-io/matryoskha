@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import Router from 'next/router';
 
 import Page from '../components/Page';
 import Posts from '../components/Posts';
@@ -25,6 +26,7 @@ class Frontpage extends Component {
       posts: this.props.posts,
     };
     this.loginUser = this.loginUser.bind(this);
+    this.logoutUser = this.logoutUser.bind(this);
     this.refreshPosts = this.refreshPosts.bind(this);
     this.subscribe = this.subscribe.bind(this);
     this.castVote = this.castVote.bind(this);
@@ -68,7 +70,7 @@ class Frontpage extends Component {
           this.setState({
             user: result.user,
           }, () => {
-            this.refreshPosts();
+            Router.replace(this.props.url.asPath);
           });
           return;
         }
@@ -76,7 +78,7 @@ class Frontpage extends Component {
         this.setState({
           user: null,
         }, () => {
-          this.refreshPosts();
+          Router.replace(this.props.url.asPath);
         });
       })
       .catch(err => console.log(err));
@@ -86,7 +88,7 @@ class Frontpage extends Component {
     utils.sessions.deleteCookie('jwt');
     this.setState({
       user: null,
-    }, () => this.refreshPosts());
+    }, () => Router.replace(this.props.url.asPath));
   }
 
   subscribe() {
@@ -111,6 +113,7 @@ class Frontpage extends Component {
         user={this.state.user}
         karma={this.state.karma}
         subscriptions={this.state.subscriptions}
+        logout={this.logoutUser}
       >
         <div className="pageContent">
           <div className="posts" >

@@ -15,7 +15,7 @@ const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, thu
   } else {
     postImageStyle.backgroundColor = '#333';
   }
-  
+
   const karmaClasses = ['post__vote'];
   const upvoteClasses = ['post__vote'];
   const downvoteClasses = ['post__vote'];
