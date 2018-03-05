@@ -62,5 +62,8 @@ package-lock.json
 # npm
 package-lock.json
 
+# nginx
+nginx/matryoshka*
+
 # docker
 data
