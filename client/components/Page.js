@@ -6,15 +6,19 @@ import Footer from './Footer';
 export default ({ user, karma, subscriptions, title, children }) => (
   <div className="main">
     <div className="header">
-      <a href="/"><Logo /></a>
-      <div className="mat">
-        <img src="/static/mat.png" height={60} />
+      <div className="header__logo">
+        <a href="/"><Logo /></a>
+        <div className="mat">
+          <img src="/static/mat.png" height={60} />
+        </div>
       </div>
-      <UserPanelHeader
-        user={user}
-        karma={karma}
-        subscriptions={subscriptions}
-      />
+      <div className="header__user">
+        <UserPanelHeader
+          user={user}
+          karma={karma}
+          subscriptions={subscriptions}
+        />
+      </div>
     </div>
     <Nav />
     <div className="page">
@@ -40,9 +44,22 @@ export default ({ user, karma, subscriptions, title, children }) => (
         .header {
           display: flex;
           flex-direction: row;
+          justify-content: space-between;
+        }
+        .header__logo {
+          flex: 1;
+          align-self: flex-start;
+          display: flex;
+          flex-direction: row;
           justify-content: flex-start;
         }
-
+        .header__user {
+          flex: 1;
+          align-self: flex-end;
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-end;
+        }
         .page {
           padding: 8px;
         }
