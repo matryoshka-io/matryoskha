@@ -88,7 +88,7 @@ const prepPostListView = (context) => {
         response.posts = posts;
         return resolve(response);
       })
-      .catch(err => reject(response));
+      .catch(err => reject(err));
   });
 };
 

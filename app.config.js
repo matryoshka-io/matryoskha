@@ -1,16 +1,14 @@
-let BASE_URL;
-let MONGO_URI;
 const APP_IMAGE = 'stacking';
 const DB_IMAGE = 'mongo';
 
+let BASE_URL = 'http://localhost:3000';
+let MONGO_URI = 'mongodb://localhost:27017/matryoksha';
+
 console.log(`CONFIG FOR: ${process.env.NODE_ENV}`);
 
-if (process.env.NODE_ENV === 'production') {
-  BASE_URL = `http://${APP_IMAGE}:80`;
+if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
+  BASE_URL = 'https://matryoskha.tech/';
   MONGO_URI = `mongodb://${DB_IMAGE}/matryoksha`;
-} else {
-  BASE_URL = 'http://localhost:3000';
-  MONGO_URI = 'mongodb://localhost:27017/matryoksha';
 }
 
 module.exports = {
