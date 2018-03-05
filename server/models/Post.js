@@ -32,7 +32,6 @@ const postSchema = mongoose.Schema({
   titleSlug: String, // For the title.
   metadata: {
     title: String, // Of the article.
-    // snippet: String, // Beginning sentence of the article, for example.
     thumbnail: String, // Link to a thumbnail of the article's main image.
   },
 });

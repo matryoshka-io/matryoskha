@@ -46,13 +46,12 @@ module.exports = {
           // Note that the title is omitted, since we will use the article's title.
           utils.getMetadata(req.body.url)
             .then(({ thumbnail, title }) => {
-              // console.log(snippet);
               (new models.Post({
                 type: 'Article',
                 url: req.body.url,
                 subreddit: subreddit._id,
                 author: req.session.user._id,
-                metadata: {
+                metadata: { // Be explicit.
                   title,
                   thumbnail,
                 },
