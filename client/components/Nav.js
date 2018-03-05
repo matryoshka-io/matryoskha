@@ -1,7 +1,10 @@
-import Link from 'next/link';
+import Link from 'next/link'
+import Logo from './Logo'
 
 export default () => (
   <ul>
+    
+    <Logo/>
     <Item href="/best">best</Item>
     <Item href="/hot">hot</Item>
     <Item href="/new">new</Item>

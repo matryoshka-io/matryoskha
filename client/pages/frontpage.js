@@ -3,21 +3,24 @@ import { Component } from 'react';
 import Page from '../components/Page';
 import Posts from '../components/Posts';
 import UserPanelBody from '../components/UserPanelBody';
-import SubredditPanelBody from '../components/SubredditPanelBody';
 
+import Data from '../../server/database/dataFrontEnd.json';
 import auth from '../utils/auth';
-import profile from '../utils/profile';
 import data from '../utils/data';
 import sessions from '../utils/sessions';
 
 
-class Homepage extends Component {
+class Frontpage extends Component {
   static async getInitialProps(context) {
+    const title = context.query.sub !== undefined && context.query.sub !== null ? context.asPath : 'Matryoshka: The Internet, Stacked';
+    console.log('PAGE QUERY PARAMS: ', context.query);
+    console.log('asPath', context.asPath);
+
     const session = await auth.initializeSession(context);
-    const posts = await data.getPosts(session);
+    const posts = await data.getPosts(session, context.query.sub);
 
     return {
-      subreddit: context.query.sub || null,
+      title,
       user: session.user,
       token: session.token,
       posts,
@@ -27,15 +30,13 @@ class Homepage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      subreddit: this.props.subreddit,
+      title: this.props.title,
       user: this.props.user,
       token: this.props.token,
       posts: this.props.posts,
     };
     this.loginUser = this.loginUser.bind(this);
     this.refreshPosts = this.refreshPosts.bind(this);
-    this.logoutUser = this.logoutUser.bind(this);
-    this.subscribe = this.subscribe.bind(this);
   }
 
   componentWillMount() {
@@ -46,30 +47,13 @@ class Homepage extends Component {
   }
 
   refreshPosts() {
-    data.getPosts({ user: this.state.user, token: this.state.token }, this.state.subreddit)
+    data.getPosts({ user: this.state.user, token: this.state.token })
       .then((posts) => {
         this.setState({
           posts,
         });
       })
       .catch(err => console.log(err));
-  }
-
-  subscribe() {
-    if (this.state.subreddit && this.state.user) {
-      profile.subscribe({ user: this.state.user, token: this.state.token }, this.state.subreddit)
-        .then(result => console.log(result))
-        .catch(err => console.log(err));
-    }
-  }
-
-  logoutUser() {
-    // todo: submit token value to backend for blacklist
-    sessions.deleteCookie('jwt');
-    this.setState({
-      user: null,
-      token: null,
-    }, () => this.refreshPosts());
   }
 
   loginUser(username, password) {
@@ -80,35 +64,33 @@ class Homepage extends Component {
           this.setState({
             user: result.user,
             token: result.token,
-          }, () => this.refreshPosts());
+          }, () => {
+            console.log(this.state.user);
+            // this.refreshPosts();
+          });
           return;
         }
         sessions.deleteCookie('jwt');
         this.setState({
           user: null,
           token: null,
-        }, () => this.refreshPosts());
+        }, () => {
+          // this.refreshPosts();
+          console.log(this.state.user);
+        });
       })
       .catch(err => console.log(err));
   }
 
   render() {
     return (
-      <Page>
+      <Page title={this.state.title}>
         <div className="pageContent">
           <div className="posts" >
             <Posts posts={this.state.posts} />
           </div>
           <div className="login" >
-            <UserPanelBody
-              user={this.state.user}
-              login={this.loginUser}
-              logout={this.logoutUser}
-            />
-            <SubredditPanelBody
-              subreddit={this.state.subreddit}
-              subscribe={this.subscribe}
-            />
+            <UserPanelBody user={this.state.user} login={this.loginUser} />
           </div>
         </div>
         <style jsx>
@@ -144,4 +126,4 @@ class Homepage extends Component {
   }
 }
 
-export default Homepage;
+export default Frontpage;

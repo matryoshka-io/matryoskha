@@ -33,28 +33,51 @@ export default class LoginForm extends Component {
     return (
       <div>
         <div className="login">
-          <h1>Login</h1>
+          <h3>Login</h3>
+          <input name="username" className="usernameInput" placeholder="username" onChange={this.getInputValue} />
+          <input name="password" type="password" className="passwordInput" placeholder="password" onChange={this.getInputValue} />
           <div>
-            <span>name</span>
-            <input name="username" className="usernameInput" onChange={this.getInputValue} />
-          </div>
-          <span>password</span>
-          <div>
-            <input name="password" type="password" className="passwordInput" onChange={this.getInputValue} />
-          </div>
-          <span>{this.state.message}</span>
-          <div>
-            <button className="loginButton" onClick={this.submitLogin}>Login</button>
-            <Link href="/signup"><button className="signinButton">Sign Up</button></Link>
+            <button className="button primary" onClick={this.submitLogin}>Login</button>
+            <Link href="/signup"><button className="button secondary">Register</button></Link>
           </div>
         </div>
         <style jsx>
           {`
-            h1 {
+            h3 {
                 text-align: center
             }
-            .usernameInput {
-                margin-right: 100px;
+            .login {
+              height: 200px;
+              padding: 8px;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: space-around;
+            }
+            .login > * {
+              margin: 2px;
+            }
+            .login input {
+              height: 24px;
+              font-size: 14px;
+              text-align: center;
+            }
+            .button {
+              margin: 4px;
+              border: solid 1px #333;
+              width: 80px;
+              height: 30px;
+              line-height: 30px;
+              font-size: 14px;
+              font-weight: 400;
+            }
+            .button:hover {
+              cursor: pointer;
+            }
+            .primary {
+
+            }
+            .secondary {
             }
           `}
         </style>

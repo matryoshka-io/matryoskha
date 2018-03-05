@@ -6,77 +6,79 @@ const utils = require('./utils');
 module.exports = {
   POST: {
     subreddit(req, res) {
-      const newSubredditData = {
+      (new models.Subreddit({
         title: req.body.title,
         description: req.body.description,
-      };
-      models.User.findOne({ username: req.session.username })
-        .then((user) => {
-          newSubredditData.creator = user._id;
-          const newSubreddit = new models.Subreddit(newSubredditData);
-          newSubreddit.save().then((subreddit) => {
-            res.status(201).end(JSON.stringify(subreddit));
-          });
-        });
+        creator: req.session.user._id,
+      })).save().then((subreddit) => {
+        res.status(201).json(subreddit);
+      }).catch((err) => {
+        if (err.code === 11000) {
+          res.status(409).end('There is already a subreddit with that name!');
+        } else {
+          res.status(400).end(`Error while creating subreddit: ${err}`);
+        }
+      });
     },
     post(req, res) {
-      models.Subreddit.findOne({ title: req.params.subName })
-        .then((subreddit) => {
-          if (req.body.type === 'Text') {
-            const newPostData = {
-              title: req.body.title,
-              type: 'Text',
-              body: req.body.body,
-              subreddit: subreddit._id,
-            };
-            models.User.findOne({ username: req.session.username }).then((user) => {
-              newPostData.author = user._id;
-              const newPost = new models.Post(newPostData);
-              newPost.save().then((post) => {
-                res.status(201).json(post);
-              });
-            });
-          } else if (req.body.type === 'Image') {
-            const newPostData = {
-              title: req.body.title,
-              type: 'Image',
-              url: req.body.url,
-              subreddit: subreddit._id,
-            };
-            models.User.findOne({ username: req.session.username }).then((user) => {
-              newPostData.author = user._id;
-              const newPost = new models.Post(newPostData);
-              newPost.save().then((post) => {
-                res.status(201).json(post);
-              });
-            });
-          } else {
-            res.status(400).end('Unknown post type.');
-          }
-        });
+      console.log('params', req.params)
+      models.Subreddit.findOne({ titleSlug: req.params.subName }).then((subreddit) => {
+        console.log('subreddit', subreddit)
+        if (req.body.type === 'Text') {
+          (new models.Post({
+            title: req.body.title,
+            type: 'Text',
+            body: req.body.body,
+            subreddit: subreddit._id,
+            author: req.session.user._id,
+          })).save().then((post) => {
+            res.status(201).json(post);
+          });
+        } else if (req.body.type === 'Image' || req.body.type === 'Video') {
+          (new models.Post({
+            title: req.body.title,
+            type: req.body.type,
+            url: req.body.url,
+            subreddit: subreddit._id,
+            author: req.session.user._id,
+          })).save().then((post) => {
+            res.status(201).json(post);
+          });
+        } else if (req.body.type === 'Article') {
+          // Pass...
+        } else {
+          res.status(400).end('Unknown post type.');
+        }
+      });
     },
   },
   GET(req, res) {
-    models.Subreddit.findOne({ title: req.params.subName })
-      .then((subreddit) => {
-        models.Post.find({ subreddit: subreddit._id }).lean()
-          .then((posts) => {
-            utils.getKarmaAndSort(posts, (posts) => {
-              const promises = [];
-              posts.forEach((post) => {
-                promises.push(utils.matryoksha(post));
-              });
-              Promise.all(promises).then(() => {
-                res.status(200).end(JSON.stringify(posts));
-              });
+    models.Subreddit.findOne({ titleSlug: req.params.subName }).then((subreddit) => {
+      models.Post.find({ subreddit: subreddit._id })
+        .populate('subreddit')
+        .populate('author')
+        .lean()
+        .then((posts) => {
+          utils.getKarmaAndSort(posts, (posts) => {
+            const promises = [];
+            posts.forEach((post) => {
+              promises.push(utils.matryoksha(post));
             });
+            Promise.all(promises)
+              .then(() => {
+                res.status(200).json(posts);
+              })
+              .catch(err => res.status(200).send([]));
           });
-      });
+        })
+        .catch(err => res.status(200).send([]));
+    });
   },
   PUT(req, res) {
-    models.Subreddit.findOne({ title: req.params.subName }).populate('creator').lean()
+    models.Subreddit.findOne({ titleSlug: req.params.subName })
+      .lean()
       .then((subreddit) => {
-        if (subreddit.creator.username === req.session.username) {
+        if (subreddit.creator.toString() === req.session.user._id.toString()) {
           models.Subreddit.update({ _id: subreddit._id }, req.body).then((response) => {
             res.status(201).end('Subreddit updated!');
           });

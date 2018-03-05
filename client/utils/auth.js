@@ -13,18 +13,13 @@ const registerUser = (username, password) =>
         }
         return resolve(result.data);
       })
-      .catch((err) => {
-        console.log('error from auth.register ', err);
-        return reject(err.data);
-      });
+      .catch(err => reject(err.data));
   });
 
 const loginUser = (username, password) =>
   new Promise((resolve, reject) => {
-    console.log('LOGIN REQUEST');
     return axios.post(`${BASE_URL}/auth/login`, { username, password })
       .then((result) => {
-        console.log('LOGIN RESULT: ', result);
         if (result.success) {
           sessions.setCookie('jwt', result.token);
         }
@@ -42,13 +37,9 @@ const makeTokenHeader = token => ({ headers: { 'x-access-token': token } });
 const authenticateToken = token =>
   new Promise((resolve, reject) => {
     if (token) {
-      console.log('AUTH TOKEN WITH SERVER');
       const headers = makeTokenHeader(token);
       return axios.post(`${BASE_URL}/auth/authenticate`, {}, headers)
-        .then((result) => {
-          console.log(result.data);
-          return resolve(result.data);
-        })
+        .then(result => resolve(result.data))
         .catch((err) => {
           sessions.deleteCookie('jwt');
           return reject(err.data);

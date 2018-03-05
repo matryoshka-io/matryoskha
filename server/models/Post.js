@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 // This model doubles as both a Post and a Comment.
 // If it's a top-level comment, its parent is a Post, and it has no Subreddit property, title property, type property, and so on.
@@ -28,6 +29,23 @@ const postSchema = mongoose.Schema({
     ref: 'Post',
   }, // See above for top-level Comments, vs. nested Comments, vs. Posts.
   url: String,
+  titleSlug: String, // For the title.
+  metadata: {
+    title: String, // Of the article.
+    snippet: String, // Beginning sentence of the article, for example.
+    thumbnail: String, // Link to a thumbnail of the article's main image.
+  },
+});
+
+postSchema.pre('save', function CreateSlugFromTitle(next) {
+  if (this.title) {
+    this.titleSlug = slugify(this.title, {
+      replacement: '-',
+      remove: /[$*_+~.()'"!\-:@]/g,
+      lower: true,
+    });
+  }
+  next();
 });
 
 const Post = mongoose.model('Post', postSchema);

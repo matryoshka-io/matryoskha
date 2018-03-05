@@ -1,9 +1,11 @@
 import Nav from './Nav';
 import Footer from './Footer';
 
-export default ({ children }) => (
+
+
+export default ({ title, children }) => (
   <div className="main">
-    <h2>Welcome to Matryoshka Io</h2>
+    <h2>{ title }</h2>
     <Nav />
     <div className="page">
       { children }

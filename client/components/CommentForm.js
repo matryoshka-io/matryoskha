@@ -1,4 +1,7 @@
 import axios from 'axios';
+import homepage from '../pages/homepage'
+import auth from '../utils/auth';
+import sessions from '../utils/sessions';
 
 class CommentForm extends React.Component {
   constructor(props) {
@@ -19,18 +22,20 @@ class CommentForm extends React.Component {
   }
 
   postComment = (commentText) => {
-    axios.get('/api')
+    const token = sessions.getToken('jwt');
+    axios.get('/api', auth.makeTokenHeader(token))
       .then(res => {
         res.data.forEach(data => {
-          this.setState({
-            postId: data._id
-          })
+          if (this.props.postTitle === data.title) {
+            return this.setState({ postId: data._id })
+          }
         })
+        return this.state.postId
       })
-      .then(res => {
-        return axios.post(`/api/post/${this.state.postId}`, { type: 'Comment', body: commentText })
+      .then((res) => {
+        return axios.post(`/api/post/${this.state.postId}`, { body: commentText }, auth.makeTokenHeader(token))
       })
-      .then(res => {
+      .then((res) => {
         console.log('SUCCESSFUL COMMENT POST')
       })
   }
