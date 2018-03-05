@@ -1,3 +1,4 @@
+import Img from 'react-image';
 import Router from 'next/router';
 import axios from 'axios';
 import LinkBar from './LinkBar';
@@ -8,7 +9,7 @@ import auth from '../utils/auth';
 import sessions from '../utils/sessions';
 import routing from '../utils/redirect';
 // import slugify from 'slugify';
-import Img from 'react-image';
+import { BASE_URL } from '../../app.config';
 
 class PostForm extends React.Component {
   constructor(props) {
@@ -34,7 +35,7 @@ class PostForm extends React.Component {
       titleText: e.target.value,
     });
   }
-  
+
   onDropdownChangeHandler(e) {
     if (e.target.value === 'text') {
       this.setState({
@@ -79,30 +80,13 @@ class PostForm extends React.Component {
     this.createNewTextPost(this.state.titleText, this.state.type, this.state.bodyText, this.state.imageLink);
   }
 
-  // onCreateNewPostWithUserImage() {
-  //   this.createNewImagePost(this.state.titleText, this.state.type, this.state.imageLink, this.state.imageLink);
-  // }
-
-  // createNewImagePost(titleText, type, url ) {
-  //   const token = sessions.getToken('jwt');
-  //   axios.post(
-  //     `/api/sub/${this.state.subredditName}`,
-  //     { title: titleText, type: this.state.type, subreddit: this.state.subredditName, url: this.state.imageLink },
-  //     auth.makeTokenHeader(token),
-  //   )
-  //     .then((res) => {
-  //       Router.replace(`/r/${this.state.subredditName}/${res.data._id}/${res.data.titleSlug}`);
-  //     })
-  //     .catch(err => console.log(err));
-  // }
-
   createNewTextPost(titleText, type, bodyText, url) {
- 
+    console.log(...arguments);
      if (type === 'Text') {
       const token = sessions.getToken('jwt');
       axios.post(
-        `/api/sub/${this.state.subredditName}`,
-        { title: this.state.titleText, type: 'Text', body: this.state.bodyText, subreddit: this.state.subredditName },
+        `${BASE_URL}/api/sub/${this.state.subredditName}`,
+        { title: titleText, type: this.state.type, body: this.state.bodyText, subreddit: this.state.subredditName },
         auth.makeTokenHeader(token),
       )
         .then((res) => {
@@ -112,25 +96,20 @@ class PostForm extends React.Component {
       } else if (type === 'Article') {
         const token = sessions.getToken('jwt');
         axios.post(
-          `/api/sub/${this.state.subredditName}`,
+          `${BASE_URL}/api/sub/${this.state.subredditName}`,
           { type: 'Article', url: this.state.link },
           auth.makeTokenHeader(token),
         )
           .then((res) => {
             Router.replace(`/r/${this.state.subredditName}/${res.data._id}/${res.data.titleSlug}`);
           })
-          .catch(err => console.log(err));        
-      } else if (type === 'Image') {
+          .catch(err => console.log(err));
+      }  else if (type === 'Image') {
         const token = sessions.getToken('jwt');
         axios.post(
-          `/api/sub/${this.state.subredditName}`,
-          { title: this.state.titleText, type: 'Image', url: this.state.link },
-          auth.makeTokenHeader(token),
-          )
-            .then((res) => {
-              Router.replace(`/r/${this.state.subredditName}/${res.data._id}/${res.data.titleSlug}`);
-            })
-            .catch(err => console.log(err));
+          `${BASE_URL}/api/sub/${this.state.subredditName}`,
+          { title: titleText, type: 'Image', url: this.state.link },
+          .catch(err => console.log(err));        
       } else if (type === 'Video') {
         const token = sessions.getToken('jwt');
         axios.post(
@@ -147,10 +126,9 @@ class PostForm extends React.Component {
 
   render() {
     return (
-      <div className="postSubmission">
+      <div className="postSubmission centered">
         <h3>Submit a post to {`/r/${this.state.subredditName}`}</h3>
 
-        Type:
         <select id="typeDropdown" onChange={this.onDropdownChangeHandler} >
           <option value="text" >Text</option>
           <option value="image">Image</option>
@@ -158,15 +136,8 @@ class PostForm extends React.Component {
           <option value='article'>Article</option>
         </select>
 
-        <br />
-
         {this.state.isTitleHidden ? null :
-          <div>
-            Title:
-            <br />
-            <textarea rows="1" cols="80" value={this.state.titleText} onChange={this.onTitleTextChangeHandler} />
-            <br />
-          </div>
+          <input value={this.state.titleText} onChange={this.onTitleTextChangeHandler} placeholder="title" />
         }
 
         <div id="linkbar">
@@ -174,16 +145,34 @@ class PostForm extends React.Component {
         </div>
 
         <div id="textbox">
-          {this.state.isTextBoxHidden ? null : <TextBox onBodyTextChangeHandler={this.onBodyTextChangeHandler} />}
+          {this.state.isTextBoxHidden ? null : <TextBox bodyText={this.state.bodyText} onBodyTextChangeHandler={this.onBodyTextChangeHandler} />}
         </div>
 
-        <button onClick={this.onCreateNewTextPostWithUserText}>Post!</button>
+        <button className="button wider" onClick={this.onCreateNewTextPostWithUserText}>Post!</button>
         <style jsx>
-        {`
-          .postSubmission {
-            text-align: center;
-          }
-        `}
+          {`
+            .postSubmission {
+              width: 500px;
+              text-align: center;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: space-between;
+            }
+            .postSubmission > * {
+              flex: 1;
+              margin: 4px;
+            }
+            input {
+              width: 95%;
+            }
+            select {
+              width: 95%;
+            }
+            .wider {
+              width: 50%;
+            }
+          `}
         </style>
       </div>
     );

@@ -4,24 +4,35 @@ import PostForm from '../components/PostForm';
 import Page from '../components/Page';
 
 import routing from '../utils/redirect';
-import auth from '../utils/auth';
+import utils from '../utils';
 
-const CreatePostPage = ({ subreddit, user }) => (
+const CreatePostPage = ({ subreddit, user, karma, subscriptions }) => (
   <div>
-    <Page title="Create New Post">
-      <PostForm subreddit={subreddit} user={user} />
+    <Page
+      subreddit={subreddit}
+      user={user}
+      karma={karma}
+      subscriptions={subscriptions}
+    >
+      <div className="centered">
+        <PostForm subreddit={subreddit} user={user} />
+      </div>
     </Page>
   </div>
 );
 
 CreatePostPage.getInitialProps = async function GetInitialPostData(context) {
-  const session = await auth.initializeSession(context);
+  const session = await utils.auth.initializeSession(context);
+  const profile = await utils.data.prepUserProfile(session);
   if (!session.user) {
-    routing.redirect('/login', context); // TODO: add referrer link for rerouting post-login
+    // todo: add referrer to login redirects
+    Router.replace('/login');
   }
   return {
     subreddit: context.query.sub,
     user: session.user,
+    karma: profile.karma,
+    subscriptions: profile.subscriptions,
   };
 };
 
