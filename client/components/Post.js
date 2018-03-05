@@ -5,11 +5,17 @@ import PostDetails from './PostDetails';
 import Rating from './Rating';
 import SubredditBar from './SubredditBar';
 
-const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, voted, castVote }) => {
-  const postImageStyle = {
+const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, thumbnail, voted, castVote }) => {
+  let postImageStyle = {
     backgroundSize: 'cover',
-    backgroundColor: '#333',
   };
+
+  if (type === 'Article') {
+    postImageStyle.backgroundImage = `url(${thumbnail})`;
+  } else {
+    postImageStyle.backgroundColor = '#333';
+  }
+  
   const karmaClasses = ['post__vote'];
   const upvoteClasses = ['post__vote'];
   const downvoteClasses = ['post__vote'];
@@ -35,7 +41,7 @@ const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, vot
         <h3>{title}</h3>
         <div className="post__meta">
           <ul>
-            <li>submitted {moment(subreddit.date).fromNow()}</li>
+            <li>submitted {moment(date).fromNow()}</li>
             <li>by <Link href={`/u/${author.username}`}><a>{author.username}</a></Link></li>
             <li>to <Link href={`/r/${subreddit.titleSlug}`}><a>{`/r/${subreddit.titleSlug}`}</a></Link></li>
           </ul>
