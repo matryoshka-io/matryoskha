@@ -15,7 +15,7 @@ const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, thu
   } else {
     postImageStyle.backgroundColor = '#333';
   }
-  
+
   const karmaClasses = ['post__vote'];
   const upvoteClasses = ['post__vote'];
   const downvoteClasses = ['post__vote'];
@@ -63,6 +63,8 @@ const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, thu
             padding: 8px;
           }
           .post__karma {
+            font-family: 'PT Serif';
+            font-size: 14px;
             width: 30px;
             height: 80px;
             padding-top: 8px;
@@ -83,10 +85,10 @@ const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, thu
             color: #ffcc00;
           }
           .happy {
-            color: #ffcc00;
+            color: #00ba3e;
           }
           .happy:hover {
-            color: #ffcc00;
+            color: #00ba3e;
           }
           .sad {
             color: #ff0000;
