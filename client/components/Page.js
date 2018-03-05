@@ -66,7 +66,7 @@ export default ({ user, subreddit, karma, subscriptions, title, children, logout
         .page {
           padding: 8px;
         }
-        input {
+        input, select {
           height: 24px;
           font-size: 14px;
           text-align: center;
@@ -114,16 +114,51 @@ export default ({ user, subreddit, karma, subscriptions, title, children, logout
           background-color: #696775;
           border-radius: 2px;
         }
-        .primary {
 
+        .centered {
+          margin: 0 auto;
         }
-        .secondary {
 
-        }
         .footerContainer {
           margin: 50px 0 50px 0;
           display: block;
           width: 100%;
+        }
+
+        .post__karma {
+          font-family: 'PT Serif';
+          font-size: 14px;
+          width: 30px;
+          height: 80px;
+          padding-top: 8px;
+          margin-right: 8px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+          transition: color 0.5s ease;
+        }
+        .post__karma > * {
+          flex: 1;
+        }
+        .post__vote {
+          cursor: pointer;
+          text-decoration: none;
+        }
+        .post__vote:hover {
+          color: #999;
+        }
+        .happy {
+          color: #00ba3e;
+        }
+        .happy:hover {
+          color: #00ba3e;
+        }
+        .sad {
+          color: #ff0000;
+        }
+        .sad:hover {
+          color: #ff0000;
         }
       `}
     </style>

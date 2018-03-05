@@ -6,8 +6,17 @@ class TextBox extends React.Component {
   render() {
     return (
       <div>
-        Text: <br />
         <textarea row="8" cols="80" value={this.bodyText} onChange={this.props.onBodyTextChangeHandler} />
+        <style jsx>
+          {`
+            textarea {
+              line-height: 18px;
+              font-size: 14px;
+              width: 476px;
+              height: 300px;
+            }
+          `}
+        </style>
       </div>
     );
   }

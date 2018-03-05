@@ -57,6 +57,7 @@ export default class LoginForm extends Component {
               margin: 2px;
             }
             .login input {
+              width: 95%;
               height: 24px;
               font-size: 14px;
               text-align: center;
