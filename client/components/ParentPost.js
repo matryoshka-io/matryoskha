@@ -86,7 +86,9 @@ class ParentPost extends React.Component {
       );
     } else if (this.state.type === 'Video') {
       display = (
-        <iframe src={`https://www.youtube.com/embed/${this.state.videoId}`}></iframe>
+        <div>
+          <iframe src={`https://www.youtube.com/embed/${this.state.videoId}`}></iframe>
+        </div>
       );
     }
     return (
