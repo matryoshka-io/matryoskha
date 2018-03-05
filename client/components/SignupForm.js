@@ -36,47 +36,79 @@ export default class SignupForm extends React.Component {
 
   render() {
     return (
-      <form>
+      <div className="signup__form">
         <div>
-          <h1>Sign Up</h1>
-          <p>Please fill in this form to create an account.</p>
-          <div>
-            <p>Username</p>
-            <input
-              type="text"
-              placeholder="Enter Username"
-              name="username"
-              required
-              onChange={this.getCredential}
-            />
-          </div>
-          <div>
-            <p>Password</p>
-            <input
-              type="password"
-              placeholder="Enter Password"
-              name="password"
-              required
-              onChange={this.getCredential}
-            />
-          </div>
-          <div>
-            <p>Repeat Password</p>
-            <input
-              type="password"
-              placeholder="Repeat Password"
-              name="passwordr"
-              onChange={this.getCredential}
-            />
-          </div>
-          <strong>{this.props.message}</strong>
-          <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
-          <div className="clearfix">
-            <button type="button" className="cancelbtn">Cancel</button>
-            <button type="button" className="signupbtn" onClick={this.submitUser}>Sign Up</button>
-          </div>
+          <input
+            type="text"
+            placeholder="username"
+            name="username"
+            required
+            onChange={this.getCredential}
+          />
         </div>
-      </form>
+        <div>
+          <input
+            type="password"
+            placeholder="password"
+            name="password"
+            required
+            onChange={this.getCredential}
+          />
+        </div>
+        <div>
+          <input
+            type="password"
+            placeholder="confirm password"
+            name="passwordr"
+            onChange={this.getCredential}
+          />
+        </div>
+        <strong>{this.props.message}</strong>
+        <div className="clearfix">
+          <button type="button" className="button primary" onClick={this.submitUser}>Sign Up</button>
+        </div>
+        <style jsx>
+          {`
+            h3 {
+                text-align: center
+            }
+            .signup__form {
+              margin: 0 auto;
+              height: 300px;
+              padding: 8px;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: space-around;
+            }
+            .login > * {
+              margin: 2px;
+            }
+            .login input {
+              height: 24px;
+              font-size: 14px;
+              text-align: center;
+            }
+            .button {
+              margin: 4px;
+              border: solid 1px #333;
+              width: 80px;
+              height: 30px;
+              line-height: 30px;
+              font-size: 14px;
+              font-weight: 400;
+            }
+            .button:hover {
+              cursor: pointer;
+            }
+            .primary {
+
+            }
+            .secondary {
+            }
+          `}
+        </style>
+      </div>
     );
   }
 }

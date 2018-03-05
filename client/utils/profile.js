@@ -4,10 +4,19 @@ const { BASE_URL } = require('../../app.config');
 
 
 const getUserProfile = (username) => {
+  console.log('get user profile ', username);
   return new Promise((resolve, reject) => {
-    return axios.get(`${BASE_URL}/api/user/${username}`)
-      .then(profile => resolve(profile.data))
-      .catch(err => reject(err));
+    if (username) {
+      return axios.get(`${BASE_URL}/api/user/${username}`)
+        .then(profile => resolve(profile.data))
+        .catch(err => reject(err));
+    }
+    return resolve({
+      _id: null,
+      username: null,
+      karma: 0,
+      date: null,
+    });
   });
 };
 
@@ -51,5 +60,6 @@ const initializeProfilePage = (context) => {
 };
 
 module.exports = {
+  getUserProfile,
   initializeProfilePage,
 };

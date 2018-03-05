@@ -1,6 +1,7 @@
 const axios = require('axios');
 
 const auth = require('./auth');
+const profile = require('./profile');
 
 const { BASE_URL } = require('../../app.config');
 
@@ -72,6 +73,8 @@ const prepPostListView = (context) => {
       user: null,
       token: null,
       subscribed: false,
+      subscriptions: [],
+      karma: 0,
       posts: [],
     };
     return auth.initializeSession(context)
@@ -81,7 +84,12 @@ const prepPostListView = (context) => {
         return getSubscriptions(session);
       })
       .then((subscriptions) => {
+        response.subscriptions = subscriptions;
         response.subscribed = subscriptions.some(subscription => subscription.subreddit.titleSlug === subreddit);
+        return profile.getUserProfile(response.user ? response.user.username : null);
+      })
+      .then((profile) => {
+        response.karma = profile.karma;
         return getPosts({ user: response.user, token: response.token }, subreddit);
       })
       .then((posts) => {
@@ -117,8 +125,34 @@ const prepPostDetailView = (context) => {
   });
 };
 
+const prepUserProfile = (session) => {
+  if (session.user && session.token) {
+    return new Promise((resolve, reject) => {
+      const result = {
+        user: session.user,
+      };
+      return profile.getUserProfile(session.user)
+        .then((profile) => {
+          result.karma = profile.karma;
+          return auth.getSubscriptions(session);
+        })
+        .then((subscriptions) => {
+          result.subscrptions = subscriptions;
+          return resolve(result);
+        })
+        .catch(err => reject(err));
+    });
+  }
+  return {
+    user: null,
+    karma: null,
+    subscriptions: []
+  };
+};
+
 module.exports = {
   getPosts,
+  prepUserProfile,
   prepPostListView,
   prepPostDetailView,
   subscribe,
