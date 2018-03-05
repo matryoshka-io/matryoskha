@@ -3,11 +3,13 @@ import UserPanelHeader from './UserPanelHeader';
 import Nav from './Nav';
 import Footer from './Footer';
 
-export default ({ user, karma, subscriptions, title, children }) => (
+export default ({ user, subreddit, karma, subscriptions, title, children, logout }) => (
   <div className="main">
     <div className="header">
       <div className="header__logo">
-        <a href="/"><Logo /></a>
+        <a className="logo" href="/">
+          <img src="/static/logo.png" alt="logo1" border="0" height={60} />
+        </a>
         <div className="mat">
           <img src="/static/mat.png" height={60} />
         </div>
@@ -17,10 +19,11 @@ export default ({ user, karma, subscriptions, title, children }) => (
           user={user}
           karma={karma}
           subscriptions={subscriptions}
+          logout={logout}
         />
       </div>
     </div>
-    <Nav />
+    <Nav subreddit={subreddit} />
     <div className="page">
       {children}
     </div>
@@ -70,14 +73,17 @@ export default ({ user, karma, subscriptions, title, children }) => (
         }
         .button {
           margin: 4px;
-          border: solid 1px #333;
-          width: 85%;
-          height: 24px;
-          font-size: 10px;
+          color: #f4ebce;
+          background-color: #696775;
+          height: 30px;
+          font-size: 12px;
           font-weight: 700;
           text-transform: uppercase;
+          transition: background-color 0.5s ease;
         }
         .button:hover {
+          color: #fff;
+          background-color: #9795a0;
           cursor: pointer;
         }
         h1, h2, h3, h4 {
@@ -114,15 +120,20 @@ export default ({ user, karma, subscriptions, title, children }) => (
         .secondary {
 
         }
+        .footerContainer {
+          margin: 50px 0 50px 0;
+          display: block;
+          width: 100%;
+        }
       `}
     </style>
     <style jsx>
       {`
-        .footerContainer {
-          margin: 50px 0 50px 0;
-          display: flex;
-          align-content: end;
-          flex-direction: column;
+        a.logo {
+          cursor: pointer;
+        }
+        a.logo:hover {
+          background-color: rgba(0,0,0,0);
         }
         .mat {
           text-align: center;

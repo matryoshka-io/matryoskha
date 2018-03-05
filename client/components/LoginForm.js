@@ -45,6 +45,7 @@ export default class LoginForm extends Component {
                 text-align: center
             }
             .login {
+              margin: 0 auto;
               height: 200px;
               padding: 8px;
               display: flex;

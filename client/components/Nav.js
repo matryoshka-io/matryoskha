@@ -1,25 +1,44 @@
 import Link from 'next/link';
 
-export default ({ title }) => (
-  <ul>
-    <Item href="/best">best</Item>
-    <Item href="/hot">hot</Item>
-    <Item href="/new">new</Item>
-    <Item href="/rising">rising</Item>
-    <Item href="/top">top</Item>
+export default ({ title, subreddit }) => {
+  if (subreddit) {
+    return (
+      <ul>
+        <Item href={`/r/${subreddit}/`}>{`/r/${subreddit}`}</Item>
+        <Item href="/">best</Item>
+        <Item href="/new">new</Item>
 
-    <style jsx>
-      {`
-        ul {
-          list-style-type: none;
-          background: #696775;
-          margin: 4px;
-          padding: 0;
-        }
-      `}
-    </style>
-  </ul>
-);
+        <style jsx>
+          {`
+          ul {
+            list-style-type: none;
+            background: #696775;
+            margin: 4px;
+            padding: 0;
+          }
+        `}
+        </style>
+      </ul>
+    );
+  }
+  return (
+    <ul>
+      <Item href="/">best</Item>
+      <Item href="/new">new</Item>
+
+      <style jsx>
+        {`
+          ul {
+            list-style-type: none;
+            background: #696775;
+            margin: 4px;
+            padding: 0;
+          }
+        `}
+      </style>
+    </ul>
+  );
+};
 
 const Item = ({ href, children }) => (
   <li>
