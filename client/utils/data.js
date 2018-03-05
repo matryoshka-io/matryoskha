@@ -62,6 +62,31 @@ const getSubscriptions = (session) => {
   });
 };
 
+const prepUserProfile = (session) => {
+  if (session.user && session.token) {
+    return new Promise((resolve, reject) => {
+      const result = {
+        user: session.user,
+      };
+      return profile.getUserProfile(session.user.username || null)
+        .then((profile) => {
+          result.karma = profile.karma;
+          return getSubscriptions(session);
+        })
+        .then((subscriptions) => {
+          result.subscriptions = subscriptions;
+          return resolve(result);
+        })
+        .catch(err => reject(err));
+    });
+  }
+  return {
+    user: null,
+    karma: null,
+    subscriptions: [],
+  };
+};
+
 const prepPostListView = (context) => {
   const title = !context.query.sub || context.query.sub === 'null' ? 'Matryoshka: Internet, Stacked' : context.asPath;
   const subreddit = !context.query.sub || context.query.sub === 'null' ? null : context.query.sub;
@@ -81,15 +106,12 @@ const prepPostListView = (context) => {
       .then((session) => {
         response.user = session.user;
         response.token = session.token;
-        return getSubscriptions(session);
-      })
-      .then((subscriptions) => {
-        response.subscriptions = subscriptions;
-        response.subscribed = subscriptions.some(subscription => subscription.subreddit.titleSlug === subreddit);
-        return profile.getUserProfile(response.user ? response.user.username : null);
+        return prepUserProfile(session);
       })
       .then((profile) => {
         response.karma = profile.karma;
+        response.subscriptions = profile.subscriptions;
+        response.subscribed = profile.subscriptions.some(subscription => subscription.subreddit.titleSlug === subreddit);
         return getPosts({ user: response.user, token: response.token }, subreddit);
       })
       .then((posts) => {
@@ -108,17 +130,17 @@ const prepPostDetailView = (context) => {
     const response = {
       title,
       subreddit,
-      post: {},
-      comments: [],
     };
     return auth.initializeSession(context)
       .then((session) => {
         response.user = session.user;
         response.token = session.token;
-        return getSubscriptions(session);
+        return prepUserProfile(session);
       })
-      .then((subscriptions) => {
-        response.subscriptions = subscriptions;
+      .then((profile) => {
+        response.karma = profile.karma;
+        response.subscriptions = profile.subscriptions;
+        response.subscribed = profile.subscriptions.some(subscription => subscription.subreddit.titleSlug === subreddit);
         return resolve(response);
       })
       .catch(err => reject(err));

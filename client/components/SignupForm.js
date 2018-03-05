@@ -37,6 +37,7 @@ export default class SignupForm extends React.Component {
   render() {
     return (
       <div className="signup__form">
+        <h3>Register for an Account</h3>
         <div>
           <input
             type="text"
@@ -90,21 +91,7 @@ export default class SignupForm extends React.Component {
               text-align: center;
             }
             .button {
-              margin: 4px;
-              border: solid 1px #333;
-              width: 80px;
-              height: 30px;
-              line-height: 30px;
-              font-size: 14px;
-              font-weight: 400;
-            }
-            .button:hover {
-              cursor: pointer;
-            }
-            .primary {
-
-            }
-            .secondary {
+              width: 95%;
             }
           `}
         </style>
