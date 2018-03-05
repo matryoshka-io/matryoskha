@@ -1,3 +1,4 @@
+import Img from 'react-image';
 import Router from 'next/router';
 import axios from 'axios';
 import LinkBar from './LinkBar';
@@ -8,7 +9,7 @@ import auth from '../utils/auth';
 import sessions from '../utils/sessions';
 import routing from '../utils/redirect';
 // import slugify from 'slugify';
-import Img from 'react-image';
+import { BASE_URL } from '../../app.config';
 
 class PostForm extends React.Component {
   constructor(props) {
@@ -80,10 +81,11 @@ class PostForm extends React.Component {
   }
 
   createNewTextPost(titleText, type, bodyText, url) {
+    console.log(...arguments);
      if (type === 'Text') {
       const token = sessions.getToken('jwt');
       axios.post(
-        `/api/sub/${this.state.subredditName}`,
+        `${BASE_URL}/api/sub/${this.state.subredditName}`,
         { title: titleText, type: this.state.type, body: this.state.bodyText, subreddit: this.state.subredditName },
         auth.makeTokenHeader(token),
       )
@@ -94,7 +96,7 @@ class PostForm extends React.Component {
       } else if (type === 'Article') {
         const token = sessions.getToken('jwt');
         axios.post(
-          `/api/sub/${this.state.subredditName}`,
+          `${BASE_URL}/api/sub/${this.state.subredditName}`,
           { type: 'Article', url: this.state.link },
           auth.makeTokenHeader(token),
         )
@@ -105,7 +107,7 @@ class PostForm extends React.Component {
       }  else if (type === 'Image') {
         const token = sessions.getToken('jwt');
         axios.post(
-          `/api/sub/${this.state.subredditName}`,
+          `${BASE_URL}/api/sub/${this.state.subredditName}`,
           { title: titleText, type: 'Image', url: this.state.link },
           auth.makeTokenHeader(token),
         )
@@ -140,7 +142,7 @@ class PostForm extends React.Component {
         </div>
 
         <div id="textbox">
-          {this.state.isTextBoxHidden ? null : <TextBox onBodyTextChangeHandler={this.onBodyTextChangeHandler} />}
+          {this.state.isTextBoxHidden ? null : <TextBox bodyText={this.state.bodyText} onBodyTextChangeHandler={this.onBodyTextChangeHandler} />}
         </div>
 
         <button className="button wider" onClick={this.onCreateNewTextPostWithUserText}>Post!</button>

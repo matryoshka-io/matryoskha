@@ -16,6 +16,7 @@ class PostDetailPage extends Component {
     const pageContext = await utils.data.prepPostDetailView(context);
     const post = await fetch(`${BASE_URL}/api/post/${context.query.post}`);
     const json = await post.json();
+    pageContext.subreddit = context.query.subTitle;
     pageContext.post = json;
     return pageContext;
   }
@@ -25,6 +26,7 @@ class PostDetailPage extends Component {
     this.state = {
       user: this.props.user,
       post: this.props.post,
+      karma: this.props.karma,
       subreddit: this.props.subreddit,
       subscribed: this.props.subscribed,
       subscriptions: this.props.subscriptions,
