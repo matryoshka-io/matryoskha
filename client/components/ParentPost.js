@@ -22,6 +22,7 @@ class ParentPost extends React.Component {
       url: props.url,
       thumbnail: props.thumbnail,
       type: props.type,
+      videoId: props.videoId,
     }
     this.postComment = this.postComment.bind(this);
     this.updateCommentList = this.updateCommentList.bind(this);
