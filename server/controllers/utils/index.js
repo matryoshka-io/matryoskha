@@ -11,11 +11,9 @@ const getMetadata = (url) =>
         const html = res.text;
         const title = html.match(/<title>(.*?)<\/title>/);
         const thumbnail = html.match(/<img src="(.*?)"/);
-        // const snippet = html.match(/<p.*?>(.*?)<\/p>/);
         resolve({
           title: title[1],
           thumbnail: thumbnail[1],
-          // snippet: snippet[1],
         });
       });
   });
