@@ -31,6 +31,7 @@ const postSchema = mongoose.Schema({
   url: String,
   titleSlug: String, // For the title.
   thumbnail: String, // Link to a thumbnail of the article's main image.
+  videoId: String, // YouTube.
 });
 
 postSchema.pre('save', function CreateSlugFromTitle(next) {
