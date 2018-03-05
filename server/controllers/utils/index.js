@@ -9,11 +9,13 @@ const getMetadata = (url) =>
       .set('accept', 'text/html')
       .end((err, res) => {
         const html = res.text;
-        const title = html.match(/<title>(.*?)<\/title>/);
-        const thumbnail = html.match(/<img src="(.*?)"/);
+        let title = html.match(/<title>(.*?)<\/title>/);
+        let thumbnail = html.match(/<img src="(.*?)"/);
+        title = title ? title[1] : 'Article';
+        thumbnail = thumbnail ? thumbnail[1] : 'http://crouton.net/crouton.png';
         resolve({
-          title: title[1],
-          thumbnail: thumbnail[1],
+          title,
+          thumbnail,
         });
       });
   });
