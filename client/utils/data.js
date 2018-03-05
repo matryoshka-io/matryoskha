@@ -86,7 +86,7 @@ const prepPostListView = (context) => {
       .then((subscriptions) => {
         response.subscriptions = subscriptions;
         response.subscribed = subscriptions.some(subscription => subscription.subreddit.titleSlug === subreddit);
-        return profile.getUserProfile(response.user);
+        return profile.getUserProfile(response.user ? response.user.username : null);
       })
       .then((profile) => {
         response.karma = profile.karma;
