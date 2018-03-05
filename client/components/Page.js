@@ -10,9 +10,9 @@ export default ({ title, children }) => (
       <Nav />
     </div>
     <div className="page">
-      { children }
+      {children}
     </div>
-    <div>
+    <div className="footerContainer">
       <Footer />
     </div>
     <style jsx global>
@@ -31,7 +31,12 @@ export default ({ title, children }) => (
     </style>
     <style jsx>
       {`
-
+      .footerContainer {
+        margin: 50px 0 50px 0;
+        display: flex;
+        align-content: end;
+        flex-direction: column;
+      }
         .mat {
           text-align: center;
         }
@@ -42,6 +47,7 @@ export default ({ title, children }) => (
         }
         .page {
           padding: 3px 10px;
+          display: flex;
         }
         @media (max-width: 750px) {
           .main {
