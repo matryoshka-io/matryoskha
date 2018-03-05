@@ -32,7 +32,7 @@ module.exports = {
           })).save().then((post) => {
             res.status(201).json(post);
           });
-        } else if (req.body.type === 'Image' || req.body.type === 'Video') {
+        } else if (req.body.type === 'Image') {
           (new models.Post({
             title: req.body.title,
             type: req.body.type,
@@ -47,6 +47,20 @@ module.exports = {
             .then(({ thumbnail, title }) => {
               (new models.Post({
                 type: 'Article',
+                url: req.body.url,
+                subreddit: subreddit._id,
+                author: req.session.user._id,
+                title,
+                thumbnail,
+              })).save().then((post) => {
+                res.status(201).json(post);
+              });
+            });
+        } else if (req.body.type === 'Video') {
+          utils.getVideoMeta(req.body.url)
+            .then(({ title, thumbnail}) => {
+              (new models.Post({
+                type: 'Video',
                 url: req.body.url,
                 subreddit: subreddit._id,
                 author: req.session.user._id,

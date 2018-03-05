@@ -20,6 +20,32 @@ const getMetadata = (url) =>
       });
   });
 
+const getVideoMeta = (url) => 
+  new Promise((resolve, reject) => {
+    request.get(url)
+      .set('accept', 'text/html')
+      .end((err, res) => {
+        const html = res.text;
+        let title = html.match(/<title>(.*?)<\/title>/);
+        title = title ? title[1] : 'Video';
+
+        let thumbnail = url.match(/watch\?v=(.*)$/);
+        if (!thumbnail) {
+          thumbnail = url.match(/\.be\/(.*)$/);
+        }
+        if (!thumbnail) {
+          thumbnail = 'http://crouton.net/crouton.png'
+        } else {
+          thumbnail = thumbnail[1];
+          thumbnail = `https://img.youtube.com/vi/${thumbnail}/default.jpg`
+        }
+        resolve({
+          title,
+          thumbnail,
+        });        
+      });
+  });
+
 const tackVote = (req, post) =>
   new Promise((resolve, reject) => {
     if (req.session.user) {
@@ -144,4 +170,5 @@ module.exports = {
   getKarmaAndSortPromise,
   getKarma,
   getMetadata,
+  getVideoMeta,
 };

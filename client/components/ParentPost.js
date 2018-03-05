@@ -55,7 +55,7 @@ class ParentPost extends React.Component {
 
   render() {
     let display;
-    if (this.state.type === 'Article') {
+    if (this.state.type === 'Article' || this.state.type === 'Video') {
       display = (
         <div>
           <div className="topOfPage">
