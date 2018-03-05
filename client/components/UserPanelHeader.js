@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import LoginForm from './LoginForm';
+import SubscribedSubreddits from './SubscribedSubreddits';
 
 // todo: separate into frontpage, subreddit varieties for logged-in
 const UserPanelHeader = ({ user, karma, subscriptions, logout }) => {
@@ -11,6 +12,7 @@ const UserPanelHeader = ({ user, karma, subscriptions, logout }) => {
           {`[ ${karma} ]`}
         </div>
         <div className="user__subreddit-menu">
+          <SubscribedSubreddits subscriptions={subscriptions} />
         </div>
         <a className="user__logout" onClick={logout}>Logout</a>
         <style jsx>

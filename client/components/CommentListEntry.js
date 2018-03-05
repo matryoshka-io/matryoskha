@@ -2,12 +2,13 @@ import ReactMarkdown from 'react-markdown';
 import Paper from 'material-ui/Paper';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import axios from 'axios';
-import Link from 'next/link'
+import Link from 'next/link';
 
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import ReplyCommentBox from './ReplyCommentBox';
-import EditBox from './EditBox'
+import EditBox from './EditBox';
+
 import auth from '../utils/auth';
 import sessions from '../utils/sessions';
 import utils from '../utils';
@@ -28,30 +29,39 @@ class CommentListEntry extends React.Component {
     this.state = {
       isReplyBoxHidden: true,
       isEditBoxHidden: true,
-      commenetBody: '',
+      commentBody: '',
       commentId: '',
-      deleteIndex: '',
     }
+    this.onReplyClickHandler = this.onReplyClickHandler.bind(this);
+    this.replyAndSetNewCommentId = this.replyAndSetNewCommentId.bind(this);
+    this.onDeleteClickHandler = this.onDeleteClickHandler.bind(this);
+    this.onDeleteClickWithIndex = this.onDeleteClickWithIndex.bind(this);
+    this.onEditClickHandler = this.onEditClickHandler.bind(this);
+    this.castVote = this.castVote.bind(this);
+    this.deleteVote = this.deleteVote.bind(this);
+    this.castUpVote = this.castUpVote.bind(this);
+    this.castDownVote = this.castDownVote.bind(this);
+
   }
 
-  onReplyClickHandler = () => {
+  onReplyClickHandler() {
     const token = sessions.getToken('jwt')
     if (token) {
       this.setState({ isReplyBoxHidden: !this.state.isReplyBoxHidden })
     }
   }
 
-  replyAndSetNewCommentId = (commentId) => {
+  replyAndSetNewCommentId(commentId) {
     this.setState({ commentId })
   }
 
-  onDeleteClickHandler = () => {
+  onDeleteClickHandler() {
     this.setState({ deleteIndex: this.props.index },
       this.onDeleteClickWithIndex(this.props.comment._id)
     )
   }
 
-  onDeleteClickWithIndex = (deleteId) => {
+  onDeleteClickWithIndex(deleteId) {
     const token = sessions.getToken('jwt')
     axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
       .then(res => {
@@ -71,7 +81,7 @@ class CommentListEntry extends React.Component {
       })
   }
 
-  onEditClickHandler = () => {
+  onEditClickHandler() {
     const token = sessions.getToken('jwt')
     if (token) {
       this.setState({
@@ -108,11 +118,11 @@ class CommentListEntry extends React.Component {
       })
   }
 
-  castUpVote = () => {
+  castUpVote() {
     this.castVote(this.props.comment._id, 1)
   }
 
-  castDownVote = () => {
+  castDownVote() {
     this.deleteVote(this.props.comment._id, 1)
   }
 

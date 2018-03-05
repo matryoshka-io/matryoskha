@@ -4,32 +4,33 @@ import sessions from '../utils/sessions';
 
 class ReplyCommentBox extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      replyBoxText: '',
       replyIndex: '',
+      replyBoxText: '',
     }
+    this.onReplyBoxChangeHandler = this.onReplyBoxChangeHandler.bind(this);
+    this.postReplyWithText = this.postReplyWithText.bind(this);
+    this.replyToComment = this.replyToComment.bind(this);
   }
 
-  onReplyBoxChangeHandler = (e) => {
+  onReplyBoxChangeHandler(e) {
     this.setState({
-      replyBoxText: e.target.value
+      replyBoxText: e.target.value,
     })
   }
 
-  postReplyWithText = () => {
+  postReplyWithText() {
     this.setState({ replyIndex: this.props.index },
       this.replyToComment(this.state.replyBoxText, this.props.commentId)
     )
   }
 
-  replyToComment = (replyBoxText, commentId) => {
-    console.log('click')
+  replyToComment(replyBoxText, commentId) {
     const token = sessions.getToken('jwt')
     axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
       .then(res => {
         res.data.comments.forEach((comment, index) => {
-          console.log('comment', comment)
           if (comment._id === commentId) {
             this.props.replyAndSetNewCommentId(comment._id)
           }

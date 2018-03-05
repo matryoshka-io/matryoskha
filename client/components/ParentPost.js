@@ -22,11 +22,13 @@ class ParentPost extends React.Component {
       url: props.url,
       thumbnail: props.thumbnail,
       type: props.type,
-      videoId: props.videoId,
-    };
+    }
+    this.postComment = this.postComment.bind(this);
+    this.updateCommentList = this.updateCommentList.bind(this);
   }
 
-  postComment = (commentText) => {
+
+  postComment(commentText) {
     const token = sessions.getToken('jwt');
     axios.get('/api', auth.makeTokenHeader(token))
       .then(res => {
@@ -38,21 +40,19 @@ class ParentPost extends React.Component {
         return this.state.postId
       })
       .then((res) => {
-        console.log('res', res)
         return axios.post(`/api/post/${this.state.postId}`, { body: commentText }, auth.makeTokenHeader(token))
-      })
-      .then((res) => {
-        console.log('SUCCESSFUL COMMENT POST')
-        return res;
       })
       .then(res => {
         res.data.comments = [];
-        let newCommentArr = this.state.comments.push(res.data)
-        this.setState({ commentBody: newCommentArr })
+        this.state.comments.push(res.data)
+        this.setState({ comments: this.state.comments })
+      })
+      .then(res => {
+        console.log('SUCCESSFUL COMMENT TO A POST')
       })
   }
 
-  updateCommentList = (comments) => {
+  updateCommentList(comments) {
     this.setState({ comments });
   }
 
