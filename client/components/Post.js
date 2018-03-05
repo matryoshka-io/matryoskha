@@ -10,16 +10,16 @@ const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, thu
     backgroundSize: 'cover',
   };
 
-  if (type === 'Article') {
+  if (type === 'Article' || type === 'Video') {
     postImageStyle.backgroundImage = `url(${thumbnail})`;
-  } 
+  }
   else if (type === 'Image'){
     postImageStyle.backgroundImage = `url(${url})`;
   }
   else {
     postImageStyle.backgroundColor = '#333';
-  } 
-  
+  }
+
   const karmaClasses = ['post__vote'];
   const upvoteClasses = ['post__vote'];
   const downvoteClasses = ['post__vote'];
@@ -65,40 +65,6 @@ const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, thu
             flex-flow: row;
             height: 80px;
             padding: 8px;
-          }
-          .post__karma {
-            font-family: 'PT Serif';
-            font-size: 14px;
-            width: 30px;
-            height: 80px;
-            padding-top: 8px;
-            margin-right: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-          }
-          .post__karma > * {
-            flex: 1;
-          }
-          .post__vote {
-            cursor: pointer;
-            text-decoration: none;
-          }
-          .post__vote:hover {
-            color: #ffcc00;
-          }
-          .happy {
-            color: #00ba3e;
-          }
-          .happy:hover {
-            color: #00ba3e;
-          }
-          .sad {
-            color: #ff0000;
-          }
-          .sad:hover {
-            color: #ff0000;
           }
           .post__image {
             width: 80px;

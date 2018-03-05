@@ -147,31 +147,6 @@ const prepPostDetailView = (context) => {
   });
 };
 
-const prepUserProfile = (session) => {
-  if (session.user && session.token) {
-    return new Promise((resolve, reject) => {
-      const result = {
-        user: session.user,
-      };
-      return profile.getUserProfile(session.user)
-        .then((profile) => {
-          result.karma = profile.karma;
-          return auth.getSubscriptions(session);
-        })
-        .then((subscriptions) => {
-          result.subscrptions = subscriptions;
-          return resolve(result);
-        })
-        .catch(err => reject(err));
-    });
-  }
-  return {
-    user: null,
-    karma: null,
-    subscriptions: []
-  };
-};
-
 module.exports = {
   getPosts,
   prepUserProfile,

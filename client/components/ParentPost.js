@@ -11,6 +11,7 @@ import Img from 'react-image'
 class ParentPost extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props.videoId);
     this.state = {
       subredditId: props.subreddit,
       postId: props._id,
@@ -25,6 +26,7 @@ class ParentPost extends React.Component {
     this.postComment = this.postComment.bind(this);
     this.updateCommentList = this.updateCommentList.bind(this);
   }
+
 
   postComment(commentText) {
     const token = sessions.getToken('jwt');
@@ -94,6 +96,12 @@ class ParentPost extends React.Component {
           <div className="postBody">
             <ReactMarkdown source={this.state.postBodyText} />
           </div>
+        </div>
+      );
+    } else if (this.state.type === 'Video') {
+      display = (
+        <div>
+          <iframe src={`https://www.youtube.com/embed/${this.state.videoId}`}></iframe>
         </div>
       );
     }
