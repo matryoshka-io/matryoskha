@@ -1,6 +1,5 @@
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
-import Postdetail from '../pages/postDetail';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import Link from 'next/link';
@@ -54,10 +53,11 @@ class ParentPost extends React.Component {
   render() {
     return (
       <div>
-        <div className="postTitle"> {this.state.postTitle}
-          <div id="textBy">by <Link href={`/u/${this.state.username}`}><a>{this.state.username}</a></Link></div>
+        <div className="topOfPage">
+          <div className="postTitle"> {this.state.postTitle}</div>
+          <div id="textBy">(by <Link href={`/u/${this.props.author.username}`}><a>{this.props.author.username}</a></Link>)</div>
         </div>
-
+        <div id="titleDate">{this.props.date}</div>
         <div className="postBody">
           <ReactMarkdown source={this.state.postBodyText} />
         </div>
@@ -74,10 +74,32 @@ class ParentPost extends React.Component {
         />
 
         <style>{`
+          .postTitle {
+            font-family: Arial, Helvetica, sans-serif;
+          }
+          .topOfPage {
+            display: flex;
+            align-items: center;
+            padding: 10px 5px 9px 5px;
+          }
+          #textBy, #titleDate {
+            padding-left: 5px;
+            font-family: Arial, Helvetica, sans-serif;
+          }
+          #titleDate {
+            font-size: 11px;
+            font-color: gray;
+            padding-bottom: 5px;
+          }
           .postBody {
             padding: 4px 0 20px 0;
             border-style: solid;
             border-width: 1px;
+            border-color: gray;
+            border-radius: 10px;
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 5px;
+            
           } 
           #textBy {
             font-size: 12px;

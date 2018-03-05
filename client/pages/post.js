@@ -18,6 +18,7 @@ class PostDetailPage extends Component {
   static async getInitialProps({ query }) {
     const post = await fetch(`http://localhost:3000/api/post/${query.post}`);
     const json = await post.json();
+    console.log('json', json)
     return json;
   }
 
@@ -28,6 +29,7 @@ class PostDetailPage extends Component {
   }
 
   render() {
+    console.log('this.props', this.state)
     return (
       <Page title={this.state.title}>
 

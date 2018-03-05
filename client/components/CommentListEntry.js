@@ -10,8 +10,8 @@ import ReplyCommentBox from './ReplyCommentBox';
 import EditBox from './EditBox'
 import auth from '../utils/auth';
 import sessions from '../utils/sessions';
-import utils from '../utils'
-import Rating from './Rating'
+import utils from '../utils';
+
 
 const style = {
   height: 100,
@@ -78,37 +78,56 @@ class CommentListEntry extends React.Component {
     const token = sessions.getToken('jwt')
     return axios.post(`/api/vote/${commentId}`, { vote: vote }, auth.makeTokenHeader(token))
       .then(res => {
-        console.log('SUCCESSFUL VOTE', res)
+        console.log('SUCCESSFUL VOTE')
+      })
+      .then(res => {
+        return axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
+      })
+      .then(res => {
+        this.props.updateCommentList(res.data.comments)
+      })
+  }
+
+  deleteVote(commentId, vote) {
+    const token = sessions.getToken('jwt')
+    return axios.delete(`/api/vote/${commentId}`, auth.makeTokenHeader(token))
+      .then(res => {
+        console.log('SUCCESSFUL VOTE')
+      })
+      .then(res => {
+        return axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
+      })
+      .then(res => {
+        this.props.updateCommentList(res.data.comments)
       })
   }
 
   castUpVote = () => {
-    console.log('props', this.props)
-    console.log('upvote', this.props.comment._id)
     this.castVote(this.props.comment._id, 1)
   }
 
   castDownVote = () => {
-    this.castVote(this.props.comment._id, -1)
+    this.deleteVote(this.props.comment._id, 1)
   }
-
-
-
 
   render() {
     return (
       <div className="entries">
+
         <MuiThemeProvider>
-
           <Paper style={this.style} zDepth={2} className="commentEntry">
-
-            <div id="username"> <Link href={`/u/${this.props.comment.author.username}`}><a>{this.props.comment.author.username}</a></Link> </div>
-            <div id="upvote" onClick={this.castUpVote}>&#x25B2; </div>
-            <div id="downvote" onClick={this.castDownVote}>&#x25BC;</div>
-            {/* <Rating /> */}
-            <div id="commentBody"><ReactMarkdown source={this.props.comment.body} /></div>
-            <div id="date">{this.props.comment.date}</div>
-
+            <div className="box">
+              <div className="votes">
+                <div id="upvote" onClick={this.castUpVote}>&#x25B2; </div>
+                <div id="totalVotes">{this.props.comment.karma}</div>
+                <div id="downvote" onClick={this.castDownVote}>&#x25BC;</div>
+              </div>
+              <div className="content">
+                <div id="username"> <Link href={`/u/${this.props.comment.author.username}`}><a>{this.props.comment.author.username}</a></Link> </div>
+                <div id="commentBody"><ReactMarkdown source={this.props.comment.body} /></div>
+                <div id="date">{this.props.comment.date}</div>
+              </div>
+            </div>
           </Paper>
         </MuiThemeProvider>
 
@@ -165,10 +184,8 @@ class CommentListEntry extends React.Component {
           #date {
             font-size: 10px;
           }
-          .commentEntry {
-            width: 98%;
-            margin: auto;
-            padding-left: 10px;
+          #commentBody {
+            font-size: 14px;
           }
           #replyComment a, #deleteComment a, #editComment a {
             display: flex;
@@ -180,11 +197,26 @@ class CommentListEntry extends React.Component {
           a:hover {
             color: #A9A9A9;
           }
-          #commentBody {
-            font-size: 14px;
-          }
           .entries {
             padding-left: 20px
+          }
+          .votes {
+            width: 30px;
+            height: 80px;
+            padding-top: 8px;
+            margin-right: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+          }
+          .box {
+            display: flex;
+            align-items: center;
+          }
+          #upvote:hover, #downvote:hover {
+            color: #ffcc00;
+            cursor: pointer;
           }
         `}
         </style>
