@@ -20,6 +20,7 @@ class PostDetailPage extends Component {
     const session = await auth.initializeSession(context);
     const post = await fetch(`${BASE_URL}/api/post/${context.query.post}`);
     const json = await post.json();
+
     return {
       user: session.user,
       subreddit: context.query.subTitle,
@@ -37,6 +38,7 @@ class PostDetailPage extends Component {
   }
 
   render() {
+    console.log('this.props', this.state)
     return (
       <Page title={this.state.title}>
 
