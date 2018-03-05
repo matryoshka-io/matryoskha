@@ -35,19 +35,25 @@ const getVideoMeta = (url) =>
           title = 'Video';
         }
 
+        let id;
         let thumbnail = url.match(/watch\?v=(.*)$/);
         if (!thumbnail) {
           thumbnail = url.match(/\.be\/(.*)$/);
         }
         if (!thumbnail) {
           thumbnail = 'http://crouton.net/crouton.png'
+          id = '';
         } else {
           thumbnail = thumbnail[1];
+          id = thumbnail;
           thumbnail = `https://img.youtube.com/vi/${thumbnail}/default.jpg`
         }
+
+        console.log(id);
         resolve({
           title,
           thumbnail,
+          id,
         });        
       });
   });

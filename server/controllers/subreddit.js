@@ -58,7 +58,7 @@ module.exports = {
             });
         } else if (req.body.type === 'Video') {
           utils.getVideoMeta(req.body.url)
-            .then(({ title, thumbnail}) => {
+            .then(({ title, thumbnail, id }) => {
               (new models.Post({
                 type: 'Video',
                 url: req.body.url,
@@ -66,6 +66,7 @@ module.exports = {
                 author: req.session.user._id,
                 title,
                 thumbnail,
+                videoId: id,
               })).save().then((post) => {
                 res.status(201).json(post);
               });
