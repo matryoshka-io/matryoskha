@@ -54,7 +54,7 @@ class PostForm extends React.Component {
       this.setState({
         isLinkBarHidden: false,
         isTextBoxHidden: true,
-        isTitleHidden: false,
+        isTitleHidden: true,
         type: 'Video',
       });
     } else if (e.target.value === 'article') {
@@ -102,7 +102,7 @@ class PostForm extends React.Component {
       const token = sessions.getToken('jwt');
       axios.post(
         `/api/sub/${this.state.subredditName}`,
-        { title: titleText, type: this.state.type, body: this.state.bodyText, subreddit: this.state.subredditName },
+        { title: this.state.titleText, type: 'Text', body: this.state.bodyText, subreddit: this.state.subredditName },
         auth.makeTokenHeader(token),
       )
         .then((res) => {
@@ -120,21 +120,29 @@ class PostForm extends React.Component {
             Router.replace(`/r/${this.state.subredditName}/${res.data._id}/${res.data.titleSlug}`);
           })
           .catch(err => console.log(err));        
-      }  else if (type === 'Image') {
+      } else if (type === 'Image') {
         const token = sessions.getToken('jwt');
         axios.post(
           `/api/sub/${this.state.subredditName}`,
-          { title: titleText, type: 'Image', url: this.state.link },
+          { title: this.state.titleText, type: 'Image', url: this.state.link },
+          auth.makeTokenHeader(token),
+          )
+            .then((res) => {
+              Router.replace(`/r/${this.state.subredditName}/${res.data._id}/${res.data.titleSlug}`);
+            })
+            .catch(err => console.log(err));
+      } else if (type === 'Video') {
+        const token = sessions.getToken('jwt');
+        axios.post(
+          `/api/sub/${this.state.subredditName}`,
+          { type: 'Video', url: this.state.link },
           auth.makeTokenHeader(token),
         )
           .then((res) => {
             Router.replace(`/r/${this.state.subredditName}/${res.data._id}/${res.data.titleSlug}`);
           })
-          .catch(err => console.log(err));        
+          .catch(err => console.log(err));
       }
-
-
-    // work on links later
   }
 
   render() {
