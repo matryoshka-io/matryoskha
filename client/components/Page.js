@@ -3,11 +3,13 @@ import UserPanelHeader from './UserPanelHeader';
 import Nav from './Nav';
 import Footer from './Footer';
 
-export default ({ user, karma, subscriptions, title, children }) => (
+export default ({ user, subreddit, karma, subscriptions, title, children }) => (
   <div className="main">
     <div className="header">
       <div className="header__logo">
-        <a href="/"><Logo /></a>
+        <a className="logo" href="/">
+          <img src="/static/logo.png" alt="logo1" border="0" height={60} />
+        </a>
         <div className="mat">
           <img src="/static/mat.png" height={60} />
         </div>
@@ -20,7 +22,7 @@ export default ({ user, karma, subscriptions, title, children }) => (
         />
       </div>
     </div>
-    <Nav />
+    <Nav subreddit={subreddit} />
     <div className="page">
       {children}
     </div>
@@ -118,11 +120,16 @@ export default ({ user, karma, subscriptions, title, children }) => (
     </style>
     <style jsx>
       {`
+        a.logo {
+          cursor: pointer;
+        }
+        a.logo:hover {
+          background-color: rgba(0,0,0,0);
+        }
         .footerContainer {
           margin: 50px 0 50px 0;
-          display: flex;
-          align-content: end;
-          flex-direction: column;
+          display: block;
+          width: 100%;
         }
         .mat {
           text-align: center;

@@ -6,40 +6,71 @@ import Post from '../components/Post';
 import UserPanelBody from '../components/UserPanelBody';
 import SubredditPanelBody from '../components/SubredditPanelBody';
 
-import auth from '../utils/auth';
-import data from '../utils/data';
-import profile from '../utils/profile';
-import vote from '../utils/votes';
-import sessions from '../utils/sessions';
+import utils from '../utils';
 import ParentPost from '../components/ParentPost';
 
 import { BASE_URL } from '../../app.config';
 
 class PostDetailPage extends Component {
   static async getInitialProps(context) {
-    console.log('context', context.query.post)
-    const session = await auth.initializeSession(context);
+    const pageContext = await utils.data.prepPostDetailView(context);
     const post = await fetch(`${BASE_URL}/api/post/${context.query.post}`);
     const json = await post.json();
-    return {
-      user: session.user,
-      subreddit: context.query.subTitle,
-      post: json,
-    };
+    pageContext.post = json;
+    return pageContext;
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      subreddit: this.props.subreddit,
       user: this.props.user,
       post: this.props.post,
+      subreddit: this.props.subreddit,
+      subscribed: this.props.subscribed,
+      subscriptions: this.props.subscriptions,
     };
+    this.loginUser = this.loginUser.bind(this);
+    this.logoutUser = this.logoutUser.bind(this);
+  }
+
+  loginUser(username, password) {
+    utils.auth.loginUser(username, password)
+      .then((result) => {
+        if (result.success) {
+          utils.sessions.setCookie('jwt', result.token);
+          this.setState({
+            user: result.user,
+          }, () => {
+            this.refreshPosts();
+          });
+          return;
+        }
+        utils.sessions.deleteCookie('jwt');
+        this.setState({
+          user: null,
+        }, () => {
+          this.refreshPosts();
+        });
+      })
+      .catch(err => console.log(err));
+  }
+
+  logoutUser() {
+    utils.sessions.deleteCookie('jwt');
+    this.setState({
+      user: null,
+    }, () => this.refreshPosts());
   }
 
   render() {
     return (
-      <Page title={this.state.title}>
+      <Page
+        subreddit={this.state.subreddit}
+        title={this.props.title}
+        user={this.state.user}
+        karma={this.state.karma}
+        subscriptions={this.state.subscriptions}
+      >
 
         <div className="pageContent">
           <div className="posts" >
@@ -53,6 +84,7 @@ class PostDetailPage extends Component {
             />
             <SubredditPanelBody
               subreddit={this.state.subreddit}
+              subscribed={this.state.subscribed}
               subscribe={this.subscribe}
             />
           </div>

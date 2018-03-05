@@ -19,7 +19,6 @@ class Frontpage extends Component {
       subreddit: this.props.subreddit,
       title: this.props.title,
       user: this.props.user,
-      token: this.props.token,
       subscribed: this.props.subscribed,
       subscriptions: this.props.subscriptions,
       karma: this.props.karma,
@@ -32,16 +31,14 @@ class Frontpage extends Component {
   }
 
   componentDidMount() {
-    // ensure session is cleared on client
     if (!this.state.user) {
       utils.sessions.deleteCookie('jwt');
     }
-    // this.refreshPosts();
   }
 
   castVote(voted, id, choice) {
     if (voted !== choice && this.state.user) {
-      utils.votes.castVote({ user: this.state.user, token: this.state.token }, id, choice)
+      utils.votes.castVote({ user: this.state.user, token: utils.sessions.getToken('jwt') }, id, choice)
         .then((result) => {
           let postUpdate = [...this.state.posts];
           postUpdate = utils.votes.setVoteInPosts(postUpdate, { _id: id, choice }, voted);
@@ -54,7 +51,7 @@ class Frontpage extends Component {
   }
 
   refreshPosts() {
-    utils.data.getPosts({ user: this.state.user, token: this.state.token }, this.state.subreddit)
+    utils.data.getPosts({ user: this.state.user, token: utils.sessions.getToken('jwt') }, this.state.subreddit)
       .then((posts) => {
         this.setState({
           posts,
@@ -70,7 +67,6 @@ class Frontpage extends Component {
           utils.sessions.setCookie('jwt', result.token);
           this.setState({
             user: result.user,
-            token: result.token,
           }, () => {
             this.refreshPosts();
           });
@@ -79,7 +75,6 @@ class Frontpage extends Component {
         utils.sessions.deleteCookie('jwt');
         this.setState({
           user: null,
-          token: null,
         }, () => {
           this.refreshPosts();
         });
@@ -88,22 +83,20 @@ class Frontpage extends Component {
   }
 
   logoutUser() {
-    // todo: submit token value to backend for blacklist
     utils.sessions.deleteCookie('jwt');
     this.setState({
       user: null,
-      token: null,
     }, () => this.refreshPosts());
   }
 
   subscribe() {
     if (this.state.subreddit && this.state.user) {
       if (!this.state.subscribed) {
-        utils.data.subscribe({ user: this.state.user, token: this.state.token }, this.state.subreddit)
+        utils.data.subscribe({ user: this.state.user, token: utils.sessions.getToken('jwt') }, this.state.subreddit)
           .then(result => this.setState({ subscribed: true }))
           .catch(err => console.log(err));
       } else {
-        utils.data.unsubscribe({ user: this.state.user, token: this.state.token }, this.state.subreddit)
+        utils.data.unsubscribe({ user: this.state.user, token: utils.sessions.getToken('jwt') }, this.state.subreddit)
           .then(result => this.setState({ subscribed: false }))
           .catch(err => console.log(err));
       }
@@ -113,6 +106,7 @@ class Frontpage extends Component {
   render() {
     return (
       <Page
+        subreddit={this.state.subreddit}
         title={this.state.title}
         user={this.state.user}
         karma={this.state.karma}
@@ -137,36 +131,36 @@ class Frontpage extends Component {
               subscribe={this.subscribe}
             />
           </div>
+          <style jsx>
+            {`
+              .pageContent {
+                width: 100%;
+              }
+              h1 {
+                font-size: 36px;
+                color: #333;
+                align-text: center;
+              }
+              h2 {
+                margin-left: 16px;
+              }
+              .posts {
+                padding-top: 30px;
+                float: left;
+                width: 75%;
+              }
+              .sidebar {
+                padding-top: 30px;
+                float: right;
+                width: 22%;
+                min-width: 200px;
+                height: 80%;
+              } * {
+                border:1
+              }
+            `}
+          </style>
         </div>
-        <style jsx>
-          {`
-            .pageContent {
-              width: 100%;
-            }
-            h1 {
-              font-size: 36px;
-              color: #333;
-              align-text: center;
-            }
-            h2 {
-              margin-left: 16px;
-            }
-            .posts {
-              padding-top: 30px;
-              float: left;
-              width: 75%;
-            }
-            .sidebar {
-              padding-top: 30px;
-              float: right;
-              width: 22%;
-              min-width: 200px;
-              height: 80%;
-            } * {
-              border:1
-            }
-          `}
-        </style>
       </Page>
     );
   }

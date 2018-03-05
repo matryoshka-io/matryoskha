@@ -4,7 +4,6 @@ const { BASE_URL } = require('../../app.config');
 
 
 const getUserProfile = (username) => {
-  console.log('get user profile ', username);
   return new Promise((resolve, reject) => {
     if (username) {
       return axios.get(`${BASE_URL}/api/user/${username}`)
