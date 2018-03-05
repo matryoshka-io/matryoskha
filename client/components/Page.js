@@ -73,14 +73,17 @@ export default ({ user, subreddit, karma, subscriptions, title, children, logout
         }
         .button {
           margin: 4px;
-          border: solid 1px #333;
-          width: 85%;
-          height: 24px;
-          font-size: 10px;
+          color: #f4ebce;
+          background-color: #696775;
+          height: 30px;
+          font-size: 12px;
           font-weight: 700;
           text-transform: uppercase;
+          transition: background-color 0.5s ease;
         }
         .button:hover {
+          color: #fff;
+          background-color: #9795a0;
           cursor: pointer;
         }
         h1, h2, h3, h4 {
@@ -117,6 +120,11 @@ export default ({ user, subreddit, karma, subscriptions, title, children, logout
         .secondary {
 
         }
+        .footerContainer {
+          margin: 50px 0 50px 0;
+          display: block;
+          width: 100%;
+        }
       `}
     </style>
     <style jsx>
@@ -126,11 +134,6 @@ export default ({ user, subreddit, karma, subscriptions, title, children, logout
         }
         a.logo:hover {
           background-color: rgba(0,0,0,0);
-        }
-        .footerContainer {
-          margin: 50px 0 50px 0;
-          display: block;
-          width: 100%;
         }
         .mat {
           text-align: center;
