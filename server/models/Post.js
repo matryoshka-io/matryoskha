@@ -14,7 +14,7 @@ const postSchema = mongoose.Schema({
     ref: 'Subreddit',
   }, // Unique ID of the Subreddit to which the Post belongs.
   title: String, // Title of the Post.
-  type: String, // Type of the Post/Comment, e.g. Video, Image (e.g. an IMGUR link), Text, Comment. Videos and Images are links.
+  type: String, // Type of the Post/Comment, e.g. Video, Image (e.g. an IMGUR link), Text, Comment, or Article. Videos, Images, and Articles have urls (or links) and Articles have metadata.
   body: String, // Body of the Post/Comment, if applicable.
   author: {
     type: mongoose.Schema.Types.ObjectId,
@@ -32,7 +32,7 @@ const postSchema = mongoose.Schema({
   titleSlug: String, // For the title.
   metadata: {
     title: String, // Of the article.
-    snippet: String, // Beginning sentence of the article, for example.
+    // snippet: String, // Beginning sentence of the article, for example.
     thumbnail: String, // Link to a thumbnail of the article's main image.
   },
 });

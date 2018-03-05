@@ -1,6 +1,25 @@
 const db = require('../../database');
 const models = require('../../models');
 
+const request = require('superagent');
+
+const getMetadata = (url) =>
+  new Promise((resolve, reject) => {
+    request.get(url)
+      .set('accept', 'text/html')
+      .end((err, res) => {
+        const html = res.text;
+        const title = html.match(/<title>(.*?)<\/title>/);
+        const thumbnail = html.match(/<img src="(.*?)"/);
+        // const snippet = html.match(/<p.*?>(.*?)<\/p>/);
+        resolve({
+          title: title[1],
+          thumbnail: thumbnail[1],
+          // snippet: snippet[1],
+        });
+      });
+  });
+
 const tackVote = (req, post) =>
   new Promise((resolve, reject) => {
     if (req.session.user) {
@@ -124,4 +143,5 @@ module.exports = {
   getKarmaAndSort,
   getKarmaAndSortPromise,
   getKarma,
+  getMetadata,
 };
