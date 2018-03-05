@@ -2,13 +2,13 @@ import Link from 'next/link';
 import LoginForm from './LoginForm';
 
 // todo: separate into frontpage, subreddit varieties for logged-in
-const UserPanelHeader = ({ user, subscriptions, logout }) => {
+const UserPanelHeader = ({ user, karma, subscriptions, logout }) => {
   if (user && user.username) {
     return (
       <div className="user__header">
         <h3><Link href="/user/profile"><a>{user.username}</a></Link></h3>
         <div className="user__karma">
-          {user.karma}
+          {karma}
         </div>
         <div className="user__subreddit-menu">
           <ul>
@@ -16,11 +16,11 @@ const UserPanelHeader = ({ user, subscriptions, logout }) => {
             {subscriptions.map(sub => <li><Link href={`/r/${sub.titleSlug}`}>{sub.title}</Link></li>)}
           </ul>
         </div>
-        <button className="button primary" onClick={logout} >Logout</button>
+        <a onClick={logout} >Logout</a>
         <style jsx>
           {`
             .user__header {
-              float: right;
+              align-self: flex-end;
               width: 400px;
               display: flex;
               flex-direction: row;
