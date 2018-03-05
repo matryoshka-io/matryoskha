@@ -32,7 +32,6 @@ class ParentPost extends React.Component {
         return this.state.postId
       })
       .then((res) => {
-        console.log('res', res)
         return axios.post(`/api/post/${this.state.postId}`, { body: commentText }, auth.makeTokenHeader(token))
       })
       .then((res) => {

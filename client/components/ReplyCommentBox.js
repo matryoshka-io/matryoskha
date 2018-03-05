@@ -24,7 +24,6 @@ class ReplyCommentBox extends React.Component {
   }
 
   replyToComment = (replyBoxText, commentId) => {
-    console.log('click')
     const token = sessions.getToken('jwt')
     axios.get(`/api/post/${this.props.postId}`, auth.makeTokenHeader(token))
       .then(res => {
