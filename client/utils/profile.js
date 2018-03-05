@@ -51,5 +51,6 @@ const initializeProfilePage = (context) => {
 };
 
 module.exports = {
+  getUserProfile,
   initializeProfilePage,
 };
