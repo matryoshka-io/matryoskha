@@ -38,7 +38,7 @@
     "dev": "node server",
     "seed": "node server/database/insertDummyData.js",
     "build": "next build client",
-    "start": "next start client",
+    "start": "node server",
     "lint": "eslint",
     "test": "jest testing/home.test.js && jest testing/public.test.js && jest testing/useractions.test.js"
   },

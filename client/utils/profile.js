@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const BASE_URL = 'http://localhost:3000';
+const { BASE_URL } = require('../../app.config');
 
 
 const getUserProfile = (username) => {
@@ -15,7 +15,7 @@ const getUserContent = (username, content) => {
   return new Promise((resolve, reject) => {
     const requestUrl = `${BASE_URL}/api/user/${username}/${content}`;
     console.log(`PROFILE CONTENT: ${requestUrl}`);
-    return axios.get(`${BASE_URL}/api/user/${username}/${content}`)
+    return axios.get(requestUrl)
       .then((content) => {
         console.log(content.data);
         return resolve(content.data);

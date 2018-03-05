@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const { MONGO_URI } = require('../../app.config');
 
-mongoose.connect('mongodb://localhost:27017/matryoksha');
+mongoose.connect(MONGO_URI);
 const db = mongoose.connection;
 db.dropDatabase();
 

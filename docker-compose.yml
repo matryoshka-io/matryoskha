@@ -1,0 +1,21 @@
+version: "2"
+services:
+  stacking:
+    container_name: stacking
+    image: pvalenzano/stacking:v3
+    restart: on-failure
+    working_dir: /usr/src/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    environment:
+      - NODE_ENV=production
+    command: "npm run start"
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
