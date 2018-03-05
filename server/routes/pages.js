@@ -1,13 +1,22 @@
+const Subreddit = require('../models/Subreddit');
+
 const addPageRoutes = (server, app) => {
   // Public Views
-  server.get('/r/:sub/:post/:comment', (req, res) => {
+  server.get('/r/:sub/:post/:postTitle/:comment', (req, res) => {
     console.log(`[GET] Comment: ${req.url}`, req.params);
     app.render(req, res, '/comment', req.params);
   });
 
-  server.get('/r/:sub/:post', (req, res) => {
+  server.get('/r/:sub/:post/:postTitle', (req, res) => {
     console.log(`[GET] Post: ${req.url}`, req.params);
-    app.render(req, res, '/post', req.params);
+    Subreddit.findOne({ titleSlug: req.params.sub })
+      .then((found) => {
+        req.params.subTitle = req.params.sub;
+        req.params.sub = found._id;
+        app.render(req, res, '/post', req.params);
+      })
+      .catch(notFound => res.sendStatus(404));
+    // app.render(req, res, '/post', req.params);
   });
 
   server.get('/r/:sub', (req, res) => {

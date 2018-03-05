@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import fetch from 'isomorphic-unfetch';
 
 import Page from '../components/Page';
 import Post from '../components/Post';
@@ -10,22 +11,30 @@ import data from '../utils/data';
 import profile from '../utils/profile';
 import vote from '../utils/votes';
 import sessions from '../utils/sessions';
-import ParentPost from '../components/ParentPost'
+import ParentPost from '../components/ParentPost';
 
-import 'isomorphic-fetch';
+import { BASE_URL } from '../../app.config';
 
 class PostDetailPage extends Component {
-  static async getInitialProps({ query }) {
-    const post = await fetch(`http://localhost:3000/api/post/${query.post}`);
+  static async getInitialProps(context) {
+    const session = await auth.initializeSession(context);
+    const post = await fetch(`${BASE_URL}/api/post/${context.query.post}`);
     const json = await post.json();
-    console.log('json', json)
-    return json;
-  }
 
+    return {
+      user: session.user,
+      subreddit: context.query.subTitle,
+      post: json,
+    };
+  }
 
   constructor(props) {
     super(props);
-    this.state = props;
+    this.state = {
+      subreddit: this.props.subreddit,
+      user: this.props.user,
+      post: this.props.post,
+    };
   }
 
   render() {
@@ -35,7 +44,7 @@ class PostDetailPage extends Component {
 
         <div className="pageContent">
           <div className="posts" >
-            <ParentPost {...this.state} />
+            <ParentPost {...this.state.post} />
           </div>
           <div className="sidebar" >
             <UserPanelBody
