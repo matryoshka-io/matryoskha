@@ -20,21 +20,7 @@ const SubredditPanelBody = ({ subscribed, subreddit, subscribe }) => {
               justify-content: space-around;
             }
             .button {
-              margin: 4px;
-              border: solid 1px #333;
-              width: 85%;
-              height: 20px;
-              font-size: 10px;
-              font-weight: 700;
-              text-transform: uppercase;
-            }
-            .button:hover {
-              cursor: pointer;
-            }
-            .primary {
-
-            }
-            .secondary {
+              width: 95%;
             }
           `}
         </style>
