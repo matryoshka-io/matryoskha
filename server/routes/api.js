@@ -26,7 +26,7 @@ router.get('/user/:username/subreddits', controllers.user.subreddits.GET);
 router.get('/user/:username/subscriptions', controllers.user.subscriptions.GET);
 
 // You must be authed to use the below API routes.
-// router.use(tokenCheck);
+router.use(tokenCheck);
 router.use(gateway);
 
 // Create a subreddit.
