@@ -22,7 +22,7 @@ class LinkBar extends React.Component {
     return (
       <div>
         Video and Img Link: <br />
-        <input val="text" onChange={this.createNewImagePost}/> <br />
+        <textarea val="text" value={this.bodyText} onChange={this.props.onLinkingAnImage, this.createNewImagePost}/> <br />
         <button onClick={this.imageHandle} >Upload</button>
         <div className="imagePreview">
           <Img src={this.state.imageLink} width={250} />

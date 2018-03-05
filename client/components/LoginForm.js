@@ -36,10 +36,8 @@ export default class LoginForm extends Component {
           <h3>Login</h3>
           <input name="username" className="usernameInput" placeholder="username" onChange={this.getInputValue} />
           <input name="password" type="password" className="passwordInput" placeholder="password" onChange={this.getInputValue} />
-          <div>
-            <button className="button primary" onClick={this.submitLogin}>Login</button>
-            <Link href="/signup"><button className="button secondary">Register</button></Link>
-          </div>
+          <button className="button primary" onClick={this.submitLogin}>Login</button>
+          <Link href="/signup"><button className="button secondary">Register</button></Link>
         </div>
         <style jsx>
           {`
@@ -62,22 +60,10 @@ export default class LoginForm extends Component {
               font-size: 14px;
               text-align: center;
             }
-            .button {
-              margin: 4px;
-              border: solid 1px #333;
-              width: 80px;
-              height: 30px;
-              line-height: 30px;
-              font-size: 14px;
-              font-weight: 400;
-            }
-            .button:hover {
-              cursor: pointer;
-            }
-            .primary {
-
-            }
-            .secondary {
+            .login .button {
+              width: 100%;
+              margin-left: 0px;
+              margin-right: 0px;
             }
           `}
         </style>

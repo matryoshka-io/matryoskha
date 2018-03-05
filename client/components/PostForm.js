@@ -26,7 +26,8 @@ class PostForm extends React.Component {
     this.onTitleTextChangeHandler = this.onTitleTextChangeHandler.bind(this);
     this.onBodyTextChangeHandler = this.onBodyTextChangeHandler.bind(this);
     this.onCreateNewTextPostWithUserText = this.onCreateNewTextPostWithUserText.bind(this);
-    this.onCreateNewPostWithUserImage = this.onCreateNewPostWithUserImage.bind(this);
+    //this.onCreateNewPostWithUserImage = this.onCreateNewPostWithUserImage.bind(this);
+    this.onLinkingAnImage = this.onLinkingAnImage.bind(this);
   }
 
   onTitleTextChangeHandler(e) {
@@ -34,7 +35,7 @@ class PostForm extends React.Component {
       titleText: e.target.value,
     });
   }
-
+  
   onDropdownChangeHandler(e) {
     if (e.target.value === 'text') {
       this.setState({
@@ -61,29 +62,40 @@ class PostForm extends React.Component {
     this.setState({ bodyText: e.target.value })
   }
 
+  onLinkingAnImage(e) {
+    this.setState({ bodyText: e.target.value })
+  }
+
   onCreateNewTextPostWithUserText() {
-    this.createNewTextPost(this.state.titleText, this.state.type, this.state.bodyText);
+    this.createNewTextPost(this.state.titleText, this.state.type, this.state.bodyText, this.state.imageLink);
   }
 
-  onCreateNewPostWithUserImage() {
-    this.createNewImagePost(this.state.titleText, this.state.type, this.state.imageLink)
-  }
+  // onCreateNewPostWithUserImage() {
+  //   this.createNewImagePost(this.state.titleText, this.state.type, this.state.imageLink, this.state.imageLink);
+  // }
 
-  createNewImagePost(e) {
-    this.setState({
-      imageLink: e.target.value
-    })
-  }
+  // createNewImagePost(titleText, type, url ) {
+  //   const token = sessions.getToken('jwt');
+  //   axios.post(
+  //     `/api/sub/${this.state.subredditName}`,
+  //     { title: titleText, type: this.state.type, subreddit: this.state.subredditName, url: this.state.imageLink },
+  //     auth.makeTokenHeader(token),
+  //   )
+  //     .then((res) => {
+  //       Router.replace(`/r/${this.state.subredditName}/${res.data._id}/${res.data.titleSlug}`);
+  //     })
+  //     .catch(err => console.log(err));
+  // }
 
   createNewTextPost(titleText, type, bodyText, url) {
     const token = sessions.getToken('jwt');
     axios.post(
       `/api/sub/${this.state.subredditName}`,
-      { title: titleText, type: this.state.type, body: this.state.bodyText, subreddit: this.state.subredditName },
+      { title: titleText, type: this.state.type, url: this.state.bodyText, subreddit: this.state.subredditName },
       auth.makeTokenHeader(token),
     )
       .then((res) => {
-        Router.replace(`/r/${this.state.subredditName}/${res.data.titleSlug}`);
+        Router.replace(`/r/${this.state.subredditName}/${res.data._id}/${res.data.titleSlug}`);
       })
       .catch(err => console.log(err));
 
@@ -110,7 +122,7 @@ class PostForm extends React.Component {
         <br />
 
         <div id="linkBar">
-          {this.state.isLinkBarHidden ? null : <LinkBar createNewImagePost={this.createNewImagePost}/>}
+          {this.state.isLinkBarHidden ? null : <LinkBar onLinkingAnImage={this.onLinkingAnImage}/>}
         </div>
 
         <div id="textbox">

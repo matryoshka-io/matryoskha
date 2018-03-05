@@ -18,7 +18,6 @@ class ReplyCommentBox extends React.Component {
   }
 
   postReplyWithText = () => {
-    console.log('this.props.commentid', this.props.commentId)
     this.setState({ replyIndex: this.props.index },
       this.replyToComment(this.state.replyBoxText, this.props.commentId)
     )
@@ -48,6 +47,7 @@ class ReplyCommentBox extends React.Component {
         this.props.updateCommentList(res.data.comments)
       })
       .then(res => {
+        this.props.onReplyClickHandler()
         console.log('SUCCESSFUL REPLY')
       })
   }

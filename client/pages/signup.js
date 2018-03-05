@@ -38,10 +38,9 @@ class SignupPage extends Component {
 
   render() {
     return (
-      <Page>
+      <Page title="Register for an account" >
         <SignupForm
           submitForm={this.registerUser}
-          message={this.state.message}
         />
       </Page>
     );
@@ -49,10 +48,10 @@ class SignupPage extends Component {
 }
 
 SignupPage.getInitialProps = async function GetInitialPropsForRegistrationPage(context) {
-  // check for session state
-  //    if session is active, redirect?
-  //    if not, continue
-  return {};
+  const session = auth.initializeSession(context);
+  return {
+    user: session.user,
+  };
 };
 
 export default SignupPage;

@@ -42,13 +42,14 @@ app.prepare()
     const nextHandler = app.getRequestHandler();
     server.get('*', (req, res) => nextHandler(req, res));
 
+    const port = process.env.PORT || 3000;
     // Start the server
-    server.listen(3000, (err) => {
+    server.listen(port, (err) => {
       server.keepAliveTimeout = 0;
       if (err) {
         console.log(`Error starting server: ${err}`);
       } else {
-        console.log('MATRYOSHKA ARE STACKING ON: 3000');
+        console.log(`MATRYOSHKA ARE STACKING ON: ${port}`);
       }
     });
   })

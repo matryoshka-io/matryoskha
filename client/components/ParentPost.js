@@ -59,7 +59,8 @@ class ParentPost extends React.Component {
         </div>
         <div id="titleDate">{this.props.date}</div>
         <div className="postBody">
-          <ReactMarkdown source={this.state.postBodyText} />
+          <Img src={this.state.postBodyText} />
+          {/* <ReactMarkdown source={this.state.postBodyText} /> */}
         </div>
 
         Add a new comment
