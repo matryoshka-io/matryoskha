@@ -70,7 +70,7 @@ class PostForm extends React.Component {
       auth.makeTokenHeader(token),
     )
       .then((res) => {
-        Router.replace(`/r/${this.state.subredditName}/${res.data.titleSlug}`);
+        Router.replace(`/r/${this.state.subredditName}/${res.data._id}/${res.data.titleSlug}`);
       })
       .catch(err => console.log(err));
 

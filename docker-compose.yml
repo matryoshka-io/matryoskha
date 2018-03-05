@@ -1,8 +1,15 @@
 version: "2"
 services:
+  nginx:
+    container_name: nginx
+    image: pvalenzano/stacking_nginx:v0
+    ports:
+      - "80:80"
+    links:
+      - stacking:stacking
   stacking:
     container_name: stacking
-    image: pvalenzano/stacking:v3
+    image: pvalenzano/stacking:v5
     restart: on-failure
     working_dir: /usr/src/app
     ports:

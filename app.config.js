@@ -7,7 +7,8 @@ let MONGO_URI = 'mongodb://localhost:27017/matryoksha';
 console.log(`CONFIG FOR: ${process.env.NODE_ENV}`);
 
 if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
-  BASE_URL = 'https://matryoskha.tech/';
+  // BASE_URL = 'https://matryoskha.tech/';
+  BASE_URL = 'http://matryoshka.tech';
   MONGO_URI = `mongodb://${DB_IMAGE}/matryoksha`;
 }
 
