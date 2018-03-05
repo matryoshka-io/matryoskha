@@ -4,7 +4,13 @@ const addPageRoutes = (server, app) => {
   // Public Views
   server.get('/r/:sub/:post/:postTitle/:comment', (req, res) => {
     console.log(`[GET] Comment: ${req.url}`, req.params);
-    app.render(req, res, '/comment', req.params);
+    Subreddit.findOne({ titleSlug: req.params.sub })
+      .then((found) => {
+        req.params.subTitle = req.params.sub;
+        req.params.sub = found._id;
+        app.render(req, res, '/comment', req.params);
+      })
+      .catch(notFound => res.sendStatus(404));
   });
 
   server.get('/r/:sub/:post/:postTitle', (req, res) => {
