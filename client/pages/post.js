@@ -17,7 +17,6 @@ import { BASE_URL } from '../../app.config';
 
 class PostDetailPage extends Component {
   static async getInitialProps(context) {
-    console.log('context', context.query.post)
     const session = await auth.initializeSession(context);
     const post = await fetch(`${BASE_URL}/api/post/${context.query.post}`);
     const json = await post.json();

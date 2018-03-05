@@ -29,9 +29,8 @@ class CommentListEntry extends React.Component {
     this.state = {
       isReplyBoxHidden: true,
       isEditBoxHidden: true,
-      commenetBody: '',
+      commentBody: '',
       commentId: '',
-      deleteIndex: '',
     }
     this.onReplyClickHandler = this.onReplyClickHandler.bind(this);
     this.replyAndSetNewCommentId = this.replyAndSetNewCommentId.bind(this);

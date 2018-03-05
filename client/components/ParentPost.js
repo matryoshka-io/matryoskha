@@ -19,7 +19,7 @@ class ParentPost extends React.Component {
       comments: props.comments,
     }
     this.postComment = this.postComment.bind(this);
-    this.updateCommentList = this.updateCommentList.bind(this)
+    this.updateCommentList = this.updateCommentList.bind(this);
   }
 
   postComment(commentText) {
@@ -36,14 +36,13 @@ class ParentPost extends React.Component {
       .then((res) => {
         return axios.post(`/api/post/${this.state.postId}`, { body: commentText }, auth.makeTokenHeader(token))
       })
-      .then((res) => {
-        console.log('SUCCESSFUL COMMENT POST')
-        return res;
-      })
       .then(res => {
         res.data.comments = [];
-        let newCommentArr = this.state.comments.push(res.data)
-        this.setState({ commentBody: newCommentArr })
+        this.state.comments.push(res.data)
+        this.setState({ comments: this.state.comments })
+      })
+      .then(res => {
+        console.log('SUCCESSFUL COMMENT TO A POST')
       })
   }
 
