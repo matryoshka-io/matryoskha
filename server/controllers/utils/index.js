@@ -2,6 +2,7 @@ const db = require('../../database');
 const models = require('../../models');
 
 const request = require('superagent');
+const _ = require('underscore');
 
 const getMetadata = (url) =>
   new Promise((resolve, reject) => {
@@ -27,7 +28,12 @@ const getVideoMeta = (url) =>
       .end((err, res) => {
         const html = res.text;
         let title = html.match(/<title>(.*?)<\/title>/);
-        title = title ? title[1] : 'Video';
+        if (title) {
+          title = title[1];
+          title = _.unescape(title);
+        } else {
+          title = 'Video';
+        }
 
         let thumbnail = url.match(/watch\?v=(.*)$/);
         if (!thumbnail) {
