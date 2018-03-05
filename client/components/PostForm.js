@@ -8,6 +8,7 @@ import auth from '../utils/auth';
 import sessions from '../utils/sessions';
 import routing from '../utils/redirect';
 // import slugify from 'slugify';
+import Img from 'react-image';
 
 class PostForm extends React.Component {
   constructor(props) {
@@ -33,7 +34,7 @@ class PostForm extends React.Component {
       titleText: e.target.value,
     });
   }
-
+  
   onDropdownChangeHandler(e) {
     if (e.target.value === 'text') {
       this.setState({
@@ -75,11 +76,29 @@ class PostForm extends React.Component {
   }
 
   onCreateNewTextPostWithUserText() {
-    this.createNewTextPost(this.state.titleText, this.state.type, this.state.bodyText);
+    this.createNewTextPost(this.state.titleText, this.state.type, this.state.bodyText, this.state.imageLink);
   }
 
+  // onCreateNewPostWithUserImage() {
+  //   this.createNewImagePost(this.state.titleText, this.state.type, this.state.imageLink, this.state.imageLink);
+  // }
+
+  // createNewImagePost(titleText, type, url ) {
+  //   const token = sessions.getToken('jwt');
+  //   axios.post(
+  //     `/api/sub/${this.state.subredditName}`,
+  //     { title: titleText, type: this.state.type, subreddit: this.state.subredditName, url: this.state.imageLink },
+  //     auth.makeTokenHeader(token),
+  //   )
+  //     .then((res) => {
+  //       Router.replace(`/r/${this.state.subredditName}/${res.data._id}/${res.data.titleSlug}`);
+  //     })
+  //     .catch(err => console.log(err));
+  // }
+
   createNewTextPost(titleText, type, bodyText, url) {
-    if (type === 'Text') {
+ 
+     if (type === 'Text') {
       const token = sessions.getToken('jwt');
       axios.post(
         `/api/sub/${this.state.subredditName}`,
@@ -101,7 +120,19 @@ class PostForm extends React.Component {
             Router.replace(`/r/${this.state.subredditName}/${res.data._id}/${res.data.titleSlug}`);
           })
           .catch(err => console.log(err));        
+      }  else if (type === 'Image') {
+        const token = sessions.getToken('jwt');
+        axios.post(
+          `/api/sub/${this.state.subredditName}`,
+          { title: titleText, type: 'Image', url: this.state.link },
+          auth.makeTokenHeader(token),
+        )
+          .then((res) => {
+            Router.replace(`/r/${this.state.subredditName}/${res.data._id}/${res.data.titleSlug}`);
+          })
+          .catch(err => console.log(err));        
       }
+
 
     // work on links later
   }

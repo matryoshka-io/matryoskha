@@ -6,6 +6,7 @@ import Link from 'next/link';
 import auth from '../utils/auth';
 import sessions from '../utils/sessions';
 import frontpage from '../pages/frontpage'
+import Img from 'react-image'
 
 class ParentPost extends React.Component {
   constructor(props) {
@@ -55,7 +56,20 @@ class ParentPost extends React.Component {
 
   render() {
     let display;
-    if (this.state.type === 'Article') {
+    if (this.state.type === 'Image') {
+      display = (
+        <div>
+          <div className="topOfPage">
+            <div className="postTitle">{this.state.postTitle}</div>
+            <div id="textBy">(by <Link href={`/u/${this.props.author.username}`}><a>{this.props.author.username}</a></Link>)</div>
+          </div>
+          <div id="titleDate">{this.props.date}</div>
+          <div className="postBody">
+            <Img src={this.state.url} width={400}/>
+          </div>        
+        </div>
+      );
+    } else if (this.state.type === 'Article') {
       display = (
         <div>
           <div className="topOfPage">

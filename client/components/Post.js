@@ -5,17 +5,21 @@ import PostDetails from './PostDetails';
 import Rating from './Rating';
 import SubredditBar from './SubredditBar';
 
-const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, thumbnail, voted, castVote }) => {
+const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, thumbnail, url, voted, castVote }) => {
   let postImageStyle = {
     backgroundSize: 'cover',
   };
 
   if (type === 'Article') {
     postImageStyle.backgroundImage = `url(${thumbnail})`;
-  } else {
-    postImageStyle.backgroundColor = '#333';
+  } 
+  else if (type === 'Image'){
+    postImageStyle.backgroundImage = `url(${url})`;
   }
-
+  else {
+    postImageStyle.backgroundColor = '#333';
+  } 
+  
   const karmaClasses = ['post__vote'];
   const upvoteClasses = ['post__vote'];
   const downvoteClasses = ['post__vote'];
