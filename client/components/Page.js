@@ -5,22 +5,44 @@ import Footer from './Footer';
 
 export default ({ title, children }) => (
   <div className="main">
-    <h2>{ title }</h2>
-    <Nav />
+    <div>
+      <div className="mat">
+        <img src="/static/mat.png" height={80} />
+      </div>
+      <Nav />
+    </div>
     <div className="page">
       { children }
     </div>
-    <Footer />
+    <div>
+      <Footer />
+    </div>
+    <style jsx global>
+      {`
+
+        body {
+          margin: 0px;
+          background: url('/static/background.png') top center no-repeat;
+          background-size: cover;
+          min-height: 100vh;
+        }
+        .page {
+          padding: 6px;
+        }
+      `}
+    </style>
     <style jsx>
       {`
+
+        .mat {
+          text-align: center;
+        }
         .main {
-          width: 85%;
+          width: 95%;
           margin: auto;
           padding: 10px 0 0 0;
         }
         .page {
-          color: #828282;
-          background: #fff;
           padding: 3px 10px;
         }
         @media (max-width: 750px) {

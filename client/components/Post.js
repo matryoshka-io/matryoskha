@@ -5,20 +5,30 @@ import PostDetails from './PostDetails';
 import Rating from './Rating';
 import SubredditBar from './SubredditBar';
 
-const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date }) => {
-  const image = null; // need image defaults by post type, image in backend response
+const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, voted, castVote }) => {
   const postImageStyle = {
-    background: `url(${image}) top center no-repeat`,
     backgroundSize: 'cover',
     backgroundColor: '#333',
   };
+  const karmaClasses = ['post__vote'];
+  const upvoteClasses = ['post__vote'];
+  const downvoteClasses = ['post__vote'];
+
+  if (voted && voted > 0) {
+    karmaClasses.push('happy');
+    upvoteClasses.push('happy');
+  }
+  if (voted && voted < 0) {
+    karmaClasses.push('sad');
+    downvoteClasses.push('sad');
+  }
 
   return (
     <div className="post__tile">
       <div className="post__karma">
-        <div className="post__vote">&#x25B2;</div>
-        <div>{karma}</div>
-        <div className="post__vote">&#x25BC;</div>
+        <div className={upvoteClasses.join(' ')} onClick={() => castVote(voted, _id, 1)}>&#x25B2;</div>
+        <div className={karmaClasses.join(' ')}>{karma}</div>
+        <div className={downvoteClasses.join(' ')} onClick={() => castVote(voted, _id, -1)}>&#x25BC;</div>
       </div>
       <div className="post__image" style={postImageStyle} />
       <div className="post__content">
@@ -33,7 +43,7 @@ const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date }) =
         <div className="post__actions">
           <ul>
             <li>
-              <Link href={`/r/${subreddit.titleSlug}/${titleSlug}`}><a>Comments</a></Link>
+              <Link href={`/r/${subreddit.titleSlug}/${_id}/${titleSlug}`}><a>Comments</a></Link>
             </li>
           </ul>
         </div>
@@ -54,12 +64,29 @@ const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date }) =
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: space-between;
           }
           .post__karma > * {
             flex: 1;
           }
           .post__vote {
+            cursor: pointer;
             text-decoration: none;
+          }
+          .post__vote:hover {
+            color: #ffcc00;
+          }
+          .happy {
+            color: #ffcc00;
+          }
+          .happy:hover {
+            color: #ffcc00;
+          }
+          .sad {
+            color: #ff0000;
+          }
+          .sad:hover {
+            color: #ff0000;
           }
           .post__image {
             width: 80px;
@@ -103,6 +130,9 @@ const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date }) =
             float: left;
             margin-right: 4px;
           }
+          .post__actions {
+            border-bottom: solid 5px #696775;
+          }
         `}
       </style>
     </div>
@@ -110,50 +140,3 @@ const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date }) =
 };
 
 export default Post;
-
-/*
-[ { _id: '5a8e31c49bc60f57d0051c11',
-    subreddit:
-     { _id: '5a8e0e217f911450d4600d98',
-       creator: '5a8e0e077f911450d4600d96',
-       description: 'Share cat photos here.',
-       title: 'Cats',
-       date: '2018-02-21T23:51:42.095Z',
-       __v: 0 },
-    title: 'Cats are better than dogs',
-    type: 'Text',
-    body: 'Cats are more independent than dogs',
-    author:
-     { _id: '5a8e0e0b7f911450d4600d97',
-       username: 'test',
-       password: 'alligator1515',
-       date: '2018-02-21T23:57:10.585Z',
-       karma: 0,
-       __v: 0 },
-    date: '2018-02-22T03:00:15.847Z',
-    __v: 0,
-    karma: 1,
-    comments: [] },
-  { _id: '5a8e0e2b7f911450d4600d99',
-    subreddit:
-     { _id: '5a8e0e217f911450d4600d98',
-       creator: '5a8e0e077f911450d4600d96',
-       description: 'Share cat photos here.',
-       title: 'Cats',
-       date: '2018-02-21T23:51:42.095Z',
-       __v: 0 },
-    title: 'Why I like my cat!',
-    type: 'Text',
-    body: 'My cat can build full-stack apps.',
-    author:
-     { _id: '5a8e0e077f911450d4600d96',
-       username: 'admin',
-       password: 'admin',
-       date: '2018-02-21T23:49:20.395Z',
-       karma: 0,
-       __v: 0 },
-    date: '2018-02-21T23:54:30.546Z',
-    __v: 0,
-    karma: 0,
-    comments: [ [Object] ] } ]
-*/

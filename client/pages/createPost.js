@@ -1,25 +1,28 @@
-import PostForm from '../components/PostForm';
-import ParentPost from '../components/ParentPost';
+import Router from 'next/router';
 
-const Post = props => (
+import PostForm from '../components/PostForm';
+import Page from '../components/Page';
+
+import routing from '../utils/redirect';
+import auth from '../utils/auth';
+
+const CreatePostPage = ({ subreddit, user }) => (
   <div>
-    <h1>{props.url.asPath}</h1>
-    <PostForm />
+    <Page title="Create New Post">
+      <PostForm subreddit={subreddit} user={user} />
+    </Page>
   </div>
 );
 
-Post.getInitialProps = async function GetInitialPostData() {
-
+CreatePostPage.getInitialProps = async function GetInitialPostData(context) {
+  const session = await auth.initializeSession(context);
+  if (!session.user) {
+    routing.redirect('/login', context); // TODO: add referrer link for rerouting post-login
+  }
   return {
-    navigation: {},
-    user: {
-      session: {},
-      profile: {},
-      subscriptions: [],
-    },
-    post: {},
-    comments: {},
+    subreddit: context.query.sub,
+    user: session.user,
   };
 };
 
-export default Post;
+export default CreatePostPage;

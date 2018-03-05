@@ -2,14 +2,14 @@
   "User": [
     {
       "_id": "5a8e0e077f911450d4600d96",
-      "username": "admin",
-      "password": "admin",
+      "username": "ken",
+      "password": "ken",
       "date": "2018-02-21T23:49:20.395Z",
       "karma": 0
     },
     {
       "_id": "5a8e0e0b7f911450d4600d97",
-      "username": "test",
+      "username": "jack",
       "password": "alligator1515",
       "date": "2018-02-21T23:57:10.585Z",
       "karma": 2
@@ -22,13 +22,56 @@
       "description": "Share cat photos here.",
       "title": "Cats",
       "date": "2018-02-21T23:51:42.095Z"
+    },
+    {
+      "_id": "5a8e0e217f911450d4600b10",
+      "creator": "5a8e0e077f911450d4600d96",
+      "description": "Share dog photos here.",
+      "title": "Dog Lovers",
+      "date": "2018-02-21T23:51:42.095Z"
     }
   ],
   "Post": [
     {
+      "_id": "5a8e0e2b7f911450d4600a88",
+      "subreddit": "5a8e0e217f911450d4600b10",
+      "title": "Why I like my dog!",
+      "type": "Text",
+      "body": "My dog is tired of broken apps.",
+      "author": "5a8e0e077f911450d4600d96",
+      "date": "2018-02-21T23:54:30.546Z"
+    },
+    {
+      "_id": "5a8e0e2b7f911450d4600a89",
+      "subreddit": "5a8e0e217f911450d4600b10",
+      "title": "Dogs do the darndest things",
+      "type": "Text",
+      "body": "My dog uses Next.js as his chew toy",
+      "author": "5a8e0e077f911450d4600d96",
+      "date": "2018-02-21T23:54:30.546Z"
+    },
+    {
       "_id": "5a8e0e2b7f911450d4600d99",
       "subreddit": "5a8e0e217f911450d4600d98",
       "title": "Why I like my cat!",
+      "type": "Text",
+      "body": "My cat can build full-stack apps.",
+      "author": "5a8e0e077f911450d4600d96",
+      "date": "2018-02-21T23:54:30.546Z"
+    },
+    {
+      "_id": "5a8e0e2b7f911450d4600d03",
+      "subreddit": "5a8e0e217f911450d4600d98",
+      "title": "another post name!",
+      "type": "Text",
+      "body": "My cat can build full-stack apps.",
+      "author": "5a8e0e077f911450d4600d96",
+      "date": "2018-02-21T23:54:30.546Z"
+    },
+    {
+      "_id": "5a8e0e2b7f911450d4600d04",
+      "subreddit": "5a8e0e217f911450d4600d98",
+      "title": "animals animals",
       "type": "Text",
       "body": "My cat can build full-stack apps.",
       "author": "5a8e0e077f911450d4600d96",

@@ -1,6 +1,22 @@
 const db = require('../../database');
 const models = require('../../models');
 
+const tackVote = (req, post) =>
+  new Promise((resolve, reject) => {
+    if (req.session.user) {
+      models.Vote.find({
+        post: post._id,
+        user: req.session.user._id,
+      }).then((votes) => {
+        if (votes.length > 0) {
+          post.voted = votes[0].value; // lulz
+        }
+        return resolve();
+      });
+    }
+    return resolve();
+  });
+
 const karmaSort = (firstPost, secondPost) => {
   if (firstPost.karma > secondPost.karma) {
     return -1;
@@ -10,45 +26,80 @@ const karmaSort = (firstPost, secondPost) => {
   return 0;
 };
 
-const getKarma = (post, callback) => {
+const getKarma = (req, post, callback) => {
   models.Vote.find({ post: post._id }).then((votes) => {
-    post.karma = votes.reduce((totalKarma, vote) => totalKarma + vote.value, 0);
-    callback(post);
+    tackVote(req, post).then(() => {
+      post.karma = votes.reduce((totalKarma, vote) => totalKarma + vote.value, 0);
+      callback(post);
+    });
   });
 };
 
-const getKarmaAndSort = (posts, callback) => {
-  const promises = [];
+const getKarmaAndSort = (req, posts, callback) => {
+  let promises = [];
   posts.forEach((post) => {
-    promises.push(models.Vote.find({ post: post._id }));
+    promises.push(tackVote(req, post));
   });
-  Promise.all(promises).then((votes) => {
+  Promise.all(promises).then(() => {
+    promises = [];
+    posts.forEach((post) => {
+      promises.push(models.Vote.find({ post: post._id }));
+    });
+    return Promise.all(promises);
+  }).then((votes) => {
     Object.entries(posts).forEach(([index, post]) => {
       post.karma = votes[index].reduce((totalKarma, vote) => totalKarma + vote.value, 0);
     });
     posts.sort(karmaSort);
-
     callback(posts);
   });
 };
 
-const matryoksha = (post, depth = 0) =>
+const getKarmaAndSortPromise = (req, posts) => {
+  return new Promise((resolve, reject) => {
+    let promises = [];
+    posts.forEach((post) => {
+      promises.push(tackVote(req, post));
+    });
+    return Promise.all(promises)
+      .then(() => {
+        promises = [];
+        posts.forEach((post) => {
+          promises.push(models.Vote.find({ post: post._id }));
+        });
+        return Promise.all(promises);
+      })
+      .then((votes) => {
+        Object.entries(posts).forEach(([index, post]) => {
+          post.karma = votes[index].reduce((totalKarma, vote) => totalKarma + vote.value, 0);
+        });
+        posts.sort(karmaSort);
+        return resolve(posts);
+      })
+      .catch(err => reject(err));
+  });
+};
+
+const matryoksha = (req, post, depth = 0) =>
   new Promise((resolve, reject) => {
     if (depth > 2) {
       resolve();
     } else {
-      models.Post.find({ type: 'Comment', parent: post._id }).lean().then((comments) => {
-        getKarmaAndSort(comments, (comments) => {
-          post.comments = comments;
-          const promises = [];
-          post.comments.forEach((comment) => {
-            promises.push(matryoksha(comment, depth + 1));
-          });
-          Promise.all(promises).then(() => {
-            resolve();
+      models.Post.find({ type: 'Comment', parent: post._id })
+        .populate('author')
+        .lean()
+        .then((comments) => {
+          getKarmaAndSort(req, comments, (comments) => {
+            post.comments = comments;
+            const promises = [];
+            post.comments.forEach((comment) => {
+              promises.push(matryoksha(req, comment, depth + 1));
+            });
+            Promise.all(promises).then(() => {
+              resolve();
+            });
           });
         });
-      });
     }
   });
 
@@ -71,5 +122,6 @@ module.exports = {
   matryoksha,
   evilMatryoksha,
   getKarmaAndSort,
+  getKarmaAndSortPromise,
   getKarma,
 };

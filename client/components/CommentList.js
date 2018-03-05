@@ -1,36 +1,39 @@
 import React from 'react';
 import CommentListEntry from './CommentListEntry';
+import ReactMarkdown from 'react-markdown';
 
-
-class CommentList extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentWillReceiveProps(newProps) {
-    this.setState({ comments: newProps })
-  }
-
-  render() {
-    return (
+const CommentList = (props) => {
+  return (
+    <div>
       <div className="list">
-        {this.props.comments.map((comment, index) => {
-          //if comment has a parent post, render different css
-          return (
-            <CommentListEntry key={comment._id} index={index} comment={comment} />
-          )
-        })}
-        <style>{`
+        {(props.comments && props.comments.map) &&
+          props.comments.map((comment, index) => {
+            return (
+              <CommentListEntry
+                key={comment._id}
+                index={index}
+                comment={comment} x
+                comments={props.comments}
+                allComments={props.allComments}
+                newCommentBody={props.newCommentBody}
+                postId={props.postId}
+                updateCommentList={props.updateCommentList}
+              />
+            )
+          })}
+      </div>
+
+      <style>{`
           .list {
             // border-style: solid;
             border-width: 1px 1px 0px 1px;
             border-color: gray;
           }
           `}
-        </style>
-      </div >
-    )
-  }
+      </style>
+    </div >
+  )
 }
+
 
 export default CommentList;

@@ -1,14 +1,13 @@
+import Link from 'next/link';
 import LoginForm from './LoginForm';
 
 // todo: separate into frontpage, subreddit varieties for logged-in
-const UserPanelBody = ({ user, login, logout, subscribe }) => {
+const UserPanelBody = ({ user, login, logout }) => {
   if (user && user.username) {
     return (
       <div className="user__panel">
-        <h3>{user.username}</h3>
-        <button className="button primary" >Create Post</button>
-        <button className="button primary" >Submit Article</button>
-        <button className="button primary" >Submit Image</button>
+        <h2><Link href="/user/profile"><a>{user.username}</a></Link></h2>
+        <button className="button primary" onClick={logout} >Logout</button>
         <style jsx>
           {`
             h3 {
@@ -16,6 +15,7 @@ const UserPanelBody = ({ user, login, logout, subscribe }) => {
             }
             .user__panel {
               height: 200px;
+              background: #696775;
               display: flex;
               flex-direction: column;
               align-items: center;

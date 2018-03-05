@@ -1,10 +1,6 @@
 const axios = require('axios');
 const cookie = require('js-cookie');
 
-const auth = require('./auth');
-
-const BASE_URL = 'http://localhost:3000';
-
 const setCookie = (key, value) => {
   if (process.browser) {
     cookie.set(key, value);

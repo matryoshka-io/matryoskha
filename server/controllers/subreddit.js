@@ -59,10 +59,10 @@ module.exports = {
         .populate('author')
         .lean()
         .then((posts) => {
-          utils.getKarmaAndSort(posts, (posts) => {
+          utils.getKarmaAndSort(req, posts, (posts) => {
             const promises = [];
             posts.forEach((post) => {
-              promises.push(utils.matryoksha(post));
+              promises.push(utils.matryoksha(req, post));
             });
             Promise.all(promises)
               .then(() => {
@@ -81,6 +81,12 @@ module.exports = {
         if (subreddit.creator.toString() === req.session.user._id.toString()) {
           models.Subreddit.update({ _id: subreddit._id }, req.body).then((response) => {
             res.status(201).end('Subreddit updated!');
+          }).catch((err) => {
+            if (err.code === 11000) {
+              res.status(409).end('There is already a subreddit with that name!');
+            } else {
+              res.status(400).end(`Error while creating subreddit: ${err}`);
+            }
           });
         } else {
           res.status(401).end('You are not the owner of this subreddit.');

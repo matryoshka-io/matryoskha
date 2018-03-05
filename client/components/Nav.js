@@ -4,7 +4,7 @@ import Logo from './Logo'
 export default () => (
   <ul>
     
-    <Logo/>
+    <a href="/"><Logo/></a>
     <Item href="/best">best</Item>
     <Item href="/hot">hot</Item>
     <Item href="/new">new</Item>
@@ -15,7 +15,9 @@ export default () => (
       {`
         ul {
           list-style-type: none;
-          border: solid 2px
+          background: #696775;
+          margin: 0;
+          padding: 0;
         }
       `}
     </style>
@@ -30,21 +32,23 @@ const Item = ({ href, children }) => (
 
     <style jsx>
       {`
-        li {
+    
+      li {
           display: inline-block;
         }
         a {
           display: inline-block;
           padding: 10px;
           margin-right: 10px;
-          font-size: 12px;
+          font-size: 16px;
           text-transform: uppercase;
           text-decoration: none;
-          color: #000;
+          color: #f4ebce;
         }
         a:hover {
           color: #fff;
         }
+        
       `}
     </style>
   </li>
