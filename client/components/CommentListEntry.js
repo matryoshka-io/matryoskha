@@ -35,7 +35,10 @@ class CommentListEntry extends React.Component {
   }
 
   onReplyClickHandler = () => {
-    this.setState({ isReplyBoxHidden: !this.state.isReplyBoxHidden })
+    const token = sessions.getToken('jwt')
+    if (token) {
+      this.setState({ isReplyBoxHidden: !this.state.isReplyBoxHidden })
+    }
   }
 
   replyAndSetNewCommentId = (commentId) => {
@@ -69,9 +72,12 @@ class CommentListEntry extends React.Component {
   }
 
   onEditClickHandler = () => {
-    this.setState({
-      isEditBoxHidden: !this.state.isEditBoxHidden
-    })
+    const token = sessions.getToken('jwt')
+    if (token) {
+      this.setState({
+        isEditBoxHidden: !this.state.isEditBoxHidden
+      })
+    }
   }
 
   castVote(commentId, vote) {
