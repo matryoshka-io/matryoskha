@@ -11,7 +11,7 @@ const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, thu
   };
 
   if (type === 'Article') {
-    postImageStyle.backgroundImage = url(thumbnail);
+    postImageStyle.backgroundImage = `url(${thumbnail})`;
   } else {
     postImageStyle.backgroundColor = '#333';
   }

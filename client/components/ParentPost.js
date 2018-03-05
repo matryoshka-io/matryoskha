@@ -63,7 +63,7 @@ class ParentPost extends React.Component {
         </div>
 
         Add a new comment
-      < CommentForm title={this.state.title} subredditId={this.state.subredditId} postComment={this.postComment} />
+        <CommentForm title={this.state.title} subredditId={this.state.subredditId} postComment={this.postComment} />
 
         <CommentList
           comments={this.state.comments}
