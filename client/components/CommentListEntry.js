@@ -145,6 +145,8 @@ class CommentListEntry extends React.Component {
             replyAndSetNewCommentId={this.replyAndSetNewCommentId}
             commentId={this.props.comment._id}
             updateCommentList={this.props.updateCommentList}
+            onReplyClickHandler={this.onReplyClickHandler}
+
 
           />
         }
@@ -157,6 +159,7 @@ class CommentListEntry extends React.Component {
             commentId={this.props.comment._id}
             updateCommentList={this.props.updateCommentList}
             replyAndSetNewCommentId={this.replyAndSetNewCommentId}
+            onEditClickHandler={this.onEditClickHandler}
           />
         }
 

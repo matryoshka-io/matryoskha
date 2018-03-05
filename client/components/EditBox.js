@@ -43,6 +43,9 @@ class EditBox extends React.Component {
 
       .then(res => {
         this.props.updateCommentList(res.data.comments)
+      })
+      .then(res => {
+        this.props.onEditClickHandler()
         console.log('SUCCESSFUL EDIT')
       })
   }
