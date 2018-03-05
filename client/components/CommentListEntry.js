@@ -10,8 +10,8 @@ import ReplyCommentBox from './ReplyCommentBox';
 import EditBox from './EditBox'
 import auth from '../utils/auth';
 import sessions from '../utils/sessions';
-import utils from '../utils'
-import Rating from './Rating'
+import utils from '../utils';
+
 
 const style = {
   height: 100,
@@ -103,17 +103,12 @@ class CommentListEntry extends React.Component {
   }
 
   castUpVote = () => {
-    console.log('props', this.props)
-    console.log('upvote', this.props.comment._id)
     this.castVote(this.props.comment._id, 1)
   }
 
   castDownVote = () => {
     this.deleteVote(this.props.comment._id, 1)
   }
-
-
-
 
   render() {
     return (
@@ -192,11 +187,6 @@ class CommentListEntry extends React.Component {
           #commentBody {
             font-size: 14px;
           }
-          .commentEntry {
-            width: 98%;
-            margin: auto;
-            padding-left: 10px;
-          }
           #replyComment a, #deleteComment a, #editComment a {
             display: flex;
             align-items: center;
@@ -207,9 +197,8 @@ class CommentListEntry extends React.Component {
           a:hover {
             color: #A9A9A9;
           }
-          
           .entries {
-            padding-left: 25px
+            padding-left: 20px
           }
           .votes {
             width: 30px;
@@ -224,6 +213,10 @@ class CommentListEntry extends React.Component {
           .box {
             display: flex;
             align-items: center;
+          }
+          #upvote:hover, #downvote:hover {
+            color: #ffcc00;
+            cursor: pointer;
           }
         `}
         </style>
