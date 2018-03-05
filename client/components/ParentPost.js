@@ -6,6 +6,7 @@ import Link from 'next/link';
 import auth from '../utils/auth';
 import sessions from '../utils/sessions';
 import frontpage from '../pages/frontpage'
+import Img from 'react-image'
 
 class ParentPost extends React.Component {
   constructor(props) {
@@ -59,8 +60,8 @@ class ParentPost extends React.Component {
         </div>
         <div id="titleDate">{this.props.date}</div>
         <div className="postBody">
-          <Img src={this.state.postBodyText} />
-          {/* <ReactMarkdown source={this.state.postBodyText} /> */}
+          {/* <Img src={this.state.postBodyText} width={300}/> */}
+          <ReactMarkdown source={this.state.postBodyText} />
         </div>
 
         Add a new comment
