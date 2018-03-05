@@ -20,14 +20,13 @@ class PostForm extends React.Component {
       type: 'Text',
       subredditName: this.props.subreddit,
       bodyText: '',
-      imageLink: '',
+      link: '',
     };
     this.onDropdownChangeHandler = this.onDropdownChangeHandler.bind(this);
     this.onTitleTextChangeHandler = this.onTitleTextChangeHandler.bind(this);
     this.onBodyTextChangeHandler = this.onBodyTextChangeHandler.bind(this);
     this.onCreateNewTextPostWithUserText = this.onCreateNewTextPostWithUserText.bind(this);
-    //this.onCreateNewPostWithUserImage = this.onCreateNewPostWithUserImage.bind(this);
-    this.onLinkingAnImage = this.onLinkingAnImage.bind(this);
+    this.onLinkChangeHandler = this.onLinkChangeHandler.bind(this);
   }
 
   onTitleTextChangeHandler(e) {
@@ -39,22 +38,32 @@ class PostForm extends React.Component {
   onDropdownChangeHandler(e) {
     if (e.target.value === 'text') {
       this.setState({
-        type: 'text',
+        type: 'Text',
         isTextBoxHidden: false,
         isLinkBarHidden: true,
+        isTitleHidden: false,
       });
     } else if (e.target.value === 'image') {
       this.setState({
         isLinkBarHidden: false,
         isTextBoxHidden: true,
-        type: 'image',
+        isTitleHidden: false,
+        type: 'Image',
       });
     } else if (e.target.value === 'video') {
       this.setState({
         isLinkBarHidden: false,
         isTextBoxHidden: true,
-        type: 'video',
+        isTitleHidden: false,
+        type: 'Video',
       });
+    } else if (e.target.value === 'article') {
+      this.setState({
+        isLinkBarHidden: false,
+        isTextBoxHidden: true,
+        isTitleHidden: true,
+        type: 'Article',
+      })
     }
   }
 
@@ -62,8 +71,8 @@ class PostForm extends React.Component {
     this.setState({ bodyText: e.target.value })
   }
 
-  onLinkingAnImage(e) {
-    this.setState({ bodyText: e.target.value })
+  onLinkChangeHandler(e) {
+    this.setState({ link: e.target.value })
   }
 
   onCreateNewTextPostWithUserText() {
@@ -88,16 +97,42 @@ class PostForm extends React.Component {
   // }
 
   createNewTextPost(titleText, type, bodyText, url) {
-    const token = sessions.getToken('jwt');
-    axios.post(
-      `/api/sub/${this.state.subredditName}`,
-      { title: titleText, type: this.state.type, url: this.state.bodyText, subreddit: this.state.subredditName },
-      auth.makeTokenHeader(token),
-    )
-      .then((res) => {
-        Router.replace(`/r/${this.state.subredditName}/${res.data._id}/${res.data.titleSlug}`);
-      })
-      .catch(err => console.log(err));
+ 
+     if (type === 'Text') {
+      const token = sessions.getToken('jwt');
+      axios.post(
+        `/api/sub/${this.state.subredditName}`,
+        { title: titleText, type: this.state.type, body: this.state.bodyText, subreddit: this.state.subredditName },
+        auth.makeTokenHeader(token),
+      )
+        .then((res) => {
+          Router.replace(`/r/${this.state.subredditName}/${res.data._id}/${res.data.titleSlug}`);
+        })
+        .catch(err => console.log(err));
+      } else if (type === 'Article') {
+        const token = sessions.getToken('jwt');
+        axios.post(
+          `/api/sub/${this.state.subredditName}`,
+          { type: 'Article', url: this.state.link },
+          auth.makeTokenHeader(token),
+        )
+          .then((res) => {
+            Router.replace(`/r/${this.state.subredditName}/${res.data._id}/${res.data.titleSlug}`);
+          })
+          .catch(err => console.log(err));        
+      }  else if (type === 'Image') {
+        const token = sessions.getToken('jwt');
+        axios.post(
+          `/api/sub/${this.state.subredditName}`,
+          { title: titleText, type: 'Image', url: this.state.link },
+          auth.makeTokenHeader(token),
+        )
+          .then((res) => {
+            Router.replace(`/r/${this.state.subredditName}/${res.data._id}/${res.data.titleSlug}`);
+          })
+          .catch(err => console.log(err));        
+      }
+
 
     // work on links later
   }
@@ -112,17 +147,22 @@ class PostForm extends React.Component {
           <option value="text" >Text</option>
           <option value="image">Image</option>
           <option value="video">Video</option>
+          <option value='article'>Article</option>
         </select>
 
         <br />
 
-        Title:
-        <br />
-        <textarea rows="1" cols="80" value={this.state.titleText} onChange={this.onTitleTextChangeHandler} />
-        <br />
+        {this.state.isTitleHidden ? null :
+          <div>
+            Title:
+            <br />
+            <textarea rows="1" cols="80" value={this.state.titleText} onChange={this.onTitleTextChangeHandler} />
+            <br />
+          </div>
+        }
 
-        <div id="linkBar">
-          {this.state.isLinkBarHidden ? null : <LinkBar onLinkingAnImage={this.onLinkingAnImage}/>}
+        <div id="linkbar">
+          {this.state.isLinkBarHidden ? null : <LinkBar linkChange={this.onLinkChangeHandler} />}
         </div>
 
         <div id="textbox">

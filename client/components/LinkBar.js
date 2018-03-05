@@ -1,43 +1,17 @@
-import Img from 'react-image';
-import axios from 'axios';
-
 class LinkBar extends React.Component {
-  constructor (props) {
-    super (props)
-    this.state= {
-      titleText: '', 
-      subredditName: this.props.subreddit,
-      imageLink: '',
-    }
-    this.createNewImagePost = this.createNewImagePost.bind(this)
+  constructor(props) {
+    super(props);
   }
-
-  createNewImagePost(e) {
-    this.setState({
-      imageLink: e.target.value
-    })
-  }
+ 
   
-  render () {
+  render() {
     return (
       <div>
-        Video and Img Link: <br />
-        <textarea val="text" value={this.bodyText} onChange={this.props.onLinkingAnImage, this.createNewImagePost}/> <br />
-        <button onClick={this.imageHandle} >Upload</button>
-        <div className="imagePreview">
-          <Img src={this.state.imageLink} width={250} />
-        </div>
-        <style jsx>
-          {`
-            
-            
-          `}
-        </style>
-      </div>
-    )
+        Link: <br />
+        <input value={this.link} onChange={this.props.linkChange} /> <br />
+      </div>      
+    );
   }
-
-
 }
 
 export default LinkBar;

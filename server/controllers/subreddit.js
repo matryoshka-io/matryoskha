@@ -43,7 +43,6 @@ module.exports = {
             res.status(201).json(post);
           });
         } else if (req.body.type === 'Article') {
-          // Note that the title is omitted, since we will use the article's title.
           utils.getMetadata(req.body.url)
             .then(({ thumbnail, title }) => {
               (new models.Post({
@@ -51,10 +50,8 @@ module.exports = {
                 url: req.body.url,
                 subreddit: subreddit._id,
                 author: req.session.user._id,
-                metadata: { // Be explicit.
-                  title,
-                  thumbnail,
-                },
+                title,
+                thumbnail,
               })).save().then((post) => {
                 res.status(201).json(post);
               });

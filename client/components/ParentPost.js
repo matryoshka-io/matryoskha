@@ -18,7 +18,10 @@ class ParentPost extends React.Component {
       postTitle: props.title,
       postBodyText: props.body,
       comments: props.comments,
-    }
+      url: props.url,
+      thumbnail: props.thumbnail,
+      type: props.type,
+    };
   }
 
   postComment = (commentText) => {
@@ -52,20 +55,54 @@ class ParentPost extends React.Component {
   }
 
   render() {
+    let display;
+    if (this.state.type === 'Image') {
+      display = (
+        <div>
+          <div className="topOfPage">
+            <div className="postTitle">{this.state.postTitle}</div>
+            <div id="textBy">(by <Link href={`/u/${this.props.author.username}`}><a>{this.props.author.username}</a></Link>)</div>
+          </div>
+          <div id="titleDate">{this.props.date}</div>
+          <div className="postBody">
+            <Img src={this.state.url} width={400}/>
+          </div>        
+        </div>
+      );
+    } else if (this.state.type === 'Article') {
+      display = (
+        <div>
+          <div className="topOfPage">
+            <div className="postTitle">{this.state.postTitle}</div>
+            <div id="textBy">(by <Link href={`/u/${this.props.author.username}`}><a>{this.props.author.username}</a></Link>)</div>
+          </div>
+          <div id="titleDate">{this.props.date}</div>
+          <div className="postBody">
+            <a href={this.state.url}>{this.state.postTitle}</a>
+            <img src={this.state.thumbnail} />
+          </div>        
+        </div>
+      );
+    } else if (this.state.type === 'Text') {
+      display = (
+        <div>
+          <div className="topOfPage">
+            <div className="postTitle"> {this.state.postTitle}</div>
+            <div id="textBy">(by <Link href={`/u/${this.props.author.username}`}><a>{this.props.author.username}</a></Link>)</div>
+          </div>
+          <div id="titleDate">{this.props.date}</div>
+          <div className="postBody">
+            <ReactMarkdown source={this.state.postBodyText} />
+          </div>
+        </div>
+      );
+    }
     return (
       <div>
-        <div className="topOfPage">
-          <div className="postTitle"> {this.state.postTitle}</div>
-          <div id="textBy">(by <Link href={`/u/${this.props.author.username}`}><a>{this.props.author.username}</a></Link>)</div>
-        </div>
-        <div id="titleDate">{this.props.date}</div>
-        <div className="postBody">
-          {/* <Img src={this.state.postBodyText} width={300}/> */}
-          <ReactMarkdown source={this.state.postBodyText} />
-        </div>
+        {display}
 
         Add a new comment
-      < CommentForm title={this.state.title} subredditId={this.state.subredditId} postComment={this.postComment} />
+        <CommentForm title={this.state.title} subredditId={this.state.subredditId} postComment={this.postComment} />
 
         <CommentList
           comments={this.state.comments}
