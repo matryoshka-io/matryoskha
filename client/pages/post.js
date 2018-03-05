@@ -31,8 +31,8 @@ class PostDetailPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      subreddit: this.props.post.subreddit,
-      user: this.props.post.user,
+      subreddit: this.props.subreddit,
+      user: this.props.user,
       post: this.props.post,
     };
   }

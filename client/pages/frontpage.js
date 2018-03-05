@@ -21,6 +21,8 @@ class Frontpage extends Component {
       user: this.props.user,
       token: this.props.token,
       subscribed: this.props.subscribed,
+      subscriptions: this.props.subscriptions,
+      karma: this.props.karma,
       posts: this.props.posts,
     };
     this.loginUser = this.loginUser.bind(this);
@@ -110,7 +112,12 @@ class Frontpage extends Component {
 
   render() {
     return (
-      <Page title={this.state.title}>
+      <Page
+        title={this.state.title}
+        user={this.state.user}
+        karma={this.state.karma}
+        subscriptions={this.state.subscriptions}
+      >
         <div className="pageContent">
           <div className="posts" >
             <Posts
@@ -146,7 +153,7 @@ class Frontpage extends Component {
             }
             .posts {
               padding-top: 30px;
-              float: left;  
+              float: left;
               width: 75%;
             }
             .sidebar {

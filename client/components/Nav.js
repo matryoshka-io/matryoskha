@@ -1,10 +1,7 @@
-import Link from 'next/link'
-import Logo from './Logo'
+import Link from 'next/link';
 
-export default () => (
+export default ({ title }) => (
   <ul>
-    
-    <a href="/"><Logo/></a>
     <Item href="/best">best</Item>
     <Item href="/hot">hot</Item>
     <Item href="/new">new</Item>
@@ -16,7 +13,7 @@ export default () => (
         ul {
           list-style-type: none;
           background: #696775;
-          margin: 0;
+          margin: 4px;
           padding: 0;
         }
       `}
@@ -32,23 +29,23 @@ const Item = ({ href, children }) => (
 
     <style jsx>
       {`
-    
       li {
-          display: inline-block;
-        }
-        a {
-          display: inline-block;
-          padding: 10px;
-          margin-right: 10px;
-          font-size: 16px;
-          text-transform: uppercase;
-          text-decoration: none;
-          color: #f4ebce;
-        }
-        a:hover {
-          color: #fff;
-        }
-        
+        display: inline-block;
+      }
+      a {
+        display: inline-block;
+        padding: 10px;
+        margin-right: 10px;
+        font-size: 16px;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: #f4ebce;
+      }
+      a:hover {
+        color: #fff;
+        text-decoration: none;
+      }
+
       `}
     </style>
   </li>
