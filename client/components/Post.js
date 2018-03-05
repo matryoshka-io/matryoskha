@@ -107,13 +107,6 @@ const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, vot
             margin-top: 0px;
             margin-bottom: 8px;
           }
-          .post__content a {
-            cursor: pointer;
-            font-weight: 700;
-          }
-          .post__content a:hover {
-            color: #ffcc00;
-          }
           .post__meta, .post__actions {
             float: left;
             display: inline-block;
