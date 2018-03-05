@@ -2,7 +2,7 @@ version: "2"
 services:
   stacking:
     container_name: stacking
-    image: pvalenzano/stacking:v0
+    image: pvalenzano/stacking:v3
     restart: on-failure
     working_dir: /usr/src/app
     ports:
