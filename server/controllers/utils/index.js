@@ -2,6 +2,7 @@ const db = require('../../database');
 const models = require('../../models');
 
 const request = require('superagent');
+const _ = require('underscore');
 
 const getMetadata = (url) =>
   new Promise((resolve, reject) => {
@@ -17,6 +18,43 @@ const getMetadata = (url) =>
           title,
           thumbnail,
         });
+      });
+  });
+
+const getVideoMeta = (url) => 
+  new Promise((resolve, reject) => {
+    request.get(url)
+      .set('accept', 'text/html')
+      .end((err, res) => {
+        const html = res.text;
+        let title = html.match(/<title>(.*?)<\/title>/);
+        if (title) {
+          title = title[1];
+          title = _.unescape(title);
+        } else {
+          title = 'Video';
+        }
+
+        let id;
+        let thumbnail = url.match(/watch\?v=(.*)$/);
+        if (!thumbnail) {
+          thumbnail = url.match(/\.be\/(.*)$/);
+        }
+        if (!thumbnail) {
+          thumbnail = 'http://crouton.net/crouton.png'
+          id = '';
+        } else {
+          thumbnail = thumbnail[1];
+          id = thumbnail;
+          thumbnail = `https://img.youtube.com/vi/${thumbnail}/default.jpg`
+        }
+
+        console.log(id);
+        resolve({
+          title,
+          thumbnail,
+          id,
+        });        
       });
   });
 
@@ -144,4 +182,5 @@ module.exports = {
   getKarmaAndSortPromise,
   getKarma,
   getMetadata,
+  getVideoMeta,
 };

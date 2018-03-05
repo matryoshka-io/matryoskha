@@ -14,7 +14,7 @@ const postSchema = mongoose.Schema({
     ref: 'Subreddit',
   }, // Unique ID of the Subreddit to which the Post belongs.
   title: String, // Title of the Post.
-  type: String, // Type of the Post/Comment, e.g. Video, Image (e.g. an IMGUR link), Text, Comment, or Article. Videos, Images, and Articles have urls (or links) and Articles have metadata.
+  type: String, // Type of the Post/Comment, e.g. Video, Image (e.g. an IMGUR link), Text, Comment, or Article. Videos, Images, and Articles have urls (or links) and Articles have a thumbnail.
   body: String, // Body of the Post/Comment, if applicable.
   author: {
     type: mongoose.Schema.Types.ObjectId,
@@ -30,10 +30,8 @@ const postSchema = mongoose.Schema({
   }, // See above for top-level Comments, vs. nested Comments, vs. Posts.
   url: String,
   titleSlug: String, // For the title.
-  metadata: {
-    title: String, // Of the article.
-    thumbnail: String, // Link to a thumbnail of the article's main image.
-  },
+  thumbnail: String, // Link to a thumbnail of the article's main image.
+  videoId: String, // YouTube.
 });
 
 postSchema.pre('save', function CreateSlugFromTitle(next) {
