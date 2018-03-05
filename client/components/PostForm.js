@@ -55,7 +55,7 @@ class PostForm extends React.Component {
       this.setState({
         isLinkBarHidden: false,
         isTextBoxHidden: true,
-        isTitleHidden: false,
+        isTitleHidden: true,
         type: 'Video',
       });
     } else if (e.target.value === 'article') {
@@ -109,6 +109,12 @@ class PostForm extends React.Component {
         axios.post(
           `${BASE_URL}/api/sub/${this.state.subredditName}`,
           { title: titleText, type: 'Image', url: this.state.link },
+          .catch(err => console.log(err));        
+      } else if (type === 'Video') {
+        const token = sessions.getToken('jwt');
+        axios.post(
+          `/api/sub/${this.state.subredditName}`,
+          { type: 'Video', url: this.state.link },
           auth.makeTokenHeader(token),
         )
           .then((res) => {
@@ -116,9 +122,6 @@ class PostForm extends React.Component {
           })
           .catch(err => console.log(err));
       }
-
-
-    // work on links later
   }
 
   render() {

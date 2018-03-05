@@ -10,7 +10,7 @@ const Post = ({ _id, type, author, subreddit, title, titleSlug, karma, date, thu
     backgroundSize: 'cover',
   };
 
-  if (type === 'Article') {
+  if (type === 'Article' || type === 'Video') {
     postImageStyle.backgroundImage = `url(${thumbnail})`;
   }
   else if (type === 'Image'){
