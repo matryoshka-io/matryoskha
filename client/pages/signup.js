@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import Router from 'next/router';
+import custom from '../utils/redirect';
 
 import SignupForm from '../components/SignupForm';
 import Page from '../components/Page';
@@ -15,21 +16,12 @@ class SignupPage extends Component {
   }
 
   registerUser(username, password) {
-    console.log(`register ${username}, ${password}`);
     const app = this;
     auth.registerUser(username, password)
       .then((result) => {
-        console.log('RESULT: ', result);
-        if (result.success) {
-          Router.replace('/');
-        } else {
-          app.setState({
-            message: result.message,
-          }, () => setTimeout(() => app.setState({ message: '' }), 3000));
-        }
+        Router.replace('/');
       })
       .catch((err) => {
-        console.log('ERROR: ', err);
         app.setState({
           message: err.message,
         }, () => setTimeout(() => app.setState({ message: ''}), 3000));
@@ -49,6 +41,9 @@ class SignupPage extends Component {
 
 SignupPage.getInitialProps = async function GetInitialPropsForRegistrationPage(context) {
   const session = auth.initializeSession(context);
+  if (session.user) {
+    Router.redirect('/');
+  }
   return {
     user: session.user,
   };

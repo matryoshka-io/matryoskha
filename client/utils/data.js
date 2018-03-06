@@ -70,7 +70,7 @@ const prepUserProfile = (session) => {
       };
       return profile.getUserProfile(session.user.username || null)
         .then((profile) => {
-          result.karma = profile.karma;
+          result.karma = profile.karma || 0;
           return getSubscriptions(session);
         })
         .then((subscriptions) => {

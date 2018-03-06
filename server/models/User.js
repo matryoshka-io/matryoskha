@@ -21,7 +21,6 @@ userSchema.pre('save', function EncryptUserPasswordOnSave(next) {
   if (!user.isModified('password')) {
     return next();
   }
-  console.log('\nUSER:  Updating Password\n');
   bcrypt
     .genSalt(10)
     .then((salt) => {

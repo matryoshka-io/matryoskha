@@ -6,7 +6,7 @@ export default ({ title, subreddit }) => {
       <ul>
         <Item href={`/r/${subreddit}/`}>{`/r/${subreddit}`}</Item>
         <Item href="/">best</Item>
-        <Item href="/new">new</Item>
+        <Item href="/">new</Item>
 
         <style jsx>
           {`
