@@ -68,3 +68,29 @@ Once in the container the `npm run seed` command will seed the application with 
 
 `exit` when you're done inside the APPLICATION container.
 
+## Built With
+
+* [Node.js](https://nodejs.org/en/)
+* [npm](https://www.npmjs.com/)
+* [Next.js](https://github.com/zeit/next.js/)
+* [JSON Web Tokens](https://jwt.io/)
+* [Express](https://expressjs.com/)
+* [Docker](https://www.docker.com/)
+* [Jest](https://facebook.github.io/jest/)
+* [MongoDB](https://www.mongodb.com/)
+* [Mongoose](http://mongoosejs.com/)
+
+## Contributing
+
+We're currently not accepting contributions at this time. Perhaps some day in the future.
+
+## Authors
+
+* **Paul Valenzano** – [GitHub](https://github.com/pazano)
+* **James Yen** – [GitHub](https://github.com/jameshyen)
+* **Alice Kim** – [GitHub](https://github.com/alicemeeyoung)
+* **Serghei Madan** – [GitHub](https://github.com/truelav)
+
+## Acknowledgments
+
+* Hack Reactor, Los Angeles
