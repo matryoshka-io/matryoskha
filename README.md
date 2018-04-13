@@ -1,18 +1,27 @@
-# matryoskha
-Comments Stack... you get it?
+# Matryoshka
+Russian-doll themed Reddit clone.
 
-## Setup
-Be sure to have a MongoDB instance running on your local machine (i.e. `localhost`) on port `27017`.
+![Subreddit View](about/subreddit.png)
+![Detailed Post View](about/detailed.png)
 
-* `npm install`
-* `npm run seed`
-* `npm run dev`
+## Getting Started
+Be sure to take care of the Prerequisites section first. Then run the following commands.
 
-## Development
+1. `yarn` (install dependencies)
+2. `yarn seed` (inserts seed data)
+3. `yarn dev` (boots up Next.js and REST server)
 
-`npm run lint path/to/file` to run ESLint on a JavaScript file, we are using the Airbnb style guide.
+### Prerequisites
 
-## Production
+**MongoDB** Have an instance running on your machine on port `27017`.
+
+## Testing
+
+Please have a look at `testing/README.md`.
+
+## Deployment
+
+Have fun!
 
 ### A Tale of Three Dockers
 
@@ -59,3 +68,29 @@ Once in the container the `npm run seed` command will seed the application with 
 
 `exit` when you're done inside the APPLICATION container.
 
+## Built With
+
+* [Node.js](https://nodejs.org/en/)
+* [npm](https://www.npmjs.com/)
+* [Next.js](https://github.com/zeit/next.js/)
+* [JSON Web Tokens](https://jwt.io/)
+* [Express](https://expressjs.com/)
+* [Docker](https://www.docker.com/)
+* [Jest](https://facebook.github.io/jest/)
+* [MongoDB](https://www.mongodb.com/)
+* [Mongoose](http://mongoosejs.com/)
+
+## Contributing
+
+We're currently not accepting contributions at this time. Perhaps some day in the future.
+
+## Authors
+
+* **Paul Valenzano** – [GitHub](https://github.com/pazano)
+* **James Yen** – [GitHub](https://github.com/jameshyen)
+* **Alice Kim** – [GitHub](https://github.com/alicemeeyoung)
+* **Serghei Madan** – [GitHub](https://github.com/truelav)
+
+## Acknowledgments
+
+* Hack Reactor, Los Angeles
