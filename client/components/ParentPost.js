@@ -68,8 +68,8 @@ class ParentPost extends React.Component {
           </div>
           <div id="titleDate">{this.props.date}</div>
           <div className="postBody">
-            <Img src={this.state.url} width={400}/>
-          </div>        
+            <Img src={this.state.url} width={400} />
+          </div>
         </div>
       );
     } else if (this.state.type === 'Article') {
@@ -83,7 +83,7 @@ class ParentPost extends React.Component {
           <div className="postBody">
             <a href={this.state.url}>{this.state.postTitle}</a>
             <img src={this.state.thumbnail} />
-          </div>        
+          </div>
         </div>
       );
     } else if (this.state.type === 'Text') {

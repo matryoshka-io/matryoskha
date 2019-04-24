@@ -90,6 +90,10 @@ class CommentListEntry extends React.Component {
     }
   }
 
+  castUpVote() {
+    this.castVote(this.props.comment._id, 1)
+  }
+
   castVote(commentId, vote) {
     const token = sessions.getToken('jwt')
     return axios.post(`/api/vote/${commentId}`, { vote: vote }, auth.makeTokenHeader(token))
@@ -102,6 +106,10 @@ class CommentListEntry extends React.Component {
       .then(res => {
         this.props.updateCommentList(res.data.comments)
       })
+  }
+
+  castDownVote() {
+    this.deleteVote(this.props.comment._id, 1)
   }
 
   deleteVote(commentId, vote) {
@@ -118,13 +126,9 @@ class CommentListEntry extends React.Component {
       })
   }
 
-  castUpVote() {
-    this.castVote(this.props.comment._id, 1)
-  }
 
-  castDownVote() {
-    this.deleteVote(this.props.comment._id, 1)
-  }
+
+
 
   render() {
     return (
@@ -155,21 +159,17 @@ class CommentListEntry extends React.Component {
 
         {
           this.state.isReplyBoxHidden ? null : <ReplyCommentBox
-            allComments={this.props.allComments}
             postId={this.props.postId}
             index={this.props.index}
             replyAndSetNewCommentId={this.replyAndSetNewCommentId}
             commentId={this.props.comment._id}
             updateCommentList={this.props.updateCommentList}
             onReplyClickHandler={this.onReplyClickHandler}
-
-
           />
         }
 
         {
           this.state.isEditBoxHidden ? null : <EditBox
-            commentBody={this.state.commentBody}
             postId={this.props.postId}
             index={this.props.index}
             commentId={this.props.comment._id}

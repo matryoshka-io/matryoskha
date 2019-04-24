@@ -1,8 +1,3 @@
-import Dropdown from 'react-simple-dropdown'
-import DropdownTrigger from 'react-simple-dropdown/lib/components/DropdownTrigger';
-import DropdownContent from 'react-simple-dropdown/lib/components/DropdownContent'
-import Link from 'next/link';
-
 const SubscribedSubreddits = ({ subscriptions }) => {
   return (
     <div class="dropdown">

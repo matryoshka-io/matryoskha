@@ -21,7 +21,7 @@ class EditBox extends React.Component {
 
   postEditWithText() {
     this.setState({ editIndex: this.props.index },
-      this.editComment(this.props.commentId, this.state.editBoxText) //should be editID not editIndex
+      this.editComment(this.props.commentId, this.state.editBoxText)
     )
   }
 
